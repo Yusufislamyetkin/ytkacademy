@@ -17,14 +17,6 @@ const Label = ({ children }) => (
 
 /* ============ HAKKIMIZDA ============ */
 const AboutPage = ({ navigate }) => {
-  const values = [
-    { icon: '💻', t: '.NET Backend Sistemleri', d: 'Ölçeklenebilir, yüksek performanslı ve modern backend mimarileri inşası.' },
-    { icon: '💳', t: 'Ödeme & Fintech Mimarisi', d: 'Vakıf Katılım gibi bankacılık ve fintech ekosistemlerinde kazanılmış entegrasyon ve işlem güvencesi tecrübesi.' },
-    { icon: '🌐', t: 'Mikroservis Mimarileri', d: 'Event-driven, loosely-coupled ve yüksek erişilebilirlikli servis tasarımları.' },
-    { icon: '🗄️', t: 'SQL & DB Modelleme', d: 'Performanslı veri tabanı sorguları, indeksleme ve ilişkisel şema tasarımı.' },
-    { icon: '📐', t: 'Sistem Tasarımı (System Design)', d: 'Monolitten mikroservislere geçiş, kuyruk yönetimi ve caching stratejileri.' }
-  ];
-
   return (
     <>
       <Header navigate={navigate} />
@@ -32,222 +24,117 @@ const AboutPage = ({ navigate }) => {
       {/* 1. HERO (GİRİŞ) */}
       <section className="relative overflow-hidden border-b border-[#0c2719]">
         <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[820px] h-[440px] z-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center,rgba(0,255,136,.13),transparent 62%)' }}></div>
-        <div className="max-w-[960px] mx-auto px-8 relative z-[2] text-center py-28">
-          <Label>MİSYON & VİZYON</Label>
-          <h1 className="text-[clamp(32px,5vw,54px)] font-disp font-bold text-[#eafff5] leading-[1.1] mb-6 mt-4">
-            Yazılım öğrenmek bilgi toplamak değil, <br />
-            <span className="text-[#00ff88] drop-shadow-[0_0_20px_rgba(0,255,136,.3)]">düşünme biçimini değiştirmektir.</span>
+        <div className="max-w-[860px] mx-auto px-8 relative z-[2] text-center py-28">
+          <Label>Hakkımda</Label>
+          <h1 className="text-[clamp(30px,5vw,50px)] font-disp font-bold text-[#eafff5] leading-[1.15] mb-6 mt-4">
+            Yazılım Öğrenmek Zor Değil, <br className="hidden md:inline" />
+            <span className="text-[#00ff88]">Doğru Yolu Bulmak Zor</span>
           </h1>
-          <p className="text-[#74998a] text-lg leading-relaxed max-w-[740px] mx-auto font-mono">
-            Backend geliştirme ve finansal sistemler üzerinde çalışan bir yazılım geliştirici olarak, C# ve .NET ekosisteminde birebir mentorluk ile geliştiricilerin problem çözme ve sistem tasarlama becerisini geliştirmeye odaklanıyorum.
-          </p>
-        </div>
-      </section>
-
-      {/* 2. BEN KİMİM */}
-      <section className="py-24 border-b border-[#0c2719] bg-[rgba(0,255,136,0.01)]">
-        <div className="max-w-[1080px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <Label>ÖZGEÇMİŞ & DENEYİM</Label>
-            <h2 className="text-[clamp(26px,3.5vw,36px)] font-disp font-bold text-[#eafff5] mb-6 mt-3">Ben Yusuf İslam Yetkin.</h2>
-            <div className="space-y-5 text-[#74998a] leading-relaxed text-[15px]">
-              <p>
-                C# & .NET Core backend geliştirme, yüksek ölçekli dağıtık mimariler ve finansal yazılım altyapıları üzerine odaklanan bir yazılım geliştiriciyim.
-              </p>
-              <p>
-                <strong>Vakıf Katılım</strong> gibi kurumsal finans kuruluşlarında ve yüksek işlem hacmine sahip backend ekosistemlerinde edindiğim <strong className="text-[#00ff88]">5 yılı aşkın sektör deneyimimle</strong>, kodun sadece "çalışmasını" değil; ölçeklenebilir, test edilebilir ve güvenli olmasını hedefleyen sistemler tasarlıyorum.
-              </p>
-              <p>
-                Edindiğim bu pratik saha tecrübelerini, ezberci eğitim modellerinden uzaklaşarak, doğrudan üretim standartlarında (production-ready) kod yazmayı hedefleyen yazılımcılara birebir mentorluk eşliğinde aktarıyorum.
-              </p>
-            </div>
-          </div>
-          <div className="rounded-2xl border border-[#0c2719] p-8" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-            <h3 className="font-mono text-sm text-[#00ff88] mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse"></span>
-              AKTİF UZMANLIK ALANLARI
-            </h3>
-            <div className="space-y-4">
-              {values.map((v, i) => (
-                <div key={i} className="flex gap-4 items-start p-3.5 rounded-xl border border-[rgba(0,255,136,0.03)] bg-[rgba(0,255,136,0.01)] hover:border-[#103a26] transition-all">
-                  <span className="text-xl flex-none mt-0.5">{v.icon}</span>
-                  <div>
-                    <h4 className="text-sm font-semibold text-[#eafff5]">{v.t}</h4>
-                    <p className="text-xs text-[#74998a] mt-1 leading-relaxed">{v.d}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. ODAK NOKTAM */}
-      <section className="py-24 border-b border-[#0c2719]">
-        <div className="max-w-[960px] mx-auto px-8 text-center">
-          <Label>EĞİTİM ANLAYIŞIM</Label>
-          <h2 className="text-[clamp(26px,3.5vw,36px)] font-disp font-bold text-[#eafff5] mb-4 mt-3">Odak Noktam</h2>
-          <p className="text-[#74998a] max-w-[540px] mx-auto font-mono text-sm mb-12">Benim yaklaşımım basit ve nettir:</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {[
-              { t: 'Framework Ezberlemek Değildir', d: 'Kütüphanelerin adını ve hazır metotları ezberlemek sizi bir adım ileri taşımaz. Önemli olan arkadaki çalışma mantığıdır.' },
-              { t: 'Video İzlemek Değildir', d: 'Saatlerce pasif bir şekilde video izleyerek yazılım öğrenilmez. Gelişim sadece parmaklarınız klavyeye değdiğinde başlar.' },
-              { t: 'Hazır Proje Kopyalamak Değildir', d: 'GitHub\'dan hazır "todo" projelerini klonlayıp özgeçmişe eklemek sizi sektör standartlarında bir mühendis yapmaz.' }
-            ].map((item, i) => (
-              <div key={i} className="rounded-xl border border-red-950/40 p-6 text-left relative overflow-hidden bg-[rgba(239,68,68,0.01)]">
-                <span className="absolute top-4 right-4 text-red-500 font-bold text-sm">❌ Hata</span>
-                <h3 className="text-[15px] font-bold text-red-400/90 mb-3 pr-8">{item.t}</h3>
-                <p className="text-xs text-[#74998a] leading-relaxed">{item.d}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-2xl border border-[#00ff88]/20 p-8 max-w-[720px] mx-auto relative overflow-hidden" style={{ background: 'linear-gradient(165deg,rgba(0,255,136,0.04),transparent)' }}>
-            <span className="absolute top-4 right-4 text-[#00ff88] font-bold text-sm">✓ Hedef</span>
-            <div className="text-2xl font-disp font-bold text-[#00ff88] mb-3">Gerçek Problem Çözmeyi Öğrenmektir.</div>
-            <p className="text-sm text-[#74998a] leading-relaxed max-w-[580px] mx-auto">
-              Bir bug ile karşılaştığınızda nasıl debug edeceğinizi, veri yapısını nasıl tasarlayacağınızı ve sisteminizi darboğazlardan nasıl koruyacağınızı öğrenmek asıl hedeftir.
+          <div className="space-y-6 text-[#74998a] text-lg leading-relaxed max-w-[720px] mx-auto">
+            <p>
+              Bugün internette binlerce eğitim, yüzlerce roadmap ve sayısız kaynak bulunuyor. Buna rağmen birçok kişi aylarca çalışmasına rağmen istediği seviyeye ulaşamıyor.
+            </p>
+            <p>
+              Sorun genellikle motivasyon eksikliği değil; ne öğrenileceğini, hangi sırayla öğrenileceğini ve öğrenilen bilgilerin gerçek projelerde nasıl kullanılacağını bilmiyor olmak.
+            </p>
+            <p className="text-[#00ff88] font-mono text-base">
+              Bu mentorluk programını oluşturma sebebim tam olarak bu.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 4. NEDEN BU MENTORLUK SİSTEMİ? */}
+      {/* 2. BEN KİMİM */}
       <section className="py-24 border-b border-[#0c2719] bg-[rgba(0,255,136,0.01)]">
-        <div className="max-w-[1080px] mx-auto px-8">
-          <div className="text-center mb-16">
-            <Label>SEKTÖREL TESPİTLER</Label>
-            <h2 className="text-[clamp(26px,3.5vw,36px)] font-disp font-bold text-[#eafff5] mt-3">Neden Bu Mentorluk Sistemi?</h2>
-            <p className="text-[#74998a] max-w-[540px] mx-auto font-mono text-sm mt-3">Çoğu geliştirici kendi kendine ilerlerken aynı kritik noktalarda takılıp kalıyor:</p>
+        <div className="max-w-[960px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-8">
+            <Label>BEN KİMİM?</Label>
+            <h2 className="text-3xl font-disp font-bold text-[#eafff5] mb-6 mt-3">Ben Yusuf İslam Yetkin.</h2>
+            <div className="space-y-5 text-[#74998a] leading-relaxed text-[16px]">
+              <p>
+                Backend geliştirme, ödeme sistemleri ve modern yazılım mimarileri üzerine çalışan bir yazılım mühendisiyim.
+              </p>
+              <p>
+                Kariyerim boyunca <strong>Vakıf Katılım</strong> gibi kurumsal finans kuruluşlarında ve yüksek ölçekli sistemlerde <strong className="text-[#00ff88]">5 yılı aşkın süre</strong> aktif olarak görev aldım. Özellikle .NET ekosistemi, mikroservis mimarileri, veritabanı tasarımı ve ölçeklenebilir sistemler üzerine çalıştım.
+              </p>
+              <p>
+                Bugün edindiğim deneyimi birebir mentorluk programlarıyla paylaşarak geliştiricilerin daha sağlam bir teknik temel oluşturmasına yardımcı oluyorum.
+              </p>
+            </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: '🧩', t: 'Sisteme Dönüştürememe', d: 'Öğrendiği teorik konuları bir araya getirip uçtan uca çalışan, entegre bir sistem tasarlamakta zorlanırlar.' },
-              { icon: '⚠️', t: 'Gerçek Proje Eksikliği', d: 'Production ortamlarında karşılaşılacak yüksek trafik, concurrency ve hata toleransı (fault tolerance) senaryolarından uzaktırlar.' },
-              { icon: '📐', t: 'Mimari Düşünememe', d: 'Kodu sadece yazıp geçmek yerine; Clean Architecture, Dependency Injection ve gevşek bağlı (loosely-coupled) yapılar kuramazlar.' },
-              { icon: '🔄', t: 'Süreçsiz İlerleme', d: 'Kodları deneyimli bir göz tarafından incelenmediği (code review) için kötü yazım alışkanlıklarını tekrarlar dururlar.' }
-            ].map((p, i) => (
-              <div key={i} className="rounded-xl border border-[#0c2719] p-6 bg-[rgba(0,255,136,0.02)] hover:border-[#103a26] transition-all">
-                <span className="text-2xl mb-4 block">{p.icon}</span>
-                <h3 className="text-sm font-bold text-[#eafff5] mb-2">{p.t}</h3>
-                <p className="text-xs text-[#74998a] leading-relaxed">{p.d}</p>
-              </div>
-            ))}
+          <div className="lg:col-span-4 rounded-2xl border border-[#0c2719] p-6 text-center" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
+            <div className="w-16 h-16 mx-auto rounded-2xl grid place-items-center text-[#5cffba] font-bold text-xl border border-[#103a26] mb-4" style={{ background: 'linear-gradient(135deg,#0a3a24,#052b18)' }}>YY</div>
+            <h3 className="text-md text-[#eafff5] font-disp font-bold">Yusuf İslam Yetkin</h3>
+            <p className="text-xs text-[#74998a] mt-1">Software Engineer</p>
+            <span className="inline-block mt-4 font-mono text-[10px] text-[#00ff88] border border-[#103a26] px-2 py-1 rounded-full bg-[rgba(0,255,136,0.04)]">Fintech & Backend Expert</span>
           </div>
         </div>
       </section>
 
-      {/* 5. NASIL ÇALIŞIYORUM? */}
+      {/* 3. NEDEN MENTORLUK? */}
       <section className="py-24 border-b border-[#0c2719]">
-        <div className="max-w-[1080px] mx-auto px-8">
-          <div className="text-center mb-16">
-            <Label>METODOLOJİ</Label>
-            <h2 className="text-[clamp(26px,3.5vw,36px)] font-disp font-bold text-[#eafff5] mt-3">Nasıl Çalışıyorum?</h2>
-            <p className="text-[#00ff88] max-w-[540px] mx-auto font-mono text-sm mt-3">Bu bir video kursu değildir. Birebir aktif bir mentorluk sürecidir:</p>
+        <div className="max-w-[860px] mx-auto px-8">
+          <div className="text-center mb-12">
+            <Label>YAKLAŞIMIM</Label>
+            <h2 className="text-3xl font-disp font-bold text-[#eafff5] mt-3">Neden Mentorluk?</h2>
           </div>
-
-          <div className="space-y-6 max-w-[820px] mx-auto">
-            {[
-              { step: '01', t: 'Seviye ve Hedef Analizi', d: 'Mevcut teknik birikiminiz, kod yazım tarzınız ve kariyer hedefleriniz detaylı bir görüşmeyle analiz edilir.' },
-              { step: '02', t: 'Kişisel Yol Haritası (Roadmap)', d: 'Eksik olduğunuz konulara ve uzmanlaşmak istediğiniz alanlara özel haftalık bir öğrenme ve uygulama planı çıkarılır.' },
-              { step: '03', t: 'Gerçekçi Backend Projeleri', d: 'Hayali projeler yerine; Sanal POS entegrasyonu, veri tabanı optimizasyonları ve mikroservis mimarileri gibi production-ready projeler geliştiririz.' },
-              { step: '04', t: 'Canlı Kod Analizi (Code Review)', d: 'Yazdığınız her satır kod birlikte incelenir. Algoritmik karmaşıklık, clean code prensipleri ve bellek yönetimi standartlarına göre düzeltilir.' },
-              { step: '05', t: 'Mimari Karar Değerlendirmeleri', d: 'Hangi kütüphanenin, neden seçilmesi gerektiğini; veritabanı tercihlerinin ardındaki teknik sebepleri tartıştığımız seanslar düzenleriz.' }
-            ].map((s, i) => (
-              <div key={i} className="flex gap-6 rounded-xl border border-[#0c2719] p-6 bg-[rgba(0,255,136,0.01)] hover:border-[#103a26] transition-all items-start">
-                <span className="font-disp font-bold text-lg text-[#00ff88] bg-[rgba(0,255,136,0.05)] border border-[#103a26] px-3 py-1.5 rounded">{s.step}</span>
-                <div>
-                  <h3 className="text-[15px] font-bold text-[#eafff5] mb-2">{s.t}</h3>
-                  <p className="text-xs text-[#74998a] leading-relaxed">{s.d}</p>
-                </div>
-              </div>
-            ))}
+          <div className="space-y-6 text-[#74998a] leading-relaxed text-base">
+            <p>
+              Yazılım öğrenirken en büyük eksikliğin doğru yönlendirme olduğunu düşünüyorum.
+            </p>
+            <p>
+              Birçok kişi ya gereğinden fazla teoriye boğuluyor ya da neden yaptığını bilmeden proje kopyalayarak ilerlemeye çalışıyor.
+            </p>
+            <div className="p-6 rounded-xl border border-[#0c2719] bg-[rgba(0,255,136,0.01)] my-6">
+              <strong className="text-[#eafff5] block mb-2 font-disp text-[17px]">Mentorluk sürecinde amacım hazır çözümler vermek değil, nasıl düşüneceğini göstermek.</strong>
+              <p className="text-sm">
+                Çünkü sektörün ihtiyaç duyduğu kişiler belirli bir teknolojiyi ezberleyenler değil, problem çözebilen geliştiricilerdir.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 6. NELERE ODAKLANIYORUM? */}
+      {/* 4. BİRLİKTE NE YAPACAĞIZ? */}
       <section className="py-24 border-b border-[#0c2719] bg-[rgba(0,255,136,0.01)]">
-        <div className="max-w-[1080px] mx-auto px-8">
+        <div className="max-w-[960px] mx-auto px-8">
           <div className="text-center mb-16">
-            <Label>MÜFREDAT ODAKLARI</Label>
-            <h2 className="text-[clamp(26px,3.5vw,36px)] font-disp font-bold text-[#eafff5] mt-3">Nelere Odaklanıyorum?</h2>
-            <p className="text-[#74998a] max-w-[540px] mx-auto font-mono text-sm mt-3">Mentorluk boyunca doğrudan sektörün talep ettiği şu ana başlıklara yoğunlaşıyoruz:</p>
+            <Label>SÜREÇ</Label>
+            <h2 className="text-3xl font-disp font-bold text-[#eafff5] mt-3">Birlikte Ne Yapacağız?</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: 'Backend Mimarisi', desc: 'Clean Architecture, CQRS, Domain-Driven Design (DDD) ve solid prensipleriyle kod geliştirme.' },
-              { title: 'API Design & Integration', desc: 'REST standartlarına uygun, güvenli, dokümante edilmiş ve optimize edilmiş API uç noktaları tasarlamak.' },
-              { title: 'SQL & Veri Modelleme', desc: 'SQL Server ile performanslı sorgular, indeks yönetimi, migration yönetimi ve verimli şema dizaynı.' },
-              { title: 'System Design Düşüncesi', desc: 'Yüksek yük altındaki sistemlerde kuyruk yapıları (RabbitMQ), caching (Redis) ve dağıtık veri akış modelleri.' },
-              { title: 'Production Backend Yaklaşımı', desc: 'Dockerize edilmiş uygulamalar, loglama, monitoring ve cloud (Vercel/Azure) üzerinde canlıya alma süreçleri.' },
-              { title: 'Finansal Sistem Mantığı', desc: 'Banka ve ödeme sistemleri entegrasyonu, transaction yönetimi, mutabakat ve finansal güvenlik mimarisi.' }
+              { emoji: '📋', title: 'Kişisel Plan', desc: 'Hedeflerinize ve mevcut seviyenize özel kişisel öğrenme planı oluşturacağız.' },
+              { emoji: '🚀', title: 'Gerçek Projeler', desc: 'Ezbere örnekler yerine endüstri standartlarında gerçek projeler geliştireceğiz.' },
+              { emoji: '🔍', title: 'Kod İnceleme', desc: 'Yazdığınız kodları satır satır birlikte inceleyecek, daha iyisini yazmayı öğreneceğiz.' },
+              { emoji: '💬', title: 'Mimari Kararlar', desc: 'Neden ve nerede hangi mimari yapıyı kullanacağımızı birlikte tartışıp kararlaştıracağız.' },
+              { emoji: '💼', title: 'Teknik Mülakatlar', desc: 'Teknik iş mülakatlarına birlikte hazırlanacak, simülasyon mülakatlar yapacağız.' },
+              { emoji: '🎯', title: 'Sektörel Yönlendirme', desc: 'Sizi modern yazılım sektörünün ve kurumsal firmaların beklentilerine göre yönlendireceğiz.' }
             ].map((item, i) => (
-              <div key={i} className="rounded-xl border border-[#0c2719] p-6 bg-[#04100a] hover:border-[#00ff88]/30 transition-all">
-                <h3 className="text-[15px] font-bold text-[#00ff88] mb-2 font-disp">{item.title}</h3>
-                <p className="text-xs text-[#74998a] leading-relaxed">{item.desc}</p>
+              <div key={i} className="rounded-xl border border-[#0c2719] p-6 bg-[#04100a] hover:border-[#00ff88]/30 transition-all flex gap-4 items-start">
+                <span className="text-2xl mt-0.5">{item.emoji}</span>
+                <div>
+                  <h3 className="text-sm font-bold text-[#00ff88] mb-1.5 font-disp">{item.title}</h3>
+                  <p className="text-xs text-[#74998a] leading-relaxed">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 7. BU SİSTEM KİMLER İÇİN? & 8. KİMLER İÇİN DEĞİL? */}
-      <section className="py-24 border-b border-[#0c2719]">
-        <div className="max-w-[1080px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Kimler İçin */}
-          <div className="rounded-xl border border-[#00ff88]/10 p-8 bg-[rgba(0,255,136,0.01)]">
-            <h2 className="text-xl font-disp font-bold text-[#00ff88] mb-6 flex items-center gap-2">
-              <span>🎯</span> Bu Sistem Kimler İçin?
-            </h2>
-            <div className="space-y-4">
-              {[
-                'Yazılımda hedefini ve yönünü kaybetmiş, nereden devam edeceğini bilemeyen geliştiriciler.',
-                'C# ve .NET Core ekosisteminde uzmanlaşarak piyasada aranan bir backend developer olmak isteyenler.',
-                'Junior seviyede kalmış, Mid veya Senior seviyeye geçişte tıkanmış olan yazılımcılar.',
-                'Gerçek ve canlı ölçekte production sistemlerin nasıl çalıştığını ve tasarlanacağını görmek isteyen geliştiriciler.'
-              ].map((text, i) => (
-                <div key={i} className="flex gap-3 items-start">
-                  <span className="text-[#00ff88] font-bold">✓</span>
-                  <p className="text-sm text-[#74998a] leading-relaxed">{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Kimler İçin Değil */}
-          <div className="rounded-xl border border-red-950/20 p-8 bg-[rgba(239,68,68,0.01)]">
-            <h2 className="text-xl font-disp font-bold text-red-400 mb-6 flex items-center gap-2">
-              <span>⚠️</span> Kimler İçin Uygun Değil?
-            </h2>
-            <div className="space-y-4">
-              {[
-                'Sadece pasif şekilde video izleyerek, aktif kod yazmadan öğrenmek isteyenler.',
-                'Ellerini kirletmeden, gerçek hataları çözmek için sabır göstermeyenler.',
-                'Düzenli pratik yapmaya vakit ayırmayacak ve ödev süreçlerini aksatacak olanlar.',
-                'Kısa sürede, hiçbir emek harcamadan mucizevi bir şekilde kıdemli geliştirici olmak isteyenler.'
-              ].map((text, i) => (
-                <div key={i} className="flex gap-3 items-start">
-                  <span className="text-red-500 font-bold">×</span>
-                  <p className="text-sm text-[#74998a] leading-relaxed">{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 9. SON MESAJ & CTA */}
+      {/* 5. NİHAİ HEDEF & CTA */}
       <section className="py-28 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,136,0.06),transparent_60%)] pointer-events-none"></div>
         <div className="max-w-[760px] mx-auto px-8 relative z-[2]">
-          <h2 className="text-2xl font-disp font-bold text-[#eafff5] leading-relaxed mb-10 italic">
-            "Yazılım öğrenmek bir içerik tüketim süreci değildir.<br />
-            <span className="text-[#00ff88] not-italic">Sistem kurmayı öğrenme sürecidir.</span>"
+          <Label>NİHAİ HEDEF</Label>
+          <h2 className="text-[clamp(24px,4.5vw,36px)] font-disp font-bold text-[#eafff5] leading-snug mb-6 mt-4">
+            Bir kursu tamamlaman değil, bağımsız şekilde proje geliştirebilen ve profesyonel ekiplerde çalışabilecek seviyeye ulaşman.
           </h2>
+          <p className="text-[#74998a] text-md max-w-[620px] mx-auto mb-12 font-mono">
+            Bu yüzden eğitimlerimde yalnızca teknoloji öğretmeye değil, yazılım geliştirme bakış açısı kazandırmaya odaklanıyorum.
+          </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button 
