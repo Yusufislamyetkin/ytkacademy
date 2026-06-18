@@ -1345,7 +1345,7 @@ const SITE_URL = process.env.SITE_URL || 'https://www.siberkampus.org';
 
 const PLANS = {
   'web-pentest': { name: 'İleri Düzey Web Siber Güvenlik Uzmanı Eğitimi', price: 600000, subscription: 'web-pentest' },
-  'one-on-one':  { name: "1'e 1 Canlı Mentörlük",                       price: 150000, subscription: 'one-on-one' }
+  'one-on-one':  { name: "60 Dakikalık Bire Bir Mentörlük",               price: 150000, subscription: 'one-on-one' }
 };
 
 // Brevo e-posta gönderici

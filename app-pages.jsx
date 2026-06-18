@@ -2678,6 +2678,7 @@ const PricingPage = ({ navigate }) => {
       oldPrice: null,
       period: null,
       img: '/freeeducationiamge-fiyatlandırma.jpg',
+      desc: 'Mevcut seviyenizi analiz edip, hedefinize en uygun öğrenme planını ve yol haritasını hazırlıyoruz.',
       features: [
         'Yetenek & Seviye Analizi',
         'Kariyer Yönü ve Rehberlik',
@@ -2690,12 +2691,13 @@ const PricingPage = ({ navigate }) => {
     },
     {
       id: 'one-on-one',
-      name: "1'e 1 Canlı Mentörlük",
+      name: '60 Dakikalık Bire Bir Mentörlük',
       tag: 'EN POPÜLER',
       price: 1500,
       oldPrice: 3000,
       period: '60 dk',
       img: '/mentoregitimi-fiyatlandırma.jpg',
+      desc: 'Kod inceleme, canlı soru-cevap ve C# & .NET Core sorun giderme odaklı bire bir destek seansı.',
       features: [
         '60 Dakika Canlı Bire Bir Görüşme',
         'Kod & Proje İncelemesi (Code Review)',
@@ -2709,13 +2711,13 @@ const PricingPage = ({ navigate }) => {
     },
     {
       id: 'fintech-program',
-      name: 'Fintech & Backend Mentorluk Programı',
+      name: '20 Saatlik Bire Bir Mentorluk',
       tag: 'PREMIUM UZMANLIK',
       price: 20000,
       oldPrice: 40000,
       period: 'Aylık',
       img: '/uzmanegitim-fiyatlandırma.jpg',
-      desc: 'Seni backend developer’dan, sistem tasarlayan mühendis seviyesine çıkaran program.',
+      desc: 'Seni backend developer seviyesinden, kurumsal fintech mimarileri tasarlayan mühendis seviyesine çıkaran program.',
       features: [
         '20 Saat Bire Bir Canlı Mentörlük',
         'Gerçekçi Backend Sistem Tasarımı',
@@ -2858,30 +2860,35 @@ const PricingPage = ({ navigate }) => {
                 <img src={plan.img} alt={plan.name} className="w-full h-44 object-cover" />
               </div>
               
-              <div className="flex-1">
-                <h2 className="text-lg text-[#eafff5] font-disp font-bold mb-3 pr-16">{plan.name}</h2>
-                {plan.desc && <p className="text-xs text-[#74998a] mb-3 leading-relaxed">{plan.desc}</p>}
-                
-                {/* Price */}
-                <div className="mb-6">
-                  {plan.oldPrice && (
-                    <span className="text-[#5c8a74] text-lg line-through font-mono mr-2">{plan.oldPrice.toLocaleString('tr-TR')} TL</span>
-                  )}
-                  <span className="text-3xl font-bold text-[#eafff5] font-mono">{plan.price === 0 ? 'Ücretsiz' : plan.price.toLocaleString('tr-TR') + ' TL'}</span>
-                  {plan.period && <span className="text-xs text-[#74998a] ml-2">/ {plan.period}</span>}
+              <div className="flex-1 flex flex-col justify-between">
+                <div>
+                  {/* Title & description wrapper to align prices vertically */}
+                  <div className="min-h-[110px] mb-3">
+                    <h2 className="text-lg text-[#eafff5] font-disp font-bold mb-2 pr-12 leading-snug">{plan.name}</h2>
+                    {plan.desc && <p className="text-xs text-[#74998a] leading-relaxed">{plan.desc}</p>}
+                  </div>
+                  
+                  {/* Price */}
+                  <div className="mb-6">
+                    {plan.oldPrice && (
+                      <span className="text-[#5c8a74] text-lg line-through font-mono mr-2">{plan.oldPrice.toLocaleString('tr-TR')} TL</span>
+                    )}
+                    <span className="text-3xl font-bold text-[#eafff5] font-mono">{plan.price === 0 ? 'Ücretsiz' : plan.price.toLocaleString('tr-TR') + ' TL'}</span>
+                    {plan.period && <span className="text-xs text-[#74998a] ml-2">/ {plan.period}</span>}
+                  </div>
+                  
+                  <hr className="border-[#0c2719] my-5" />
+                  
+                  {/* Features */}
+                  <ul className="space-y-3 text-sm font-mono">
+                    {plan.features.map((f, fi) => (
+                      <li key={fi} className="flex items-start gap-2.5 text-[#9fc4b5]">
+                        <span className="text-[#00ff88] text-xs mt-0.5">✔</span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                
-                <hr className="border-[#0c2719] my-5" />
-                
-                {/* Features */}
-                <ul className="space-y-3 text-sm font-mono">
-                  {plan.features.map((f, fi) => (
-                    <li key={fi} className="flex items-start gap-2.5 text-[#9fc4b5]">
-                      <span className="text-[#00ff88] text-xs mt-0.5">✔</span>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
               
               {/* CTA */}
@@ -3108,18 +3115,18 @@ const ProductDetailPage = ({ navigate, data }) => {
       isFree: true
     },
     'one-on-one': {
-      name: "1'e 1 Canlı Mentörlük",
+      name: '60 Dakikalık Bire Bir Mentörlük',
       price: 1500, oldPrice: 3000,
       img: '/mentoregitimi-fiyatlandırma.jpg',
-      desc: 'Haftalık canlı birebir dersler, kod ve proje incelemeleri (code review), C# & .NET & SQL desteği ile kariyerinizi hızla bir üst seviyeye taşıyın.',
+      desc: 'Kod inceleme, canlı soru-cevap ve C# & .NET Core sorun giderme odaklı bire bir destek seansı.',
       features: ['60 Dakika Canlı Bire Bir Görüşme', 'Kod & Proje İncelemesi (Code Review)', 'C#, .NET & SQL Geliştirici Desteği', 'Kariyer & Sektör Tavsiyeleri', 'Soru-Cevap & Sorun Giderme Seansı'],
       isFree: false
     },
     'fintech-program': {
-      name: 'Fintech & Backend Mentorluk Programı',
+      name: '20 Saatlik Bire Bir Mentorluk',
       price: 20000, oldPrice: 40000,
       img: '/uzmanegitim-fiyatlandırma.jpg',
-      desc: 'Seni backend developer’dan, sistem tasarlayan mühendis seviyesine çıkaran program.',
+      desc: 'Seni backend developer seviyesinden, kurumsal fintech mimarileri tasarlayan mühendis seviyesine çıkaran program.',
       features: ['20 Saat Bire Bir Canlı Mentörlük', 'Gerçekçi Backend Sistem Tasarımı', 'Ödeme & Transaction Mimarisi', 'Mikroservisler & Event-Driven Sistemler', 'Production-Ready Proje Geliştirme', 'Mimari Değerlendirme & Kod Analizi', 'Kariyer & Teknik Mülakat Hazırlığı'],
       isFree: false
     }
