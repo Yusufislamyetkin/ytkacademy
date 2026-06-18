@@ -63,7 +63,9 @@ const AboutPage = ({ navigate }) => {
             </div>
           </div>
           <div className="lg:col-span-4 rounded-2xl border border-[#0c2719] p-6 text-center" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-            <div className="w-16 h-16 mx-auto rounded-2xl grid place-items-center text-[#5cffba] font-bold text-xl border border-[#103a26] mb-4" style={{ background: 'linear-gradient(135deg,#0a3a24,#052b18)' }}>YY</div>
+            <div className="w-28 h-28 mx-auto rounded-2xl overflow-hidden border border-[#00ff88]/30 shadow-[0_0_20px_rgba(0,255,136,0.15)] mb-4 bg-[#0a1f15]">
+              <img src="/yusufislamyetkin.jpg" alt="Yusuf İslam Yetkin" className="w-full h-full object-cover" />
+            </div>
             <h3 className="text-md text-[#eafff5] font-disp font-bold">Yusuf İslam Yetkin</h3>
             <p className="text-xs text-[#74998a] mt-1">Software Engineer</p>
             <span className="inline-block mt-4 font-mono text-[10px] text-[#00ff88] border border-[#103a26] px-2 py-1 rounded-full bg-[rgba(0,255,136,0.04)]">Fintech & Backend Expert</span>
@@ -2669,74 +2671,76 @@ const PricingPage = ({ navigate }) => {
 
   const plans = [
     {
-      id: 'free-basic',
-      name: 'Temel Siber Güvenlik Eğitimi',
-      tag: 'ÜCRETSİZ',
+      id: 'career-analysis',
+      name: '15 Dakika Ücretsiz Kariyer Analizi',
+      tag: 'YOL HARİTASI',
       price: 0,
       oldPrice: null,
       period: null,
       img: '/freeeducationiamge-fiyatlandırma.jpg',
       features: [
-        '15+ Temel Hacking Odası',
-        'Temel Zafiyet Eğitimleri (SQLi, XSS)',
-        'Genel Sohbet Kanalına Erişim',
-        'Profil ve Rozet Kazanımı'
+        'Yetenek & Seviye Analizi',
+        'Kariyer Yönü ve Rehberlik',
+        'Kişisel Öğrenme Yol Haritası',
+        'Mentörlük Uyum Değerlendirmesi'
       ],
-      cta: isLoggedIn ? 'Zaten Kayıtlısınız ✔' : 'Kaydol, Kullanmaya Başla ⚡',
+      cta: 'Ücretsiz Analiz Randevusu Al ⚡',
       popular: false,
       accent: '#74998a'
     },
     {
-      id: 'web-pentest',
-      name: 'İleri Düzey Web Siber Güvenlik Uzmanı Eğitimi',
-      tag: '%50 İNDİRİM',
-      price: 6000,
-      oldPrice: 12000,
-      period: 'Tek Ödeme',
-      img: '/uzmanegitim-fiyatlandırma.jpg',
+      id: 'one-on-one',
+      name: "1'e 1 Canlı Mentörlük",
+      tag: 'EN POPÜLER',
+      price: 1500,
+      oldPrice: 3000,
+      period: '60 dk',
+      img: '/mentoregitimi-fiyatlandırma.jpg',
       features: [
-        '30 Derslik VIP Eğitim Odasına Erişim',
-        'Eğitim Sonunda Sertifika',
-        'Özel VIP Sohbet Grubuna Katılım',
-        'Tek Ödeme ile Ömür Boyu Erişim'
+        '60 Dakika Canlı Bire Bir Görüşme',
+        'Kod & Proje İncelemesi (Code Review)',
+        'C#, .NET & SQL Geliştirici Desteği',
+        'Kariyer & Sektör Tavsiyeleri',
+        'Soru-Cevap & Sorun Giderme Seansı'
       ],
-      cta: 'Satın Al ⚡',
+      cta: 'Hemen Canlı Ders Satın Al ⚡',
       popular: true,
       accent: '#00ff88'
     },
     {
-      id: 'one-on-one',
-      name: "1'e 1 Canlı Siber Güvenlik Eğitimi",
-      tag: '%50 İNDİRİM',
-      price: 12000,
-      oldPrice: 24000,
-      period: null,
-      img: '/mentoregitimi-fiyatlandırma.jpg',
+      id: 'fintech-program',
+      name: 'Fintech & Backend Mentorluk Programı',
+      tag: 'PREMIUM UZMANLIK',
+      price: 20000,
+      oldPrice: 40000,
+      period: 'Aylık',
+      img: '/uzmanegitim-fiyatlandırma.jpg',
+      desc: 'Seni backend developer’dan, sistem tasarlayan mühendis seviyesine çıkaran program.',
       features: [
-        '4 Haftalık Birebir Online Eğitim',
-        'Haftada 2 Saat Canlı Ders',
-        'Ders Materyallerine Ömür Boyu Erişim',
-        'Özel VIP Sohbet Grubuna Erişim',
-        'YTK Academy Onaylı Sertifikalar',
-        'CV Hazırlama & Mülakat Desteği'
+        '20 Saat Bire Bir Canlı Mentörlük',
+        'Gerçekçi Backend Sistem Tasarımı',
+        'Ödeme & Transaction Mimarisi',
+        'Mikroservisler & Event-Driven Sistemler',
+        'Production-Ready Proje Geliştirme',
+        'Mimari Değerlendirme & Kod Analizi',
+        'Kariyer & Teknik Mülakat Hazırlığı'
       ],
-      cta: 'Satın Al ⚡',
+      cta: 'Ön Görüşme Başvurusu Yap ⚡',
       popular: false,
       accent: '#ffd166'
     }
   ];
 
   const handlePlanClick = (plan) => {
-    if (plan.id === 'free-basic') {
-      if (isLoggedIn) {
-        navigate('dashboard');
-      } else {
-        window.__SK_REGISTER_INFO = 'Kayıt olarak platformdaki ücretsiz eğitimlere erişebilirsiniz.';
-        navigate('register');
-      }
+    if (plan.id === 'career-analysis') {
+      window.open('https://wa.me/905389351189?text=Merhaba,%2015%20Dakika%20%C3%9Ccretsiz%20Kariyer%20Analizi%20randevusu%20almak%20istiyorum.', '_blank');
       return;
     }
-    // Ücretli planlar — checkout modal aç (login zorunlu değil, email ile yeni hesap oluşturulabilir)
+    if (plan.id === 'fintech-program') {
+      window.open('https://wa.me/905389351189?text=Merhaba,%20Fintech%20%26%20Backend%20Mentorluk%20Program%C4%B1%20i%C3%A7in%20%C3%B6n%20g%C3%B6r%C3%BC%C5%9Fme%20ba%C5%9Fvurusu%20yapmak%20istiyorum.', '_blank');
+      return;
+    }
+    // 'one-on-one' planı — checkout modal aç (PayTR üzerinden ödeme için)
     openCheckoutModal(plan);
   };
 
@@ -2830,7 +2834,7 @@ const PricingPage = ({ navigate }) => {
         <div className="max-w-[1280px] mx-auto px-8 text-center relative z-[2]">
           <span className="font-mono text-[13px] font-medium tracking-[.18em] uppercase text-[#00ff88] inline-flex items-center gap-2.5"><span className="text-[#5c8a74] font-bold">//</span> EĞİTİM PAKETLERİ</span>
           <h1 className="text-[clamp(36px,5vw,56px)] text-[#eafff5] my-5 font-disp">Eğitim Paketleri & Fiyatlandırma</h1>
-          <p className="text-[#74998a] max-w-[640px] mx-auto text-base">Seviyenize uygun eğitim paketini seçin ve siber güvenlik kariyerinize hemen başlayın.</p>
+          <p className="text-[#74998a] max-w-[640px] mx-auto text-base">İhtiyacınıza uygun eğitim paketini seçin ve C# & .NET Core yazılım kariyerinize hemen başlayın.</p>
           <div className="mt-6 inline-flex items-center gap-3 bg-[rgba(0,255,136,.06)] border border-[#00ff88]/30 rounded-full px-6 py-3">
             <span className="text-[#00ff88] text-2xl">🔥</span>
             <span className="text-[#00ff88] font-bold text-lg font-mono">%50 İNDİRİM</span>
@@ -2856,6 +2860,7 @@ const PricingPage = ({ navigate }) => {
               
               <div className="flex-1">
                 <h2 className="text-lg text-[#eafff5] font-disp font-bold mb-3 pr-16">{plan.name}</h2>
+                {plan.desc && <p className="text-xs text-[#74998a] mb-3 leading-relaxed">{plan.desc}</p>}
                 
                 {/* Price */}
                 <div className="mb-6">
@@ -3094,28 +3099,28 @@ const ProductDetailPage = ({ navigate, data }) => {
   const productId = data && data.id;
 
   const products = {
-    'free-basic': {
-      name: 'Temel Siber Güvenlik Eğitimi',
+    'career-analysis': {
+      name: '15 Dakika Ücretsiz Kariyer Analizi',
       price: 0, oldPrice: null,
       img: '/freeeducationiamge-fiyatlandırma.jpg',
-      desc: 'Siber güvenlik dünyasına ilk adımınızı atın! Bu ücretsiz eğitim programı ile SQL Injection, XSS, CSRF gibi temel web zafiyetlerini öğrenecek, interaktif laboratuvar ortamlarında pratik yapacaksınız.',
-      features: ['15+ Temel Hacking Odası', 'Temel Zafiyet Eğitimleri (SQLi, XSS)', 'Genel Sohbet Kanalına Erişim', 'Profil ve Rozet Kazanımı'],
+      desc: 'Yetenek ve seviyenizi analiz edip, hedefinize en uygun kariyer yönünü belirliyoruz. Kişisel öğrenme yol haritanızı çiziyor ve mentörlük uyumumuzu değerlendiriyoruz.',
+      features: ['Yetenek & Seviye Analizi', 'Kariyer Yönü ve Rehberlik', 'Kişisel Öğrenme Yol Haritası', 'Mentörlük Uyum Değerlendirmesi'],
       isFree: true
     },
-    'web-pentest': {
-      name: 'İleri Düzey Web Siber Güvenlik Uzmanı Eğitimi',
-      price: 6000, oldPrice: 12000,
-      img: '/uzmanegitim-fiyatlandırma.jpg',
-      desc: 'Profesyonel web pentest uzmanı olmak için ihtiyacınız olan tüm bilgi ve beceriyi kazandıran kapsamlı bir eğitim programı. 30 derslik VIP eğitim odalarında gerçek dünya senaryolarını uygulayarak öğreneceksiniz.',
-      features: ['30 Derslik VIP Eğitim Odasına Erişim', 'Eğitim Sonunda Sertifika', 'Özel VIP Sohbet Grubuna Katılım', 'Tek Ödeme ile Ömür Boyu Erişim'],
+    'one-on-one': {
+      name: "1'e 1 Canlı Mentörlük",
+      price: 1500, oldPrice: 3000,
+      img: '/mentoregitimi-fiyatlandırma.jpg',
+      desc: 'Haftalık canlı birebir dersler, kod ve proje incelemeleri (code review), C# & .NET & SQL desteği ile kariyerinizi hızla bir üst seviyeye taşıyın.',
+      features: ['60 Dakika Canlı Bire Bir Görüşme', 'Kod & Proje İncelemesi (Code Review)', 'C#, .NET & SQL Geliştirici Desteği', 'Kariyer & Sektör Tavsiyeleri', 'Soru-Cevap & Sorun Giderme Seansı'],
       isFree: false
     },
-    'one-on-one': {
-      name: "1'e 1 Canlı Siber Güvenlik Eğitimi",
-      price: 12000, oldPrice: 24000,
-      img: '/mentoregitimi-fiyatlandırma.jpg',
-      desc: 'Deneyimli bir siber güvenlik uzmanıyla birebir çalışarak kariyerinizi hızla ilerletin. 4 haftalık yoğun eğitim programında size özel müfredat ve doğrudan mentörlük desteği alacaksınız.',
-      features: ['4 Haftalık Birebir Online Eğitim', 'Haftada 2 Saat Canlı Ders', 'Ders Materyallerine Ömür Boyu Erişim', 'Özel VIP Sohbet Grubuna Erişim', 'YTK Academy Onaylı Sertifikalar', 'CV Hazırlama & Mülakat Desteği'],
+    'fintech-program': {
+      name: 'Fintech & Backend Mentorluk Programı',
+      price: 20000, oldPrice: 40000,
+      img: '/uzmanegitim-fiyatlandırma.jpg',
+      desc: 'Seni backend developer’dan, sistem tasarlayan mühendis seviyesine çıkaran program.',
+      features: ['20 Saat Bire Bir Canlı Mentörlük', 'Gerçekçi Backend Sistem Tasarımı', 'Ödeme & Transaction Mimarisi', 'Mikroservisler & Event-Driven Sistemler', 'Production-Ready Proje Geliştirme', 'Mimari Değerlendirme & Kod Analizi', 'Kariyer & Teknik Mülakat Hazırlığı'],
       isFree: false
     }
   };
