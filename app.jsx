@@ -692,28 +692,48 @@ const HomePage = ({ navigate }) => {
           <div className="space-y-4">
             {[
               { 
-                q: 'Sıfırdan başlayabilir miyim?', 
-                a: 'Evet. Program sıfırdan başlayanlar için de özel hazırlanmıştır. Algoritmik düşünce ve temel mantıktan başlayarak aşama aşama ileri seviye backend konularına geçiş yapıyoruz.' 
+                q: 'Yazılıma sıfırdan başlayabilir miyim?', 
+                a: 'Evet. Mentorluk programı başlangıç seviyesinden ileri seviyeye kadar farklı profillere uygundur. İlk görüşmede mevcut seviyenizi değerlendirerek size özel bir öğrenme planı oluşturuyoruz.' 
               },
               { 
-                q: 'Dersler online mı?', 
-                a: 'Evet. Tüm canlı dersler ve mentorluk seansları online video konferans uygulamaları üzerinden birebir olarak gerçekleştirilir.' 
+                q: 'Dersler birebir mi yapılıyor?', 
+                a: 'Evet. Tüm oturumlar birebir gerçekleştirilir. Böylece öğrenme süreci tamamen hedeflerinize ve seviyenize göre şekillenir.' 
               },
               { 
-                q: 'Haftada kaç saat?', 
-                a: 'Haftalık canlı görüşme süresi ortalama 2-4 saat arasındadır. Kalan günlerde ise size verilen ödev ve proje adımlarını geliştirmeniz beklenmektedir.' 
+                q: 'Hangi teknolojileri öğrenebilirim?', 
+                a: 'Programın içeriği hedeflerinize göre belirlenir. Genel olarak:\n\n• C#\n• .NET & ASP.NET Core\n• SQL\n• Entity Framework\n• Microservices\n• Docker\n• Redis\n• RabbitMQ\n• System Design\n• Clean Architecture\n\nkonularında mentorluk verilmektedir.' 
               },
               { 
-                q: 'Kayıt alınıyor mu?', 
-                a: 'Evet. Yapılan tüm canlı dersler kayıt altına alınmaktadır. Ders sonrasında bu kayıtları istediğiniz zaman tekrar izleyerek pekiştirebilirsiniz.' 
+                q: 'Haftada kaç saat görüşüyoruz?', 
+                a: 'Bu tamamen sizin programınıza bağlıdır. Genellikle haftada 1 veya 2 oturum şeklinde ilerlenir. Görüşmeler dışında da çalışma planı ve yönlendirmeler sağlanır.' 
               },
               { 
-                q: 'Sertifika veriliyor mu?', 
-                a: 'Evet. Mentorluk programını ve bitirme projelerini başarıyla tamamlayan tüm öğrencilerimize, CV ve LinkedIn profillerinde paylaşabilecekleri doğrulanabilir YTK Academy Mezuniyet Sertifikası verilmektedir.' 
+                q: 'Ders kayıtları paylaşılabiliyor mu?', 
+                a: 'Talebe göre oturum kayıtları alınabilir ve daha sonra tekrar izyleyebilmeniz için paylaşılabilir.' 
               },
               { 
-                q: 'İş bulmama yardımcı olur musunuz?', 
-                a: 'Evet. Eğitim süreci bittikten sonra profesyonel CV hazırlama, teknik mülakat simülasyonları gerçekleştiriyoruz. Ayrıca kurumsal iş ortaklarımız ve Yusuf İslam Yetkin\'in kişisel referans desteği ile iş arama sürecinizde yanınızda oluyoruz.' 
+                q: 'Sadece ders mi yapıyoruz?', 
+                a: 'Hayır.\n\nMentorluk süreci yalnızca canlı derslerden oluşmaz. Kod incelemeleri, proje çalışmaları, ödevler ve teknik yönlendirmeler de sürecin önemli bir parçasıdır.' 
+              },
+              { 
+                q: 'Gerçek proje geliştirecek miyiz?', 
+                a: 'Evet.\n\nAmaç yalnızca konu anlatmak değil, öğrendiklerinizi gerçek senaryolarda uygulayabilmenizi sağlamaktır. Bu nedenle süreç boyunca proje geliştirme odaklı ilerlenir.' 
+              },
+              { 
+                q: 'Teknik mülakatlara hazırlık yapıyor musunuz?', 
+                a: 'Evet.\n\nTeknik mülakatlarda sık karşılaşılan konular, sistem tasarımı soruları ve backend geliştirme senaryoları üzerinde çalışılabilir.' 
+              },
+              { 
+                q: 'İş garantisi veriyor musunuz?', 
+                a: 'Hayır.\n\nHiç kimse etik olarak iş garantisi veremez. Ancak amacım sizi sektörün beklentilerine uygun teknik seviyeye ulaştırmak ve kariyer yolculuğunuzda doğru şekilde yönlendirmektir.' 
+              },
+              { 
+                q: 'Mentorluk programı bana uygun mu?', 
+                a: 'Eğer aşağıdakilerden biriyseniz program sizin için uygun olabilir:\n\n• Yazılıma sıfırdan başlamak isteyenler\n• Backend alanında uzmanlaşmak isteyenler\n• Kariyer değişikliği hedefleyenler\n• Teknik mülakatlara hazırlananlar\n• Mevcut bilgisini ileri seviyeye taşımak isteyen geliştiriciler' 
+              },
+              { 
+                q: 'İlk görüşme ücretli mi?', 
+                a: 'Hayır.\n\nİlk görüşmede hedeflerinizi, mevcut seviyenizi ve nasıl bir yol haritası izleyebileceğimizi konuşuruz. Bu görüşme herhangi bir ücret talep edilmeden gerçekleştirilir.' 
               }
             ].map((faq, idx) => (
               <div key={idx} className="border border-[#0c2719] rounded-xl overflow-hidden transition-all duration-300 hover:border-[#103a26]" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
@@ -727,11 +747,11 @@ const HomePage = ({ navigate }) => {
                 <div
                   className="transition-all duration-300 overflow-hidden"
                   style={{
-                    maxHeight: openFaq === idx ? '300px' : '0px',
+                    maxHeight: openFaq === idx ? '400px' : '0px',
                     opacity: openFaq === idx ? 1 : 0
                   }}
                 >
-                  <div className="px-5 pb-5 pt-1 text-xs md:text-sm text-[#74998a] border-t border-[#0c2719]/40 leading-relaxed font-mono">
+                  <div className="px-5 pb-5 pt-1 text-xs md:text-sm text-[#74998a] border-t border-[#0c2719]/40 leading-relaxed font-mono whitespace-pre-line">
                     {faq.a}
                   </div>
                 </div>
@@ -742,8 +762,8 @@ const HomePage = ({ navigate }) => {
           {/* SSS Altı Soru Kartı */}
           <div className="mt-12 p-8 rounded-2xl border border-[#0c2719] text-center relative overflow-hidden reveal" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
             <div className="absolute inset-0 bg-[#00ff88]/[0.01] pointer-events-none"></div>
-            <h3 className="text-lg md:text-xl text-[#eafff5] font-disp font-bold mb-2">Kafanıza takılan başka bir soru mu var?</h3>
-            <p className="text-xs md:text-sm text-[#74998a] mb-6 max-w-[500px] mx-auto">Size en uygun yol haritasını çizmek ve program ayrıntılarını görüşmek üzere ücretsiz bir ön görüşme planlayın.</p>
+            <h3 className="text-lg md:text-xl text-[#eafff5] font-disp font-bold mb-2">Sorunuzun cevabını bulamadınız mı?</h3>
+            <p className="text-xs md:text-sm text-[#74998a] mb-6 max-w-[500px] mx-auto">Bana ulaşın, hedeflerinizi konuşalım ve size uygun bir öğrenme planı oluşturalım.</p>
             <button
               onClick={() => setShowQuiz(true)}
               className="font-mono text-xs md:text-sm font-bold text-[#021008] bg-[#00ff88] px-6 py-3.5 clip-btn hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] transition-all cursor-pointer border-none"
