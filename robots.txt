@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin
+Disallow: /dashboard
 
-Sitemap: https://siberkampus.org/sitemap.xml
+Sitemap: https://ytkacademy.com.tr/sitemap.xml

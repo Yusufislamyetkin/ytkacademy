@@ -747,74 +747,39 @@ app.get(['/api/sitemap.xml', '/sitemap.xml'], async (req, res) => {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
     
-    // Static main pages
+    const BASE = 'https://ytkacademy.com.tr';
+
+    // Static main pages (Turkish-friendly URLs)
     const staticPages = [
-      '',
-      '/about',
-      '/contact',
-      '/support',
-      '/terms',
-      '/privacy',
-      '/tools'
+      { url: '',               priority: '1.0', freq: 'weekly'  },
+      { url: '/hakkimizda',   priority: '0.8', freq: 'monthly' },
+      { url: '/iletisim',     priority: '0.6', freq: 'monthly' },
+      { url: '/fiyatlandirma',priority: '0.9', freq: 'weekly'  },
+      { url: '/destek',       priority: '0.5', freq: 'monthly' },
+      { url: '/kullanim-sartlari', priority: '0.3', freq: 'yearly' },
+      { url: '/gizlilik',     priority: '0.3', freq: 'yearly'  },
+      { url: '/blog',         priority: '0.8', freq: 'weekly'  },
+      { url: '/giris',        priority: '0.5', freq: 'monthly' },
+      { url: '/kayit',        priority: '0.6', freq: 'monthly' },
     ];
-    
-    staticPages.forEach(p => {
+
+    staticPages.forEach(({ url, priority, freq }) => {
       xml += `  <url>\n`;
-      xml += `    <loc>https://siberkampus.org${p}</loc>\n`;
-      xml += `    <priority>${p === '' ? '1.0' : p === '/tools' ? '0.9' : '0.7'}</priority>\n`;
-      xml += `    <changefreq>${p === '' ? 'daily' : 'weekly'}</changefreq>\n`;
+      xml += `    <loc>${BASE}${url}</loc>\n`;
+      xml += `    <priority>${priority}</priority>\n`;
+      xml += `    <changefreq>${freq}</changefreq>\n`;
       xml += `  </url>\n`;
     });
-    
-    // Dynamic tools pages (10 tools)
-    const toolsSlugs = [
-      'reverse-shell',
-      'encoder-decoder',
-      'password-strength',
-      'subnet-calc',
-      'hash-tool',
-      'xss-generator',
-      'sqli-generator',
-      'cron-explainer',
-      'base64-file',
-      'dns-lookup'
-    ];
-    
-    toolsSlugs.forEach(slug => {
-      xml += `  <url>\n`;
-      xml += `    <loc>https://siberkampus.org/tools/${slug}</loc>\n`;
-      xml += `    <priority>0.8</priority>\n`;
-      xml += `    <changefreq>weekly</changefreq>\n`;
-      xml += `  </url>\n`;
-    });
-    
+
     // Dynamic blog articles from DB
     result.rows.forEach(b => {
       xml += `  <url>\n`;
-      xml += `    <loc>https://siberkampus.org/blogs/${b.slug}</loc>\n`;
+      xml += `    <loc>${BASE}/blogs/${b.slug}</loc>\n`;
       xml += `    <priority>0.8</priority>\n`;
       xml += `    <changefreq>weekly</changefreq>\n`;
       xml += `  </url>\n`;
     });
 
-    // Dynamic lesson briefings (public pages)
-    const briefingRoomIds = [
-      'net-01',
-      'web-01',
-      'web-04',
-      'web-11',
-      'web-12',
-      'web-13'
-    ];
-
-    briefingRoomIds.forEach(id => {
-      xml += `  <url>\n`;
-      xml += `    <loc>https://siberkampus.org/brief/${id}</loc>\n`;
-      xml += `    <priority>0.7</priority>\n`;
-      xml += `    <changefreq>monthly</changefreq>\n`;
-      xml += `  </url>\n`;
-    });
-    
     xml += `</urlset>`;
     
     res.header('Content-Type', 'application/xml');

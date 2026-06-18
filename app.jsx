@@ -1545,6 +1545,7 @@ const updateSEOMeta = (p, d) => {
 
 const getPagePath = (p, d) => {
   if (p === 'home') return '/';
+  if (p === 'about') return '/hakkimizda';
   if (p === 'blog-detail' && d) {
     const slug = typeof d === 'string' ? d : d.slug || '';
     return `/blogs/${slug}`;
@@ -1583,6 +1584,31 @@ const parseLocation = () => {
   const path = window.location.pathname;
   if (path === '/' || path === '') {
     return { page: 'home', data: null };
+  }
+  // Türkçe URL alias'ları
+  if (path === '/hakkimizda' || path === '/about') {
+    return { page: 'about', data: null };
+  }
+  if (path === '/iletisim' || path === '/contact') {
+    return { page: 'contact', data: null };
+  }
+  if (path === '/giris' || path === '/login') {
+    return { page: 'login', data: null };
+  }
+  if (path === '/kayit' || path === '/register') {
+    return { page: 'register', data: null };
+  }
+  if (path === '/fiyatlandirma' || path === '/pricing') {
+    return { page: 'pricing', data: null };
+  }
+  if (path === '/destek' || path === '/support') {
+    return { page: 'support', data: null };
+  }
+  if (path === '/gizlilik' || path === '/privacy') {
+    return { page: 'privacy', data: null };
+  }
+  if (path === '/kullanim-sartlari' || path === '/terms') {
+    return { page: 'terms', data: null };
   }
   if (path.startsWith('/blogs/')) {
     const slug = path.substring(7);
