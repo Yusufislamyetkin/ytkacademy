@@ -371,27 +371,25 @@ const HomePage = ({ navigate }) => {
               <span className="w-[7px] h-[7px] rounded-full bg-[#00ff88] shadow-[0_0_10px_#00ff88] sk-pulse"></span>
               Yusuf İslam Yetkin ile Birebir Yazılım Eğitimi
             </span>
-            <h1 className="text-[clamp(40px,6vw,78px)] text-[#eafff5] mb-[18px] tracking-[-.025em]">
-              Yazılım Öğrenmenin En Hızlı Yolu:<br />
-              <span className="glitch" data-text="Birebir Mentorluk">Birebir Mentorluk</span>
+            <h1 className="text-[clamp(32px,4.5vw,48px)] text-[#eafff5] mb-[24px] tracking-[-.025em] font-disp font-bold leading-tight">
+              YTK Academy | <br className="hidden sm:inline" />
+              <span className="text-[#00ff88]">Bire Bir Yazılım Mentörlük Programı</span>
             </h1>
             
             {/* HERO CONTENT */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 mt-6">
-              {[
-                { title: "Canlı birebir dersler", desc: "Sınıf ortamı yok. Sadece size özel canlı ders saati." },
-                { title: "Gerçek proje geliştirme", desc: "Teoride kalmayın, çalışan kurumsal projeler kodlayın." },
-                { title: "Kariyer odaklı yol haritası", desc: "İşe girmek veya seviye atlamak için net adımlar." },
-                { title: "Online ve esnek program", desc: "Zamanınızı kendiniz belirleyin, kendi hızınızda ilerleyin." }
-              ].map((item, idx) => (
-                <div key={idx} className="flex gap-3 items-start border border-[#0c2719] rounded-xl p-4 bg-[#04100a]/20">
-                  <span className="text-[#00ff88] font-bold text-sm">✓</span>
-                  <div>
-                    <h3 className="text-sm font-disp font-bold text-[#eafff5]">{item.title}</h3>
-                    <p className="text-xs text-[#74998a] leading-relaxed mt-1">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="space-y-4 text-[#74998a] text-[15px] leading-relaxed mb-8 mt-6 max-w-[680px]">
+              <p>
+                <strong>YTK Academy</strong>, Yusuf İslam Yetkin rehberliğinde sunulan bire bir yazılım mentörlük programıdır.
+              </p>
+              <p>
+                Yazılıma sıfırdan başlamak isteyenler veya mevcut teknik yetkinliklerini ileri seviyeye taşımayı hedefleyen geliştiriciler için kişiselleştirilmiş bir öğrenme yolculuğu sunar.
+              </p>
+              <p>
+                Eğitim sürecinde yalnızca teorik bilgiler değil, gerçek kurumsal projelerde kullanılan yaklaşımlar, modern yazılım mimarileri ve profesyonel geliştirme süreçleri uygulamalı olarak öğretilir.
+              </p>
+              <p>
+                Katılımcılar adım adım ilerleyen bir yol haritası eşliğinde; .NET, SQL, mikroservisler, bulut teknolojileri ve yazılım mimarileri gibi alanlarda yetkinlik kazanırken, aynı zamanda CV'lerinde ve iş görüşmelerinde kullanabilecekleri profesyonel projelerden oluşan güçlü bir portföy oluştururlar.
+              </p>
             </div>
 
             {/* HERO CTA */}
