@@ -36,7 +36,7 @@ const Header = ({ navigate }) => {
       <div className="max-w-[1280px] mx-auto px-6 md:px-8 flex items-center justify-between h-[72px]">
         <a href={getPagePath('home')} onClick={(e) => { e.preventDefault(); navigate('home'); }} className="flex items-center gap-3 font-disp font-bold text-xl text-[#eafff5] tracking-tight">
           <span className="w-[34px] h-[34px] border-[1.5px] border-[#00ff88] rounded-lg grid place-items-center text-[#00ff88] font-mono text-[15px] font-bold shadow-[0_0_18px_-4px_var(--glow),inset_0_0_12px_-6px_var(--glow)]">&gt;_</span>
-          YTK Academy<b className="text-[#00ff88]">Akademi</b>
+          YTK <b className="text-[#00ff88]">Academy</b>
         </a>
         <nav className="hidden md:flex gap-9 items-center">
           {menuItems.map(([t, p]) => (
@@ -90,7 +90,7 @@ const Footer = ({ navigate }) =>
         <div className="col-span-2 md:col-span-1 flex flex-col items-center md:items-start text-center md:text-left">
           <a href={getPagePath('home')} onClick={(e) => { e.preventDefault(); navigate('home'); }} className="flex items-center gap-3 font-disp font-bold text-xl text-[#eafff5] whitespace-nowrap">
             <span className="w-[34px] h-[34px] border-[1.5px] border-[#00ff88] rounded-lg grid place-items-center text-[#00ff88] font-mono text-[15px] font-bold">&gt;_</span>
-            YTK Academy<b className="text-[#00ff88]">Akademi</b>
+            YTK <b className="text-[#00ff88]">Academy</b>
           </a>
           <p className="text-[#74998a] text-sm mt-[18px] max-w-[300px] leading-relaxed">Uygulamalı CTF görevleri ve siber güvenlik laboratuvarlarıyla yeni nesil siber güvenlik uzmanlarını yetiştiriyoruz.</p>
         </div>
