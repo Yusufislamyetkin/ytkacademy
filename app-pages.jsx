@@ -132,7 +132,7 @@ const AboutPage = ({ navigate }) => {
         <div className="max-w-[760px] mx-auto px-8 relative z-[2]">
           <Label>NİHAİ HEDEF</Label>
           <h2 className="text-[clamp(24px,4.5vw,36px)] font-disp font-bold text-[#eafff5] leading-snug mb-6 mt-4">
-            Bir kursu tamamlaman değil, bağımsız şekilde proje geliştirebilen ve profesyonel ekiplerde çalışabilecek seviyeye ulaşman.
+            Amacımız yalnızca bir kursu tamamlaman değil; bağımsız olarak proje geliştirebilen ve profesyonel yazılım ekiplerinde aktif rol alabilecek seviyeye gelmendir.
           </h2>
           <p className="text-[#74998a] text-md max-w-[620px] mx-auto mb-12 font-mono">
             Bu yüzden eğitimlerimde yalnızca teknoloji öğretmeye değil, yazılım geliştirme bakış açısı kazandırmaya odaklanıyorum.
