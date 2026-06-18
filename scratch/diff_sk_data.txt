@@ -1,0 +1,132 @@
+﻿diff --git a/sk-data.jsx b/sk-data.jsx
+index d9cc6a3..03121d2 100644
+--- a/sk-data.jsx
++++ b/sk-data.jsx
+@@ -8,20 +8,24 @@ const SK_CATEGORIES = [
+     slug: 'web-exploitation', name: 'Web Exploitation', icon: '­şîÉ', color: '#00ff88',
+     desc: 'SQL Injection, XSS, CSRF ve daha fazlas─▒ ÔÇö web uygulamalar─▒ndaki zafiyetleri ke┼şfet ve s├Âm├╝r.',
+     rooms: [
+-      { id: 'web-01', name: 'SQL Injection Temelleri', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Temel SQLi tekniklerini ├Â─şren ve ilk bayra─ş─▒n─▒ yakala.', users: 1420, points: 50, premium: true },
+-      { id: 'web-04', name: 'XSS (Reflected)', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Reflected XSS ile cookie ├ğalma.', users: 1290, points: 50, premium: true },
+-      { id: 'web-11', name: 'Varsay─▒lan Parola S├Âm├╝r├╝s├╝', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Router y├Âneticisinin varsay─▒lan kimlik bilgileriyle giri┼ş yapma.', users: 1150, points: 50, premium: true },
+-      { id: 'web-12', name: 'Komut Enjeksiyonu Temelleri', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Ping panelinden komut enjeksiyonu ile bayrak okuma.', users: 1080, points: 50, premium: true },
+-      { id: 'web-13', name: 'Kaynak Kod Analizi', difficulty: 'Ba┼şlang─▒├ğ', desc: 'HTML yorum sat─▒rlar─▒nda gizlenen bayra─ş─▒ bulma.', users: 980, points: 50, premium: true },
+-      { id: 'web-14', name: 'Dizin Ge├ği┼şi Temelleri', difficulty: 'Ba┼şlang─▒├ğ', desc: '../ ile yol traversal yaparak sunucu dosyalar─▒n─▒ okuma.', users: 890, points: 50, premium: true },
+-      { id: 'web-15', name: '├çerez Manip├╝lasyonu', difficulty: 'Ba┼şlang─▒├ğ', desc: '─░stemci taraf─▒ ├ğerezleri de─şi┼ştirerek yetki y├╝kseltme.', users: 820, points: 50, premium: true },
+-      { id: 'web-02', name: 'UNION-Based SQLi', difficulty: 'Orta', desc: 'UNION SELECT ile ├ğoklu tablo dump etme.', users: 950, points: 75, premium: true },
+-      { id: 'web-05', name: 'XSS (Stored & DOM)', difficulty: 'Orta', desc: 'Kal─▒c─▒ XSS ve DOM manip├╝lasyonu.', users: 870, points: 75, premium: true },
+-      { id: 'web-06', name: 'CSRF Sald─▒r─▒lar─▒', difficulty: 'Orta', desc: 'Cross-Site Request Forgery ile i┼şlem tetikleme.', users: 780, points: 70, premium: true },
+-      { id: 'web-03', name: 'Blind SQL Injection', difficulty: '─░leri', desc: 'Boolean ve time-based blind injection.', users: 680, points: 100, premium: true },
+-      { id: 'web-07', name: 'File Upload Bypass', difficulty: '─░leri', desc: 'Dosya y├╝kleme filtrelerini atlatma ve shell alma.', users: 620, points: 100, premium: true },
+-      { id: 'web-08', name: 'SSRF & XXE', difficulty: '─░leri', desc: 'Server-Side Request Forgery ve XML Entity injection.', users: 580, points: 120, premium: true },
+-      { id: 'web-09', name: 'JWT Token Exploitation', difficulty: 'Uzman', desc: 'JWT zafiyetleri: none algorithm, key confusion.', users: 510, points: 150, premium: true },
++      { id: 'web-01', name: 'SQL Injection: Giri┼ş & Bypass', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Temel SQLi tekniklerini ├Â─şren ve ilk bayra─ş─▒n─▒ yakala.', users: 1420, points: 50 },
++      { id: 'web-04', name: 'Reflected XSS: Oturum ├çalma', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Reflected XSS ile cookie ├ğalma.', users: 1290, points: 50 },
++      { id: 'web-11', name: 'Kaba Kuvvet & Varsay─▒lan Kimlik Bilgileri', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Router y├Âneticisinin varsay─▒lan kimlik bilgileriyle giri┼ş yapma.', users: 1150, points: 50 },
++      { id: 'web-12', name: 'Command Injection: RCE Ke┼şfi', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Ping panelinden komut enjeksiyonu ile bayrak okuma.', users: 1080, points: 50 },
++      { id: 'web-13', name: 'Kaynak Kod Analizi & Hassas Bilgi S─▒z─▒nt─▒s─▒', difficulty: 'Ba┼şlang─▒├ğ', desc: 'HTML yorum sat─▒rlar─▒nda gizlenen bayra─ş─▒ bulma.', users: 980, points: 50 },
++      { id: 'web-14', name: 'Directory Traversal: Dosya Okuma', difficulty: 'Ba┼şlang─▒├ğ', desc: '../ ile yol traversal yaparak sunucu dosyalar─▒n─▒ okuma.', users: 890, points: 50 },
++      { id: 'web-15', name: 'Cookie Tampering: Yetki Y├╝kseltme', difficulty: 'Ba┼şlang─▒├ğ', desc: '─░stemci taraf─▒ ├ğerezleri de─şi┼ştirerek yetki y├╝kseltme.', users: 820, points: 50 },
++      { id: 'web-19', name: 'IDOR & Rol De─şi┼şimi ile Yetki Y├╝kseltme', difficulty: 'Ba┼şlang─▒├ğ', desc: 'Profil veya kullan─▒c─▒ ayarlar─▒ g├╝ncellenirken istek parametrelerindeki rol alanlar─▒n─▒ de─şi┼ştirerek y├Ânetici yetkilerine y├╝ksel.', users: 1020, points: 50 },
++      { id: 'web-02', name: 'UNION-Based SQLi: Veri Taban─▒ S─▒zd─▒rma', difficulty: 'Orta', desc: 'UNION SELECT ile ├ğoklu tablo dump etme.', users: 950, points: 75 },
++      { id: 'web-05', name: 'Stored & DOM XSS: Kal─▒c─▒ S├Âm├╝r├╝', difficulty: 'Orta', desc: 'Kal─▒c─▒ XSS ve DOM manip├╝lasyonu.', users: 870, points: 75 },
++      { id: 'web-06', name: 'CSRF: Cross-Site Request Forgery', difficulty: 'Orta', desc: 'Cross-Site Request Forgery ile i┼şlem tetikleme.', users: 780, points: 70 },
++      { id: 'web-16', name: 'LFI & Log Poisoning: Log Dosyalar─▒ ├£zerinden RCE', difficulty: 'Orta', desc: 'Yerel dosya dahil etme (LFI) a├ğ─▒─ş─▒n─▒ apache/nginx log poisoning y├Ântemiyle birle┼ştirerek sunucuda uzaktan kod ├ğal─▒┼şt─▒r (RCE).', users: 720, points: 80 },
++      { id: 'web-17', name: 'API BOLA: Yetkisiz Nesne Eri┼şimi', difficulty: 'Orta', desc: 'API endpoint\'lerindeki kimlik ve nesne parametrelerini (ID) manip├╝le ederek yetkisiz veri s─▒z─▒nt─▒s─▒ (BOLA) ger├ğekle┼ştir.', users: 690, points: 75 },
++      { id: 'web-03', name: 'Blind SQLi: Boolean & Time-Based', difficulty: '─░leri', desc: 'Boolean ve time-based blind injection.', users: 680, points: 100 },
++      { id: 'web-07', name: 'File Upload Bypass: Web Shell', difficulty: '─░leri', desc: 'Dosya y├╝kleme filtrelerini atlatma ve shell alma.', users: 620, points: 100 },
++      { id: 'web-08', name: 'SSRF & XXE: ─░├ğ A─ş S─▒zmas─▒', difficulty: '─░leri', desc: 'Server-Side Request Forgery ve XML Entity injection.', users: 580, points: 120 },
++      { id: 'web-18', name: 'NoSQL Injection: MongoDB Bypass', difficulty: '─░leri', desc: 'NoSQL mant─▒ksal operat├Âr enjeksiyonu ($ne, $gt) ile veritaban─▒ filtrelerini ve login panelini bypass et.', users: 480, points: 100 },
++      { id: 'web-09', name: 'JWT Token S├Âm├╝r├╝s├╝ & Algoritma Bypass', difficulty: 'Uzman', desc: 'JWT zafiyetleri: none algorithm, key confusion.', users: 510, points: 150 },
+     ]
+   },
+   {
+@@ -257,6 +261,63 @@ const MENTOR_LESSONS_INFO = {
+       "A├ğ─▒k portlar─▒ ve servis versiyonlar─▒n─▒ do─şru analiz etmeyi ├Â─şrendin.",
+       "─░┼şletim sistemi analizi ve agresif tarama y├Ântemlerini kavrad─▒n."
+     ]
++  },
++
++  'web-16': {
++    scenario: "Merhaba {name}. Hedef sunucu ├╝zerindeki bir parametrenin LFI (Local File Inclusion) zafiyetine sahip oldu─şunu tespit ettik. LFI tek ba┼ş─▒na sadece dosya okumaya yarar; ancak sunucudaki apache/nginx access log dosyalar─▒na web shell payload'u g├Ânderip ard─▒ndan bu log dosyas─▒n─▒ LFI ile dahil ederek RCE (Uzaktan Kod ├çal─▒┼şt─▒rma) elde etmelisin.",
++    goals: [
++      "LFI a├ğ─▒─ş─▒n─▒ tespit etme ve dizin ge├ği┼şi ile birle┼ştirme",
++      "Log Poisoning (Log Zehirleme) y├Ântemini anlama",
++      "User-Agent veya di─şer HTTP ba┼şl─▒klar─▒ ├╝zerinden kod enjeksiyonu",
++      "Log dosyalar─▒n─▒ dahil ederek sistemde komut ├ğal─▒┼şt─▒rma"
++    ],
++    realWorld: "Log zehirleme, bir dosya okuma/dahil etme a├ğ─▒─ş─▒n─▒ tam komut ├ğal─▒┼şt─▒rma yetkisine d├Ân├╝┼şt├╝ren son derece kritik bir post-exploitation tekni─şidir. Savunma i├ğin girdi kontrol├╝ ve log dosyas─▒ eri┼şim izinlerinin s─▒k─▒la┼şt─▒r─▒lmas─▒ ├Ânerilir.",
++    learned: [
++      "LFI zafiyetini log zehirleme (log poisoning) ile birle┼ştirerek RCE elde etmeyi ├Â─şrendin.",
++      "HTTP istek ba┼şl─▒klar─▒n─▒n sunucu loglar─▒nda nas─▒l i┼şlendi─şini ve s├Âm├╝r├╝ld├╝─ş├╝n├╝ kavrad─▒n."
++    ]
++  },
++
++  'web-17': {
++    scenario: "Merhaba {name}. REST API tabanl─▒ modern web uygulamalar─▒nda BOLA (Broken Object Level Authorization) en s─▒k kar┼ş─▒la┼ş─▒lan kritik a├ğ─▒klardan biridir. `/api/v1/users/{id}/profile` endpoint'inde, di─şer kullan─▒c─▒lara ait nesne ID'lerini (├Ârne─şin s─▒ral─▒ veya UUID format─▒ndaki id parametrelerini) manip├╝le ederek yetkisiz ┼şekilde veri s─▒zd─▒rmal─▒s─▒n.",
++    goals: [
++      "API istek yap─▒s─▒n─▒ ve parametrelerini analiz etme",
++      "Nesne d├╝zeyinde yetki do─şrulama eksikli─şini tespit etme",
++      "ID parametrelerini de─şi┼ştirerek (ID de─şi┼ştirme sald─▒r─▒s─▒) yetkisiz veri s─▒zd─▒rma"
++    ],
++    realWorld: "BOLA zafiyetleri, sald─▒rganlar─▒n milyonlarca kullan─▒c─▒n─▒n ki┼şisel verilerini, faturalar─▒n─▒ veya ├Âzel dosyalar─▒n─▒ sadece ID numaralar─▒n─▒ art─▒rarak indirmelerine sebep olur. ├ç├Âz├╝m olarak sunucu taraf─▒nda her istek i├ğin nesne sahipli─şi do─şrulamas─▒ yap─▒lmal─▒d─▒r.",
++    learned: [
++      "BOLA / IDOR zafiyetlerini API endpoint'lerinde aramay─▒ ve s├Âm├╝rmeyi ├Â─şrendin.",
++      "─░stemciye g├╝venen zay─▒f yetkilendirme modellerinin risklerini kavrad─▒n."
++    ]
++  },
++
++  'web-18': {
++    scenario: "Merhaba {name}. Klasik ili┼şkisel veritabanlar─▒n─▒n aksine NoSQL veritabanlar─▒ (MongoDB vb.) SQL kullanmaz; fakat zay─▒f girdi temizli─şi durumunda mant─▒ksal sorgu operat├Ârleri ($ne, $gt, $regex) enjekte edilebilir. Giri┼ş panelinde ┼şifre alan─▒na bir nesne enjekte ederek kimlik do─şrulamay─▒ bypass etmelisin.",
++    goals: [
++      "NoSQL sorgu yap─▒s─▒n─▒ ve JSON girdi manip├╝lasyonunu anlama",
++      "MongoDB mant─▒ksal operat├Ârlerini (`$ne` - not equal vb.) kullanma",
++      "Admin giri┼şini ┼şifre bilmeden bypass etme"
++    ],
++    realWorld: "NoSQL Injection, SQL Map gibi geleneksel taray─▒c─▒lar taraf─▒ndan kolayca tespit edilemeyebilir ancak ayn─▒ derecede tehlikelidir ve t├╝m veritaban─▒ ┼şemas─▒n─▒ d├Âkmeye veya yetkisiz giri┼şe yol a├ğabilir. ├ç├Âz├╝m, girdilerin ┼şema d├╝zeyinde do─şrulanmas─▒d─▒r.",
++    learned: [
++      "NoSQL veritabanlar─▒nda sorgu enjeksiyonu yapmay─▒ ├Â─şrendin.",
++      "`$ne` operat├Âr├╝ kullanarak kullan─▒c─▒ do─şrulamalar─▒n─▒ atlatmay─▒ ba┼şard─▒n."
++    ]
++  },
++
++  'web-19': {
++    scenario: "Merhaba {name}. Kullan─▒c─▒ hesab─▒ ayarlar─▒n─▒ g├╝ncellerken HTTP POST istek g├Âvdesinde (JSON) gizli parametrelerin (├Ârne─şin `role: 'user'` veya `is_admin: false`) g├Ânderildi─şini g├Ârd├╝k. Bu iste─şi yakalay─▒p rol de─şerini `admin` olarak manip├╝le etmeli ve sunucuda dikey yetki y├╝kseltme ger├ğekle┼ştirmelisin.",
++    goals: [
++      "Kullan─▒c─▒ profil g├╝ncelleme isteklerini yakalama",
++      "Gizli parametreleri (Mass Assignment / Parameter Pollution) ke┼şfetme",
++      "Rol manip├╝lasyonu ile dikey yetki y├╝kseltme (Privilege Escalation)"
++    ],
++    realWorld: "─░stemciden gelen rol bilgilerinin sunucu taraf─▒nda roller hiyerar┼şisiyle denetlenmeden do─şrudan veritaban─▒na yaz─▒lmas─▒ (Mass Assignment), bir kullan─▒c─▒n─▒n saniyeler i├ğinde admin yetkisi kazanmas─▒na neden olur.",
++    learned: [
++      "Parametre manip├╝lasyonu ile dikey yetki y├╝kseltme yapmay─▒ ├Â─şrendin.",
++      "Sunucu taraf─▒nda korumas─▒z b─▒rak─▒lan veri modeli g├╝ncelleme a├ğ─▒klar─▒n─▒ tespit ettin."
++    ]
+   }
+ };
+ 
+@@ -295,6 +356,7 @@ const SK_PATHWAYS = [
+           { type: 'room', id: 'web-13' },
+           { type: 'room', id: 'web-11' },
+           { type: 'room', id: 'web-15' },
++          { type: 'room', id: 'web-19' },
+           { type: 'room', id: 'web-01' },
+           { type: 'room', id: 'web-04' },
+           { type: 'room', id: 'web-14' },
+@@ -314,6 +376,8 @@ const SK_PATHWAYS = [
+           { type: 'room', id: 'web-02' },
+           { type: 'room', id: 'web-05' },
+           { type: 'room', id: 'web-06' },
++          { type: 'room', id: 'web-16' },
++          { type: 'room', id: 'web-17' },
+         ]
+       },
+       {
+@@ -329,6 +393,7 @@ const SK_PATHWAYS = [
+           { type: 'room', id: 'web-03' },
+           { type: 'room', id: 'web-07' },
+           { type: 'room', id: 'web-08' },
++          { type: 'room', id: 'web-18' },
+           { type: 'room', id: 'web-09' },
+         ]
+       },

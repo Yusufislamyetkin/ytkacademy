@@ -1,0 +1,224 @@
+﻿diff --git a/index.html b/index.html
+index 52b560b..9268e5c 100644
+--- a/index.html
++++ b/index.html
+@@ -2,30 +2,30 @@
+ <html lang="tr">
+ <head>
+   <meta charset="UTF-8" />
+-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+-  <title>Siber G├╝venlik Uzman─▒ Ol | siberkampus ÔÇö CTF & Hacking Laboratuvarlar─▒</title>
++  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++  <title>Siber Kamp├╝s Akademi | Siber G├╝venlik E─şitimi</title>
+   <link rel="icon" href="/favicon.png" type="image/png" />
+   <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+-  <meta name="description" content="siberkampus, CTF g├Ârevleri ve ger├ğek hacking laboratuvarlar─▒yla s─▒f─▒rdan siber g├╝venlik uzman─▒ olman─▒ sa─şlayan uygulamal─▒ e─şitim kamp├╝s├╝d├╝r. Hemen ├╝cretsiz ba┼şla." />
+-  <meta name="keywords" content="siber g├╝venlik, ctf, hacking laboratuvar─▒, siber ctf, ethical hacking, s─▒zma testi, pentest, siber e─şitim" />
+-  <meta name="author" content="siberkampus" />
++  <meta name="description" content="Siber Kamp├╝s Akademi ile siber g├╝venli─şi uygulamal─▒ ├Â─şren. Uygulamal─▒ e─şitimler, ger├ğek senaryolar ve ad─▒m ad─▒m rehberlerle siber g├╝venlik kariyerine ilk ad─▒m─▒n─▒ at. Hemen ba┼şla!" />
++  <meta name="keywords" content="siber kamp├╝s, siber g├╝venlik e─şitimi, uygulamal─▒ siber g├╝venlik, siber g├╝venlik kursu, siber g├╝venlik ├Â─şren, siber g├╝venlik nedir, siber g├╝venlik ba┼şlang─▒├ğ, bilgi g├╝venli─şi, online g├╝venlik e─şitimi" />
++  <meta name="author" content="Siber Kamp├╝s Akademi" />
+   
+-  <!-- Google Search Console Verification -->
+-  <meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_VERIFICATION_TOKEN_HERE" />
++  <!-- Canonical URL -->
++  <link rel="canonical" href="https://www.siberkampus.org/" />
+ 
+   <!-- Open Graph / Facebook -->
+   <meta property="og:type" content="website" />
+-  <meta property="og:url" content="https://siberkampus.com/" />
+-  <meta property="og:title" content="Siber G├╝venlik Uzman─▒ Ol | siberkampus ÔÇö CTF & Hacking Laboratuvarlar─▒" />
+-  <meta property="og:description" content="siberkampus, CTF g├Ârevleri ve ger├ğek hacking laboratuvarlar─▒yla s─▒f─▒rdan siber g├╝venlik uzman─▒ olman─▒ sa─şlayan uygulamal─▒ e─şitim kamp├╝s├╝d├╝r." />
+-  <meta property="og:image" content="https://siberkampus.com/ogretici.jpg" />
++  <meta property="og:url" content="https://www.siberkampus.org/" />
++  <meta property="og:title" content="Siber G├╝venlik E─şitimi | Siber Kamp├╝s Akademi" />
++  <meta property="og:description" content="Siber Kamp├╝s Akademi ile siber g├╝venli─şi uygulamal─▒ ├Â─şren. Uygulamal─▒ e─şitimler ve ger├ğek senaryolarla siber g├╝venlik kariyerine ilk ad─▒m─▒n─▒ at." />
++  <meta property="og:image" content="https://www.siberkampus.org/ogretici.jpg" />
+ 
+   <!-- Twitter -->
+-  <meta property="twitter:card" content="summary_large_image" />
+-  <meta property="twitter:url" content="https://siberkampus.com/" />
+-  <meta property="twitter:title" content="Siber G├╝venlik Uzman─▒ Ol | siberkampus ÔÇö CTF & Hacking Laboratuvarlar─▒" />
+-  <meta property="twitter:description" content="siberkampus, CTF g├Ârevleri ve ger├ğek hacking laboratuvarlar─▒yla s─▒f─▒rdan siber g├╝venlik uzman─▒ olman─▒ sa─şlayan uygulamal─▒ e─şitim kamp├╝s├╝d├╝r." />
+-  <meta property="twitter:image" content="https://siberkampus.com/ogretici.jpg" />
++  <meta name="twitter:card" content="summary_large_image" />
++  <meta name="twitter:url" content="https://www.siberkampus.org/" />
++  <meta name="twitter:title" content="Siber G├╝venlik E─şitimi | Siber Kamp├╝s Akademi" />
++  <meta name="twitter:description" content="Siber Kamp├╝s Akademi ile siber g├╝venli─şi uygulamal─▒ ├Â─şren. Uygulamal─▒ e─şitimler ve ger├ğek senaryolarla siber g├╝venlik kariyerine ilk ad─▒m─▒n─▒ at." />
++  <meta name="twitter:image" content="https://www.siberkampus.org/ogretici.jpg" />
+ 
+   <!-- Google tag (gtag.js) -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFXKTX2HD3"></script>
+@@ -37,34 +37,25 @@
+     gtag('config', 'G-QFXKTX2HD3');
+   </script>
+ 
++  <meta name="robots" content="index, follow" />
++  <meta name="publisher" content="Siber Kamp├╝s Akademi" />
++
+   <!-- Preload critical React and ReactDOM libraries -->
+   <link rel="preload" href="https://unpkg.com/react@18.3.1/umd/react.production.min.js" as="script" />
+   <link rel="preload" href="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" as="script" />
+   <!-- Preload compiled application JS assets -->
+-  <link rel="preload" href="/sk-data.js?v=1.0.29" as="script" />
+-  <link rel="preload" href="/sk-articles.js?v=1.0.29" as="script" />
+-  <link rel="preload" href="/sk-docs.js?v=1.0.29" as="script" />
+-  <link rel="preload" href="/app.js?v=1.0.29" as="script" />
+-  <link rel="preload" href="/app-auth.js?v=1.0.29" as="script" />
+-  <link rel="preload" href="/app-pages.js?v=1.0.29" as="script" />
+-  <link rel="preload" href="https://cdn.tailwindcss.com" as="script" />
++  <link rel="preload" href="/sk-data.js?v=1.0.30" as="script" />
++  <link rel="preload" href="/sk-articles.js?v=1.0.30" as="script" />
++  <link rel="preload" href="/sk-docs.js?v=1.0.30" as="script" />
++  <link rel="preload" href="/app.js?v=1.0.30" as="script" />
++  <link rel="preload" href="/app-auth.js?v=1.0.30" as="script" />
++  <link rel="preload" href="/app-pages.js?v=1.0.30" as="script" />
++  <link rel="preload" href="/style.css?v=1.0.30" as="style" />
++  <link rel="stylesheet" href="/style.css?v=1.0.30" />
+ 
+   <link rel="preconnect" href="https://fonts.googleapis.com" />
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+-  <script src="https://cdn.tailwindcss.com"></script>
+-  <script>
+-    tailwind.config = {
+-      theme: {
+-        extend: {
+-          fontFamily: {
+-            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+-            disp: ['"Chakra Petch"', 'system-ui', 'sans-serif'],
+-          },
+-        },
+-      },
+-    };
+-  </script>
+   <style>
+     :root {
+       --bg:#020806; --bg-2:#04100a; --surface:#07150e; --border:#103a26;
+@@ -158,18 +149,119 @@
+   </style>
+   <!-- Vercel Speed Insights -->
+   <script src="/_vercel/speed-insights/script.js" defer data-sdkn="@vercel/speed-insights" data-sdkv="2.0.0"></script>
++  <!-- Schema.org Structured Data -->
++  <script type="application/ld+json">
++  {
++    "@context": "https://schema.org",
++    "@graph": [
++      {
++        "@type": "Organization",
++        "@id": "https://www.siberkampus.org/#organization",
++        "name": "Siber Kamp├╝s Akademi",
++        "url": "https://www.siberkampus.org/",
++        "logo": {
++          "@type": "ImageObject",
++          "@id": "https://www.siberkampus.org/#logo",
++          "url": "https://www.siberkampus.org/favicon.png",
++          "caption": "Siber Kamp├╝s Akademi Logo"
++        },
++        "image": {
++          "@id": "https://www.siberkampus.org/#logo"
++        }
++      },
++      {
++        "@type": "WebSite",
++        "@id": "https://www.siberkampus.org/#website",
++        "url": "https://www.siberkampus.org/",
++        "name": "Siber Kamp├╝s Akademi",
++        "description": "Siber G├╝venlik E─şitimi",
++        "publisher": {
++          "@id": "https://www.siberkampus.org/#organization"
++        },
++        "inLanguage": "tr"
++      }
++    ]
++  }
++  </script>
+ </head>
+ <body>
+-  <div id="root"></div>
++  <div id="root">
++    <!-- SEO Fallback Content for Crawlers and Non-JS Users -->
++    <header style="padding: 20px; text-align: center; border-bottom: 1px solid #103a26; background: #04100a;">
++      <nav style="font-family: monospace;">
++        <a href="/" style="color: #00ff88; text-decoration: none; margin: 0 15px;">Anasayfa</a> | 
++        <a href="/hakkimizda" style="color: #cdeede; text-decoration: none; margin: 0 15px;">Hakk─▒m─▒zda</a> | 
++        <a href="/iletisim" style="color: #cdeede; text-decoration: none; margin: 0 15px;">─░leti┼şim</a> | 
++        <a href="/blog" style="color: #cdeede; text-decoration: none; margin: 0 15px;">Blog Makaleleri</a> |
++        <a href="/rooms" style="color: #cdeede; text-decoration: none; margin: 0 15px;">Laboratuvarlar (CTF)</a> |
++        <a href="/tools" style="color: #cdeede; text-decoration: none; margin: 0 15px;">Siber G├╝venlik Ara├ğlar─▒</a>
++      </nav>
++    </header>
++    
++    <main style="max-w: 800px; margin: 40px auto; padding: 0 20px; font-family: sans-serif; line-height: 1.8;">
++      <h1 style="font-size: 3rem; color: #00ff88; margin-bottom: 10px;">Siber Kamp├╝s Akademi</h1>
++      <h2 style="font-size: 1.8rem; color: #eafff5; margin-bottom: 30px;">Siber G├╝venlik E─şitimi</h2>
++      
++      <p style="font-size: 1.1rem; color: #cdeede;">
++        Siber Kamp├╝s Akademi, s─▒f─▒rdan siber g├╝venlik ├Â─şrenmek isteyen merakl─▒lar ve uzman adaylar─▒ i├ğin kurulmu┼ş, taray─▒c─▒ tabanl─▒ tamamen uygulamal─▒ bir siber g├╝venlik e─şitim platformudur. S─▒k─▒c─▒ teorik slaytlar yerine, t├╝m zafiyetleri ve a─ş ara├ğlar─▒n─▒ ger├ğek senaryolar ├╝zerinden, do─şrudan taray─▒c─▒n─▒z─▒n i├ğindeki sanal laboratuvar ortamlar─▒nda deneyimlersiniz.
++      </p>
++
++      <hr style="border: 0; border-top: 1px solid #103a26; margin: 40px 0;" />
++
++      <section>
++        <h3 style="font-size: 1.5rem; color: #5cffba;">E─şitim Metodolojimiz ve G├╝venilirlik</h3>
++        <p style="color: #74998a;">
++          E─şitimlerimiz uluslararas─▒ <strong>OWASP Top 10</strong> standartlar─▒na ve s─▒zma testi metodolojilerine (PTES) g├Âre kurgulanm─▒┼şt─▒r. Platform, siber g├╝venlik alan─▒nda uzun y─▒llar ├ğal─▒┼şm─▒┼ş deneyimli s─▒zma testi uzmanlar─▒ ve akademisyenler taraf─▒ndan tasarlanan m├╝fredatlarla desteklenir. Teorik bilgi toplama, zafiyet ke┼şfi, exploit geli┼ştirme ve yetki y├╝kseltme a┼şamalar─▒n─▒ ad─▒m ad─▒m i┼şleriz.
++        </p>
++      </section>
++
++      <section style="margin-top: 30px;">
++        <h3 style="font-size: 1.5rem; color: #5cffba;">Pop├╝ler Siber G├╝venlik Laboratuvar─▒ Odalar─▒ (CTF)</h3>
++        <p style="color: #74998a;">
++          A┼şa─ş─▒daki laboratuvarlar─▒ hi├ğbir ek kurulum yapmadan, kendi taray─▒c─▒n─▒z ├╝zerinden pratik yaparak ├ğ├Âzebilirsiniz:
++        </p>
++        <ul style="color: #cdeede; padding-left: 20px;">
++          <li style="margin-bottom: 8px;"><strong>SQL Injection:</strong> Mant─▒ksal sorgu manip├╝lasyonu ve bypass teknikleri.</li>
++          <li style="margin-bottom: 8px;"><strong>Reflected XSS:</strong> JavaScript enjeksiyonu ile oturum ├ğerezi ├ğalma senaryosu.</li>
++          <li style="margin-bottom: 8px;"><strong>Command Injection (RCE):</strong> Sistem komutlar─▒n─▒ s─▒zd─▒rarak sunucu kontrol├╝n├╝ ele ge├ğirme.</li>
++          <li style="margin-bottom: 8px;"><strong>API BOLA:</strong> Yetkisiz nesne eri┼şimi ve API g├╝venlik a├ğ─▒klar─▒.</li>
++          <li style="margin-bottom: 8px;"><strong>NoSQL Injection:</strong> MongoDB filtrelerini mant─▒ksal operat├Âr enjeksiyonu ile atlatma.</li>
++        </ul>
++      </section>
++
++      <section style="margin-top: 30px;">
++        <h3 style="font-size: 1.5rem; color: #5cffba;">Online Siber G├╝venlik Ara├ğ Kiti</h3>
++        <p style="color: #74998a;">
++          G├╝nl├╝k s─▒zma testlerinizde veya derslerinizde kullanabilece─şiniz, client-side (istemci taraf─▒nda) ├ğal─▒┼şan siber g├╝venlik hesaplay─▒c─▒lar─▒:
++        </p>
++        <ul style="color: #cdeede; padding-left: 20px;">
++          <li style="margin-bottom: 8px;"><strong>Online Reverse Shell Olu┼şturucu:</strong> Bash, Python, PowerShell ve Netcat jenerat├Âr├╝.</li>
++          <li style="margin-bottom: 8px;"><strong>CIDR & Subnet Hesaplay─▒c─▒:</strong> IP alt a─ş maskesi ve kullan─▒labilir host aral─▒─ş─▒ hesaplama.</li>
++          <li style="margin-bottom: 8px;"><strong>Cyber Encoder/Decoder:</strong> Base64, Hex, URL, Binary d├Ân├╝┼şt├╝r├╝c├╝.</li>
++          <li style="margin-bottom: 8px;"><strong>Parola Entropi Analiz├Âr├╝:</strong> ┼Şifre k─▒rma s├╝resi ve brute-force dayan─▒kl─▒l─▒k testi.</li>
++        </ul>
++      </section>
++
++      <section style="margin-top: 40px; padding: 15px; border-left: 3px solid #00ff88; background: rgba(0,255,136,0.03);">
++        <p style="font-size: 0.9rem; color: #74998a; margin: 0;">
++          <strong>Yasal Uyar─▒:</strong> Siber Kamp├╝s Akademi ├╝zerinde ├Â─şretilen t├╝m teknikler ve sim├╝lasyonlar tamamen e─şitim ve siber savunma bilincini art─▒rma ama├ğl─▒d─▒r. Platform d─▒┼ş─▒ndaki yetkisiz sistemlerde bu y├Ântemlerin kullan─▒lmas─▒ yasal sorumluluk do─şurur.
++        </p>
++      </section>
++    </main>
++
++    <footer style="text-align: center; padding: 30px; border-top: 1px solid #103a26; color: #5c8a74; font-size: 0.9rem;">
++      <p>┬® 2026 Siber Kamp├╝s Akademi ÔÇö T├╝m haklar─▒ sakl─▒d─▒r.</p>
++    </footer>
++  </div>
+ 
+   <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" defer></script>
+   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" defer></script>
+ 
+-  <script src="/sk-data.js?v=1.0.29" defer></script>
+-  <script src="/sk-articles.js?v=1.0.29" defer></script>
+-  <script src="/sk-docs.js?v=1.0.29" defer></script>
+-  <script src="/app.js?v=1.0.29" defer></script>
+-  <script src="/app-auth.js?v=1.0.29" defer></script>
+-  <script src="/app-pages.js?v=1.0.29" defer></script>
++  <script src="/sk-data.js?v=1.0.30" defer></script>
++  <script src="/sk-articles.js?v=1.0.30" defer></script>
++  <script src="/sk-docs.js?v=1.0.30" defer></script>
++  <script src="/app.js?v=1.0.30" defer></script>
++  <script src="/app-auth.js?v=1.0.30" defer></script>
++  <script src="/app-pages.js?v=1.0.30" defer></script>
+ </body>
+ </html>

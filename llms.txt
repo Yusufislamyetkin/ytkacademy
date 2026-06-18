@@ -1,0 +1,33 @@
+# Siber Kampüs
+
+Siber Kampüs, sıfırdan siber güvenlik öğrenmek isteyenler için tasarlanmış tamamen ücretsiz ve uygulamalı bir eğitim platformudur.
+
+## Temel Bilgiler
+- **Platform Adı:** Siber Kampüs
+- **Anahtar Kelime:** Ücretsiz Siber Güvenlik Eğitimi
+- **Web Sitesi:** [Siber Kampüs](https://www.siberkampus.org)
+- **Erişim Türü:** Tamamen Ücretsiz, kurulumsuz tarayıcı tabanlı hacking laboratuvarları.
+
+## Sayfalar ve Rotalar
+- [Ana Sayfa](https://www.siberkampus.org/) - Tanıtım, kayıt ve giriş sayfası.
+- [Hacking Laboratuvarları](https://www.siberkampus.org/rooms) - Pratik siber güvenlik ve hacking laboratuvar odaları (CTF).
+- [Blog](https://www.siberkampus.org/blog) - Güncel siber güvenlik açıkları, web güvenliği ve hacking rehberleri makaleleri.
+- [Siber Güvenlik Araçları](https://www.siberkampus.org/tools) - Sızma testlerinde kullanılan online hesaplayıcılar ve jeneratörler.
+- [Hakkımızda](https://www.siberkampus.org/hakkimizda) - Siber Kampüs platform vizyonu ve eğitim hedefleri.
+- [İletişim](https://www.siberkampus.org/iletisim) - Bize ulaşabileceğiniz destek ve iletişim sayfası.
+- [Kullanım Şartları](https://www.siberkampus.org/kullanim-sartlari) - Platform kullanım kuralları ve şartları.
+- [Gizlilik Politikası](https://www.siberkampus.org/gizlilik) - Kullanıcı gizliliği ve veri güvenliği politikası.
+
+## Eğitim Metodolojimiz ve Laboratuvarlar
+- [SQL Injection: Giriş & Bypass](https://www.siberkampus.org/brief/web-01) - SQL enjeksiyonu başlangıç rehberi ve laboratuvar brifingi.
+- [Reflected XSS: Oturum Çalma](https://www.siberkampus.org/brief/web-04) - Tarayıcı tabanlı zafiyetlerin sömürülmesi ve cookie çalma.
+- [Kaba Kuvvet & Varsayılan Kimlik Bilgileri](https://www.siberkampus.org/brief/web-11) - Varsayılan şifre sömürüleri.
+- [Command Injection: RCE Keşfi](https://www.siberkampus.org/brief/web-12) - Sunucu üzerinde uzaktan komut çalıştırma zafiyeti.
+- [Kaynak Kod Analizi & Hassas Bilgi Sızıntısı](https://www.siberkampus.org/brief/web-13) - Geliştirici yorum satırlarının analizi.
+
+## Siber Güvenlik Araç Kiti
+- [Online Reverse Shell Oluşturucu](https://www.siberkampus.org/tools/reverse-shell) - Bash, Python, PowerShell ve Netcat reverse shell komutları online oluşturucu.
+- [Cyber Encoder/Decoder](https://www.siberkampus.org/tools/encoder-decoder) - Base64, Hex, URL, Binary ve HTML dönüştürücü.
+- [Parola Güvenlik Testi & Entropi Hesaplama](https://www.siberkampus.org/tools/password-strength) - Şifre brute-force kırılma süresi hesaplayıcı.
+- [CIDR & Subnet Hesaplayıcı](https://www.siberkampus.org/tools/subnet-calc) - IP alt ağ maskesi hesaplayıcı.
+- [Online Hash Oluşturucu ve Tanımlayıcı](https://www.siberkampus.org/tools/hash-tool) - MD5, SHA-256 jeneratörü ve hash tespit aracı.

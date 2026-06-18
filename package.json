@@ -1,0 +1,38 @@
+{
+  "name": "siberkampus",
+  "version": "1.0.0",
+  "description": "Siber Kampüs siber güvenlik eğitim platformu web sitesi.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "compile": "tailwindcss -i ./input.css -o ./style.css --minify && esbuild sk-data.jsx --outfile=sk-data.js --minify --jsx=transform --format=iife && esbuild sk-articles.jsx --outfile=sk-articles.js --minify --jsx=transform --format=iife && esbuild sk-docs.jsx --outfile=sk-docs.js --minify --jsx=transform --format=iife && esbuild app.jsx --outfile=app.js --minify --jsx=transform --format=iife && esbuild app-auth.jsx --outfile=app-auth.js --minify --jsx=transform --format=iife && esbuild app-pages.jsx --outfile=app-pages.js --minify --jsx=transform --format=iife"
+  },
+  "keywords": [
+    "siberkampus",
+    "ctf",
+    "react"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@getbrevo/brevo": "^5.0.4",
+    "@vercel/speed-insights": "^2.0.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.21.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.29.7",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@tailwindcss/cli": "^4.3.0",
+    "autoprefixer": "^10.5.0",
+    "esbuild": "^0.28.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0"
+  }
+}

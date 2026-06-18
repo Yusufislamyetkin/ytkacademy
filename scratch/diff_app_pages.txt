@@ -1,0 +1,79 @@
+﻿diff --git a/app-pages.jsx b/app-pages.jsx
+index fbfc0ec..e198448 100644
+--- a/app-pages.jsx
++++ b/app-pages.jsx
+@@ -50,7 +50,7 @@ const AboutPage = ({ navigate }) => {
+         <div className="max-w-[860px] mx-auto px-8 relative z-[2] text-center py-24">
+           <Label>Hakk─▒m─▒zda</Label>
+           <h1 className="text-[clamp(34px,5vw,58px)] text-[#eafff5] mb-5">Hacker'lar─▒ <span className="text-[#00ff88]">Klavyede</span> Yeti┼ştiriyoruz</h1>
+-          <p className="text-[#74998a] text-lg leading-relaxed max-w-[640px] mx-auto">siberkampus, siber g├╝venli─şi izlenecek bir ders de─şil, oynanacak bir oyun haline getirmek i├ğin kuruldu. Amac─▒m─▒z net: T├╝rkiye'de yeni nesil siber g├╝venlik uzmanlar─▒n─▒, ger├ğek sistemleri ele ge├ğirerek ├Â─şrenebilecekleri bir kamp├╝ste yeti┼ştirmek.</p>
++          <p className="text-[#74998a] text-lg leading-relaxed max-w-[640px] mx-auto">Siber Kamp├╝s Akademi, siber g├╝venli─şi izlenecek bir ders de─şil, oynanacak bir oyun haline getirmek i├ğin kuruldu. Amac─▒m─▒z net: T├╝rkiye'de yeni nesil siber g├╝venlik uzmanlar─▒n─▒, ger├ğek sistemleri ele ge├ğirerek ├Â─şrenebilecekleri bir kamp├╝ste yeti┼ştirmek.</p>
+         </div>
+       </section>
+ 
+@@ -61,9 +61,9 @@ const AboutPage = ({ navigate }) => {
+             <Label>Hikayemiz</Label>
+             <h2 className="text-[clamp(26px,3.5vw,38px)] text-[#eafff5] mb-5">Bir Terminal, Bir Merak</h2>
+             <div className="space-y-4 text-[#74998a] leading-relaxed">
+-              <p>siberkampus, "siber g├╝venli─şe nereden ba┼şlasam?" sorusuna tak─▒l─▒p kalm─▒┼ş ├Â─şrencilerin hayal k─▒r─▒kl─▒─ş─▒ndan do─şdu. Da─ş─▒n─▒k videolar, kurmas─▒ saatler s├╝ren sanal makineler ve ger├ğek pratikten kopuk teori... Biz bunu k─▒rmak istedik.</p>
++              <p>Siber Kamp├╝s Akademi, "siber g├╝venli─şe nereden ba┼şlasam?" sorusuna tak─▒l─▒p kalm─▒┼ş ├Â─şrencilerin hayal k─▒r─▒kl─▒─ş─▒ndan do─şdu. Da─ş─▒n─▒k videolar, kurmas─▒ saatler s├╝ren sanal makineler ve ger├ğek pratikten kopuk teori... Biz bunu k─▒rmak istedik.</p>
+               <p>Bug├╝n, kurulum gerektirmeyen taray─▒c─▒ tabanl─▒ laboratuvarlar─▒m─▒zda binlerce ├Â─şrenci ger├ğek zafiyetleri s├Âm├╝rerek ├Â─şreniyor. ─░lk bayra─ş─▒n─▒ yakalayan herkesin g├Âz├╝ndeki o k─▒v─▒lc─▒m, bizi her g├╝n daha fazlas─▒n─▒ ├╝retmeye itiyor.</p>
+-              <p>siberkampus, kurucumuz <strong className="text-[#cdeede]">Yusuf ─░slam Yetkin</strong>'in vizyonuyla ┼şekillendi ÔÇö uzun y─▒llar finans ve enterprise sistemlerde ├ğal─▒┼şm─▒┼ş, ├Âl├ğeklenen g├╝venli sistemler kurmu┼ş deneyimli bir yaz─▒l─▒m m├╝hendisi. Sahada ├Â─şrendi─şi bir ger├ğe─şi bu platforma ta┼ş─▒d─▒: g├╝venlik, kodu k─▒ran─▒ anlamadan kurulamaz.</p>
++              <p>Siber Kamp├╝s Akademi, kurucumuz <strong className="text-[#cdeede]">Yusuf ─░slam Yetkin</strong>'in vizyonuyla ┼şekillendi ÔÇö uzun y─▒llar finans ve enterprise sistemlerde ├ğal─▒┼şm─▒┼ş, ├Âl├ğeklenen g├╝venli sistemler kurmu┼ş deneyimli bir yaz─▒l─▒m m├╝hendisi. Sahada ├Â─şrendi─şi bir ger├ğe─şi bu platforma ta┼ş─▒d─▒: g├╝venlik, kodu k─▒ran─▒ anlamadan kurulamaz.</p>
+             </div>
+           </div>
+           <div className="grid grid-cols-2 gap-4">
+@@ -281,7 +281,7 @@ const TermsPage = ({ navigate }) => (
+     { h: 'Hizmetin Tan─▒m─▒', p: ['siberkampus, e─şitim ama├ğl─▒ siber g├╝venlik laboratuvarlar─▒ ve CTF g├Ârevleri sunan bir ├Â─şrenme platformudur. T├╝m i├ğerik yaln─▒zca yasal, etik ├Â─şrenme amac─▒yla sa─şlan─▒r.'] },
+     { h: 'Hesap Sorumlulu─şu', p: ['Hesab─▒n─▒z─▒n g├╝venli─şinden ve hesab─▒n─▒z alt─▒nda ger├ğekle┼ştirilen t├╝m etkinliklerden siz sorumlusunuz. ┼Şifrenizi gizli tutmay─▒ ve ┼ş├╝pheli bir durumda bizi bilgilendirmeyi kabul edersiniz.'] },
+     { h: 'Kabul Edilebilir Kullan─▒m', p: ['Platformda ├Â─şrendi─şiniz teknikleri yaln─▒zca size ait ya da a├ğ─▒k├ğa izin verilmi┼ş sistemlerde kullanabilirsiniz. ─░zinsiz sistemlere y├Ânelik sald─▒r─▒lar yasa d─▒┼ş─▒d─▒r ve kesinlikle yasakt─▒r.', 'Laboratuvar ortamlar─▒n─▒ platform d─▒┼ş─▒na ta┼ş─▒maya, di─şer kullan─▒c─▒lara zarar vermeye ya da altyap─▒m─▒z─▒ k├Ât├╝ye kullanmaya ├ğal─▒┼şmak hesab─▒n─▒z─▒n ask─▒ya al─▒nmas─▒na yol a├ğar.'] },
+-    { h: 'Fikri M├╝lkiyet', p: ['Laboratuvarlar, g├Ârevler, i├ğerikler ve marka unsurlar─▒ siberkampus\'a aittir. Yaz─▒l─▒ izin olmadan ├ğo─şalt─▒lamaz ya da yeniden da─ş─▒t─▒lamaz.'] },
++    { h: 'Fikri M├╝lkiyet', p: ['Laboratuvarlar, g├Ârevler, i├ğerikler ve marka unsurlar─▒ Siber Kamp├╝s Akademi\'ye aittir. Yaz─▒l─▒ izin olmadan ├ğo─şalt─▒lamaz ya da yeniden da─ş─▒t─▒lamaz.'] },
+     { h: 'Sorumlulu─şun S─▒n─▒r─▒', p: ['Hizmet "oldu─şu gibi" sunulur. Platformun kesintisiz ya da hatas─▒z olaca─ş─▒n─▒ garanti etmeyiz. ├û─şrenilen bilgilerin k├Ât├╝ye kullan─▒m─▒ndan do─şan sorumluluk tamamen kullan─▒c─▒ya aittir.'] },
+     { h: 'De─şi┼şiklikler', p: ['Bu ┼şartlar─▒ zaman zaman g├╝ncelleyebiliriz. ├ûnemli de─şi┼şiklikler platform ├╝zerinden duyurulur. Hizmeti kullanmaya devam etmeniz g├╝ncel ┼şartlar─▒ kabul etti─şiniz anlam─▒na gelir.'] },
+   ]} />
+@@ -497,7 +497,7 @@ const CertificatesPage = ({ navigate }) => {
+       tasksDone: webSolvedCount,
+       tasksRequired: 10,
+       prog: Math.min(99, Math.round((webSolvedCount / 10) * 100)),
+-      desc: 'Bu sertifika sahibi, siberkampus b├╝nyesindeki uygulamal─▒ Web G├╝venli─şi e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde SQL Injection, Cross-Site Scripting (XSS), CSRF ve Dosya Y├╝kleme A├ğ─▒kl─▒klar─▒ (File Upload Bypass) gibi kritik zafiyetlerin tespiti, s├Âm├╝r├╝lmesi ve kapat─▒lmas─▒ konular─▒nda pratik yetkinlik kazanarak, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
++      desc: 'Bu sertifika sahibi, Siber Kamp├╝s Akademi b├╝nyesindeki uygulamal─▒ Web G├╝venli─şi e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde SQL Injection, Cross-Site Scripting (XSS), CSRF ve Dosya Y├╝kleme A├ğ─▒kl─▒klar─▒ (File Upload Bypass) gibi kritik zafiyetlerin tespiti, s├Âm├╝r├╝lmesi ve kapat─▒lmas─▒ konular─▒nda pratik yetkinlik kazanarak, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
+     },
+     {
+       title: 'Linux Sistem G├╝venli─şi',
+@@ -507,7 +507,7 @@ const CertificatesPage = ({ navigate }) => {
+       tasksDone: sysSolvedCount,
+       tasksRequired: 10,
+       prog: Math.min(99, Math.round((sysSolvedCount / 10) * 100)),
+-      desc: 'Bu sertifika sahibi, siberkampus b├╝nyesindeki Linux Sistem G├╝venli─şi ve Ayr─▒cal─▒k Y├╝kseltme e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde SUID/SGID haklar─▒n─▒n k├Ât├╝ye kullan─▒m─▒, Cron Job zafiyetleri, PATH suistimalleri, Linux Kernel Exploitleri ve sistem s─▒k─▒la┼şt─▒rma (Hardening) konular─▒nda pratik yetkinlik kazanarak, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
++      desc: 'Bu sertifika sahibi, Siber Kamp├╝s Akademi b├╝nyesindeki Linux Sistem G├╝venli─şi ve Ayr─▒cal─▒k Y├╝kseltme e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde SUID/SGID haklar─▒n─▒n k├Ât├╝ye kullan─▒m─▒, Cron Job zafiyetleri, PATH suistimalleri, Linux Kernel Exploitleri ve sistem s─▒k─▒la┼şt─▒rma (Hardening) konular─▒nda pratik yetkinlik kazanarak, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
+     },
+     {
+       title: 'A─ş S─▒zma Testi',
+@@ -517,7 +517,7 @@ const CertificatesPage = ({ navigate }) => {
+       tasksDone: netSolvedCount,
+       tasksRequired: 10,
+       prog: Math.min(99, Math.round((netSolvedCount / 10) * 100)),
+-      desc: 'Bu sertifika sahibi, siberkampus b├╝nyesindeki kurumsal A─ş S─▒zma Testleri e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde Nmap ile geli┼şmi┼ş ke┼şif, ARP Zehirlemesi, SMB zafiyetleri ve Active Directory ortamlar─▒nda bilgi toplama ve s├Âm├╝r├╝ faaliyetleri y├╝r├╝terek pratik yetkinlik kazanm─▒┼ş, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
++      desc: 'Bu sertifika sahibi, Siber Kamp├╝s Akademi b├╝nyesindeki kurumsal A─ş S─▒zma Testleri e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde Nmap ile geli┼şmi┼ş ke┼şif, ARP Zehirlemesi, SMB zafiyetleri ve Active Directory ortamlar─▒nda bilgi toplama ve s├Âm├╝r├╝ faaliyetleri y├╝r├╝terek pratik yetkinlik kazanm─▒┼ş, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
+     },
+     {
+       title: '─░leri CTF & Red Team',
+@@ -527,7 +527,7 @@ const CertificatesPage = ({ navigate }) => {
+       tasksDone: totalSolved,
+       tasksRequired: 20,
+       prog: Math.min(99, Math.round((totalSolved / 20) * 100)),
+-      desc: 'Bu sertifika sahibi, siberkampus b├╝nyesindeki ─░leri CTF ve Red Team Metodolojileri e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde ├ğok ad─▒ml─▒ s─▒zma senaryolar─▒, a─şlar aras─▒ pivotlama ve t├╝nelleme, custom backdoor yaz─▒m─▒ ve anti-debug korumalar─▒n─▒ atlatma konular─▒nda pratik yetkinlik kazanarak, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
++      desc: 'Bu sertifika sahibi, Siber Kamp├╝s Akademi b├╝nyesindeki ─░leri CTF ve Red Team Metodolojileri e─şitimini ba┼şar─▒yla tamamlam─▒┼şt─▒r. E─şitim s├╝recinde ├ğok ad─▒ml─▒ s─▒zma senaryolar─▒, a─şlar aras─▒ pivotlama ve t├╝nelleme, custom backdoor yaz─▒m─▒ ve anti-debug korumalar─▒n─▒ atlatma konular─▒nda pratik yetkinlik kazanarak, ilgili t├╝m hacking laboratuvarlar─▒n─▒ ve CTF g├Ârevlerini ├ğ├Âzm├╝┼şt├╝r.'
+     },
+   ];
+ 
+@@ -760,7 +760,7 @@ const CertificatesPage = ({ navigate }) => {
+                      <div className="absolute inset-0 opacity-[.06] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(0,255,136,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.5) 1px,transparent 1px)', backgroundSize: '20px 20px' }}></div>
+                      <div className="relative flex items-start justify-between">
+                        <div>
+-                         <div className="flex items-center gap-2 mb-3"><span className="w-7 h-7 border border-[#00ff88] rounded grid place-items-center text-[#00ff88] font-mono text-[11px] font-bold">&gt;_</span><span className="font-disp font-bold text-sm text-[#eafff5]">siberkampus</span></div>
++                         <div className="flex items-center gap-2 mb-3"><span className="w-7 h-7 border border-[#00ff88] rounded grid place-items-center text-[#00ff88] font-mono text-[11px] font-bold">&gt;_</span><span className="font-disp font-bold text-sm text-[#eafff5]">Siber Kamp├╝s Akademi</span></div>
+                          <p className="font-mono text-[10px] text-[#74998a] tracking-widest uppercase">Tamamlama Sertifikas─▒</p>
+                          <h3 className="font-disp font-bold text-xl mt-2 text-[#74998a]" style={{ maxWidth: '260px', lineHeight: 1.25 }}>{c.title}</h3>
+                        </div>

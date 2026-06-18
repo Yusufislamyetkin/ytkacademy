@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-disp: "Chakra Petch", system-ui, sans-serif;
+}
+
+@keyframes pricingGlow {
+  0%, 100% {
+    border-color: #00ff88;
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.25);
+  }
+  50% {
+    border-color: #5cffba;
+    box-shadow: 0 0 45px rgba(92, 255, 186, 0.5);
+  }
+}
+
+.pricing-featured-pulse {
+  animation: pricingGlow 3s infinite ease-in-out;
+}
