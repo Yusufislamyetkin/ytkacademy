@@ -1181,6 +1181,24 @@ const LoginPage = ({ navigate }) => {
           <h1 className="text-4xl text-[#eafff5] mb-2">Giriş Yap</h1>
           <p className="text-[#74998a] text-sm">YTK Academy hesabına erişim sağla</p>
         </div>
+        {/* ── Demo Giriş ── */}
+        <button
+          type="button"
+          disabled={loading}
+          onClick={() => handleLogin('demo@siberkampus.com', 'demo123456')}
+          className="w-full flex items-center justify-center gap-2.5 py-3 rounded-lg border border-[#00ff88]/40 bg-[#00ff88]/8 text-[#00ff88] font-mono font-bold text-sm hover:bg-[#00ff88]/15 hover:border-[#00ff88] hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] transition-all disabled:opacity-50 mb-6"
+        >
+          <span className="text-base">⚡</span>
+          {loading ? 'Lütfen bekleyin...' : 'Demo Hesabıyla Görüntüle →'}
+        </button>
+
+        {/* ── Ayırıcı ── */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="flex-1 h-px bg-[#0c2719]"></div>
+          <span className="text-xs font-mono text-[#5c8a74] uppercase tracking-widest">veya kendi hesabınla giriş yap</span>
+          <div className="flex-1 h-px bg-[#0c2719]"></div>
+        </div>
+
         <form onSubmit={submit} className="space-y-5">
           {err && <div className="bg-[rgba(255,46,136,.08)] border border-[#ff2e88]/50 rounded-lg p-3.5"><p className="text-sm text-[#ff2e88]">{err}</p></div>}
           <Field label="E-posta Adresi" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seni@example.com" disabled={loading} />
