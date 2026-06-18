@@ -168,9 +168,9 @@ const AboutPage = ({ navigate }) => {
 const ContactPage = ({ navigate }) => {
   const [sent, setSent] = useState(false);
   const channels = [
-    { icon: '✉️', t: 'E-posta', v: 'destek@ytkacademy.com.tr' },
-    { icon: '💬', t: 'Canlı Sohbet', v: 'Topluluk kanalı · 7/24' },
-    { icon: '🐦', t: 'Sosyal Medya', v: '@ytkacademy' },
+    { icon: '📞', t: 'Doğrudan Arama', v: '+90 538 935 11 89', link: 'tel:+905389351189' },
+    { icon: '💬', t: 'WhatsApp', v: '+90 538 935 11 89', link: 'https://wa.me/905389351189?text=Merhaba%20mentorluk%20hakk%C4%B1nda%20g%C3%B6r%C3%BC%C5%9Fmek%20istiyorum.' },
+    { icon: '✉️', t: 'E-posta', v: 'yusufislamyetkin@hotmail.com', link: 'mailto:yusufislamyetkin@hotmail.com' },
   ];
   return (
     <>
@@ -186,10 +186,13 @@ const ContactPage = ({ navigate }) => {
         <div className="max-w-[1080px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-10">
           <div className="space-y-4">
             {channels.map((c, i) => (
-              <div key={i} className="flex items-center gap-4 rounded-xl border border-[#0c2719] p-5" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
+              <a key={i} href={c.link} target={c.link.startsWith('http') ? '_blank' : undefined} rel={c.link.startsWith('http') ? 'noopener noreferrer' : undefined} className="flex items-center gap-4 rounded-xl border border-[#0c2719] p-5 hover:border-[#00ff88]/30 transition-all cursor-pointer block" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
                 <span className="w-11 h-11 flex-none rounded-lg grid place-items-center text-lg border border-[#103a26] bg-[rgba(0,255,136,.04)]">{c.icon}</span>
-                <div><div className="text-xs text-[#74998a]">{c.t}</div><div className="text-sm text-[#eafff5] font-mono mt-0.5">{c.v}</div></div>
-              </div>
+                <div>
+                  <div className="text-xs text-[#74998a]">{c.t}</div>
+                  <div className="text-sm text-[#eafff5] font-mono mt-0.5 hover:text-[#00ff88] transition-colors">{c.v}</div>
+                </div>
+              </a>
             ))}
             <div className="rounded-xl border border-[#103a26] p-5 bg-[rgba(0,255,136,.03)]">
               <p className="text-sm text-[#74998a] leading-relaxed"><span className="text-[#00ff88]">⚡ Hızlı yanıt:</span> Teknik sorular için <button onClick={() => navigate('support')} className="text-[#00ff88] hover:text-[#5cffba] underline">Destek</button> sayfasındaki SSS'e göz at — çoğu cevap orada.</p>
