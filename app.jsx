@@ -371,9 +371,9 @@ const HomePage = ({ navigate }) => {
               <span className="w-[7px] h-[7px] rounded-full bg-[#00ff88] shadow-[0_0_10px_#00ff88] sk-pulse"></span>
               Yusuf İslam Yetkin ile Birebir Yazılım Eğitimi
             </span>
-            <h1 className="text-[clamp(32px,4.5vw,48px)] text-[#eafff5] mb-[24px] tracking-[-.025em] font-disp font-bold leading-tight">
-              YTK Academy | <br className="hidden sm:inline" />
-              <span className="text-[#00ff88]">Bire Bir Yazılım Mentörlük Programı</span>
+            <h1 className="text-[clamp(36px,5.5vw,72px)] text-[#eafff5] mb-[20px] tracking-[-.025em] font-disp font-bold leading-[1.15]">
+              YTK Academy |<br />
+              <span className="glitch" data-text="Bire Bir Yazılım Mentörlük Programı">Bire Bir Yazılım Mentörlük Programı</span>
             </h1>
             
             {/* HERO CONTENT */}
@@ -454,7 +454,8 @@ const HomePage = ({ navigate }) => {
               { icon: "💻", title: "Junior geliştiriciler", desc: "Sektörde çalışan fakat kendisini mimari, sistem tasarımı ve ileri düzey konularda geliştirmek isteyenler." },
               { icon: "🔄", title: "İş değiştirmek isteyenler", desc: "Farklı meslek gruplarından gelip, yazılım dünyasına backend geliştirici olarak geçmek isteyen kariyer değişimcileri." },
               { icon: "🎯", title: "Mülakatlara hazırlananlar", desc: "Kurumsal firmaların teknik mülakat, kod testleri ve System Design aşamalarını aşmak isteyenler." },
-              { icon: "🚀", title: "Backend uzmanlaşmak isteyenler", desc: "C# ve .NET Core teknolojilerinde derinleşerek kurumsal ölçekte backend sistemleri tasarlamak isteyenler." }
+              { icon: "🚀", title: "Backend uzmanlaşmak isteyenler", desc: "C# ve .NET Core teknolojilerinde derinleşerek kurumsal ölçekte backend sistemleri tasarlamak isteyenler." },
+              { icon: "⚡", title: "Mühendislik öğrencileri & Mezunlar", desc: "Okullardaki teorik eğitimi endüstriyel pratiklerle birleştirip, mezun olmadan veya mezuniyet sonrasında sektöre hazır hale gelmek isteyenler." }
             ].map((k, idx) => (
               <div key={idx} className="reveal group relative overflow-hidden rounded-2xl border border-[#0c2719] p-8 hover:border-[#103a26] hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(0,255,136,.35)] transition-all flex flex-col justify-between min-h-[200px]" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
                 <span className="absolute top-0 left-0 w-full h-0.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" style={{ background: 'linear-gradient(90deg,#00ff88,transparent)' }}></span>
@@ -577,46 +578,46 @@ const HomePage = ({ navigate }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                title: 'E-Ticaret Backend',
-                tag: 'KURUMSAL YAPI',
-                desc: 'Sepet, sipariş, stok ve ödeme akışlarını barındıran kurumsal ölçekte e-ticaret altyapısı.',
-                techs: ['C#', 'PostgreSQL', 'EF Core', 'Clean Architecture'],
-                details: ['Repository Pattern ve Unit of Work', 'Global Exception Middleware', 'Fluent Validation entegrasyonu']
+                title: 'Kurumsal E-Ticaret Sistemi',
+                tag: 'YÜKSEK TRAFİKLİ ALTYAPI',
+                desc: 'Sepet, sipariş, stok ve ödeme akışlarını barındıran, yüksek trafikli kurumsal ölçekte e-ticaret altyapısı.',
+                techs: ['.NET Core API', 'PostgreSQL', 'RabbitMQ', 'Redis'],
+                details: ['Repository ve Unit of Work Desenleri', 'Redis ile Dağıtık Cache Yönetimi', 'Stok Ayrıştırma ve Sipariş Kuyrukları']
               },
               {
-                title: 'Sanal POS Sistemi',
-                tag: 'FİNTECH ENTEGRASYONU',
-                desc: 'Gerçek ödeme geçitleri (PayTR / Iyzico) ile çalışan, 3D Secure ve hash doğrulamalı ödeme akışları.',
-                techs: ['ASP.NET Core API', 'SHA256 Encryption', 'Loglama', 'Database Transaction'],
-                details: ['Hash doğrulama algoritmaları', 'Callback endpoint yönetimi', 'Hata kodlarının çözümlenmesi']
+                title: 'Netflix Benzeri Video Stream API',
+                tag: 'BÜYÜK VERİ & MEDYA AKIŞI',
+                desc: 'Video içerik yönetimi, kullanıcı izleme geçmişi analizi ve yüksek boyutlu veri/medya akışı yönetimi.',
+                techs: ['ASP.NET Core', 'MongoDB', 'AWS S3', 'Redis'],
+                details: ['Video streaming chunking algoritmaları', 'NoSQL veri tabanı tasarımı', 'CDN entegrasyonu ve önbellekleme']
               },
               {
-                title: 'Mikroservis Mimarisi',
-                tag: 'DAĞITIK SİSTEMLER',
-                desc: 'Birbirinden bağımsız çalışan ve Docker Compose ile ayağa kaldırılan ölçeklenebilir servisler.',
-                techs: ['Docker', 'Ocelot API Gateway', 'PostgreSQL', 'Redis'],
-                details: ['Dockerize edilmiş servisler', 'Merkezi API yönlendirmesi', 'Bağımsız veritabanı tasarımları']
+                title: 'Sanal POS & Finans Gateway',
+                tag: 'FİNTECH MİMARİSİ',
+                desc: 'Güvenli 3D Secure ödeme alma, hash doğrulama ve gerçek ödeme geçitleri (PayTR / Iyzico) ile fintech entegrasyonu.',
+                techs: ['C#', 'SQL Server', 'SHA256 Encryption', 'Loglama'],
+                details: ['PCI-DSS güvenlik standartları', 'Callback endpoint ve web-hook yönetimi', 'Database Transaction (ACID) yönetimi']
               },
               {
-                title: 'Event Driven Sistem',
-                tag: 'ASENKRON HABERLEŞME',
-                desc: 'RabbitMQ mesaj kuyruğu kullanılarak servislerin birbiriyle asenkron şekilde haberleştiği mimari.',
-                techs: ['RabbitMQ', 'MassTransit', 'Docker', '.NET Core'],
-                details: ['Event publish ve subscribe süreçleri', 'Dead Letter Queue hata akışı', 'Transactional Outbox yönetimi']
+                title: 'Slack & Discord Benzeri Chat',
+                tag: 'GERÇEK ZAMANLI SİSTEMLER',
+                desc: 'Kullanıcıların canlı odalar oluşturup mesajlaşabildiği, okundu bilgisi ve anlık bildirimler gönderen WebSocket altyapısı.',
+                techs: ['SignalR', '.NET Core', 'Redis Pub/Sub', 'PostgreSQL'],
+                details: ['SignalR Hub ve WebSocket yönetimi', 'Redis Pub/Sub ile ölçeklenebilir mesaj iletimi', 'Çevrimdışı mesaj kuyruklama']
               },
               {
-                title: 'JWT Authentication',
-                tag: 'GÜVENLİK',
-                desc: 'Claims-based, rollere göre yetkilendirme sağlayan merkezi kullanıcı kimlik doğrulama API\'si.',
-                techs: ['JWT Token', 'ASP.NET Core Identity', 'Refresh Token'],
-                details: ['Güvenli şifre hashing', 'Claims tabanlı filtreleme', 'Refresh Token ile oturum yenileme']
+                title: 'Çoklu Kiracılı SaaS Altyapısı',
+                tag: 'KURUMSAL YAZILIM MİMARİSİ',
+                desc: 'Her şirkete özel şema/veritabanı ayıran, JWT token ve rol tabanlı güvenli SaaS mimarisi.',
+                techs: ['Clean Architecture', 'ASP.NET Identity', 'EF Core', 'JWT'],
+                details: ['Dynamic Tenant connection string yönetimi', 'JWT Claims & Role-based authorization', 'Refresh Token ile güvenli oturum yönetimi']
               },
               {
-                title: 'API Gateway',
-                tag: 'YÖNLENDİRME',
-                desc: 'Tüm mikroservislerin arkasında durduğu, merkezi güvenlik, rate limiting ve loglama geçidi.',
-                techs: ['Ocelot Gateway', 'Redis Rate Limiter', 'Serilog'],
-                details: ['Merkezi istek yönlendirmesi', 'Redis ile IP tabanlı Rate Limiting', 'Global log takibi']
+                title: 'Yönetilebilir Mikroservis Geçidi',
+                tag: 'MİKROSERVİS ORKESTRASYONU',
+                desc: 'Tüm arka plan servislerinin önünde duran, güvenlik, rate limiting ve loglama işlemlerini merkezi olarak üstlenen geçit.',
+                techs: ['Ocelot Gateway', 'Docker Compose', 'Serilog', 'ELK Stack'],
+                details: ['Ocelot üzerinden istek yönlendirme', 'IP tabanlı Rate Limiting altyapısı', 'Merkezi log toplama ve izleme (Serilog)']
               }
             ].map((proj, idx) => (
               <div key={idx} className="reveal group relative overflow-hidden rounded-2xl border border-[#0c2719] p-8 hover:border-[#103a26] hover:-translate-y-1 hover:shadow-[0_30px_60px_-25px_rgba(0,255,136,.3)] transition-all flex flex-col justify-between" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
