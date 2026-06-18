@@ -92,10 +92,10 @@ const Footer = ({ navigate }) =>
             <span className="w-[34px] h-[34px] border-[1.5px] border-[#00ff88] rounded-lg grid place-items-center text-[#00ff88] font-mono text-[15px] font-bold">&gt;_</span>
             YTK <b className="text-[#00ff88]">Academy</b>
           </a>
-          <p className="text-[#74998a] text-sm mt-[18px] max-w-[300px] leading-relaxed">Uygulamalı CTF görevleri ve siber güvenlik laboratuvarlarıyla yeni nesil siber güvenlik uzmanlarını yetiştiriyoruz.</p>
+          <p className="text-[#74998a] text-sm mt-[18px] max-w-[300px] leading-relaxed">Yusuf İslam Yetkin rehberliğinde bire bir yazılım mentörlüğüyle; .NET, SQL, mikroservisler ve bulut teknolojilerinde uzmanlaş.</p>
         </div>
         {[
-      { h: 'Platform', items: [['Laboratuvarlar', 'rooms'], ['Blog', 'blogs'], ['CTF Görevleri', 'rooms'], ['Liderlik Tablosu', 'leaderboard']] },
+      { h: 'Platform', items: [['Mentörlük Programı', 'about'], ['Fiyatlandırma', 'pricing'], ['Blog', 'blogs'], ['İletişim', 'contact']] },
       { h: 'Kurumsal & Yasal', items: [['Hakkımızda', 'about'], ['İletişim', 'contact'], ['Kullanım Şartları', 'terms'], ['Gizlilik Politikası', 'privacy'], ['İade ve İptal Koşulları', 'refund-policy']] },
       { h: 'Geliştirici Araçları I', items: [['C# Model & DTO Oluşturucu', 'tools/reverse-shell'], ['JWT & Base64 Çözücü', 'tools/encoder-decoder'], ['Password Hash & Salt Test', 'tools/password-strength'], ['CIDR & Subnet Hesaplayıcı', 'tools/subnet-calc'], ['MD5, SHA-256 Jeneratörü', 'tools/hash-tool']] },
       { h: 'Geliştirici Araçları II', items: [['SQL Şema Oluşturucu', 'tools/xss-generator'], ['EF Model Mapper', 'tools/sqli-generator'], ['Cron Zamanlayıcı & Açıklayıcı', 'tools/cron-explainer'], ['Base64 Dosya Dönüştürücü', 'tools/base64-file'], ['API Endpoint & Header Test', 'tools/dns-lookup']] }].
