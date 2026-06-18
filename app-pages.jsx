@@ -3294,6 +3294,13 @@ const SetPasswordPage = ({ navigate, data }) => {
   );
 };
 
+const DisabledPageRedirect = ({ navigate }) => {
+  useEffect(() => {
+    navigate('dashboard');
+  }, []);
+  return null;
+};
+
 /* ============ REGISTER PAGES ============ */
 Object.assign(PAGES, {
   about: AboutPage,
@@ -3302,10 +3309,10 @@ Object.assign(PAGES, {
   terms: TermsPage,
   privacy: PrivacyPage,
   notfound: NotFoundPage,
-  profile: ProfilePage,
-  badges: BadgesPage,
-  certificates: CertificatesPage,
-  tools: ToolsPage,
+  profile: DisabledPageRedirect,
+  badges: DisabledPageRedirect,
+  certificates: DisabledPageRedirect,
+  tools: DisabledPageRedirect,
   pricing: PricingPage,
   product: ProductDetailPage,
   'set-password': SetPasswordPage,

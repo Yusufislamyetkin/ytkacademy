@@ -242,10 +242,7 @@ const AppHeader = ({ navigate, active }) => {
     return () => window.removeEventListener('open_vip_mentor_modal', handleOpen);
   }, []);
 
-  const nav = [['Dashboard', 'dashboard', '▣'], ['Leaderboard', 'leaderboard', '🏆'], ['Sohbet', 'chat', '💬']];
-  if (user && user.is_admin) {
-    nav.push(['Yönetim Paneli', 'admin', '⚙️']);
-  }
+  const nav = [['Panel', 'dashboard', '▣']];
   return (
     <>
       <header className="sticky top-0 z-50 bg-[rgba(2,8,6,.88)] backdrop-blur-md border-b border-[#0c2719]">
@@ -264,11 +261,6 @@ const AppHeader = ({ navigate, active }) => {
             </nav>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#103a26] bg-[rgba(0,255,136,.03)]">
-              <span className="text-[#00ff88] text-sm">◆</span>
-              <span className="font-mono text-sm text-[#eafff5] font-bold">{user.points}</span>
-              <span className="text-xs text-[#74998a]">puan</span>
-            </div>
             <div className="relative">
               <button onClick={() => setOpen(o => !o)} aria-label="Kullanıcı Menüsü" className="flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-lg border border-[#103a26] hover:border-[#00ff88] transition-colors">
                 <span className="w-7 h-7 rounded-md grid place-items-center text-[#5cffba] font-bold text-xs border border-[#103a26]" style={{ background: 'linear-gradient(135deg,#0a3a24,#052b18)' }}>{user.avatar}</span>
@@ -277,10 +269,7 @@ const AppHeader = ({ navigate, active }) => {
               </button>
               {open && (
                 <div className="absolute right-0 top-[calc(100%+8px)] w-44 bg-[#04100a] border border-[#103a26] rounded-lg p-1.5 shadow-[0_20px_50px_-20px_#000] z-50">
-                  {[['Profilim', 'profile'], ['Rozetlerim', 'badges'], ['Sertifikalarım', 'certificates']].map(([t, p], i) => (
-                    <button key={i} onClick={() => { setOpen(false); navigate(p); }} className="w-full text-left px-3 py-2 rounded-md text-sm text-[#74998a] hover:text-[#cdeede] hover:bg-[rgba(0,255,136,.04)] transition-colors">{t}</button>
-                  ))}
-                  <div className="h-px bg-[#0c2719] my-1.5"></div>
+                  {/* Profil ve rozetler pasif hale getirilmistir */}
                   <button onClick={() => { 
                     setOpen(false); 
                     localStorage.removeItem('sk_token');
@@ -460,464 +449,500 @@ const SectionLabel = ({ children }) => (
   <span className="font-mono text-[12px] font-medium tracking-[.18em] uppercase text-[#00ff88] inline-flex items-center gap-2.5 mb-4"><span className="text-[#5c8a74] font-bold">//</span> {children}</span>
 );
 
-/* ============ DASHBOARD ============ */
 const DashboardPage = ({ navigate, data }) => {
-  const [user, updateUser] = useUser();
-
-  useEffect(() => {
-    if (data && data.scrollTo === 'categories') {
-      setTimeout(() => {
-        document.getElementById('categories-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 150);
+  const [user] = useUser();
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [activeLessonIndex, setActiveLessonIndex] = useState(0);
+  const [completedLessons, setCompletedLessons] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('ytk_completed_lessons') || '[]');
+    } catch (e) {
+      return [];
     }
-  }, [data]);
-
-  const solvedList = JSON.parse(localStorage.getItem('sk_solved_rooms') || '[]');
-  const progressMap = JSON.parse(localStorage.getItem('sk_room_progress') || '{}');
-  const inProgress = window.SK_ALL_ROOMS
-    .map(r => ({
-      ...r,
-      progress: progressMap[r.id] || 0
-    }))
-    .filter(r => r.progress > 0 && r.progress < 100);
-
-  const categories = window.SK_CATEGORIES.map(c => {
-    const solvedInCat = c.rooms.filter(r => solvedList.includes(r.id)).length;
-    return {
-      ...c,
-      count: c.rooms.length,
-      solvedCount: solvedInCat
-    };
   });
-  const dynamicBadges = window.getDynamicBadges ? window.getDynamicBadges(user, solvedList) : [];
-  const badges = dynamicBadges.slice(0, 7);
 
-  // daily activity chart (last 14 days)
-  const solvedDetails = JSON.parse(localStorage.getItem('sk_solved_details') || '[]');
-  let daily = Array(14).fill(0);
-  const now = new Date();
-  for (let i = 0; i < 14; i++) {
-    const targetDate = new Date(now.getTime() - (13 - i) * 24 * 60 * 60 * 1000);
-    const startOfDay = new Date(targetDate);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(targetDate);
-    endOfDay.setHours(23, 59, 59, 999);
-    
-    let pointsSum = 0;
-    solvedDetails.forEach(s => {
-      if (s.solved_at) {
-        const solvedTime = new Date(s.solved_at).getTime();
-        if (solvedTime >= startOfDay.getTime() && solvedTime <= endOfDay.getTime()) {
-          pointsSum += s.points_earned;
+  const COURSES = {
+    csharp: {
+      title: "C# Programlama Temelleri",
+      desc: "C# dilinin temel sözdizimi, değişkenler, koşullar, döngüler ve OOP kavramları.",
+      icon: "💻",
+      lessons: [
+        {
+          id: "cs-1",
+          title: "Ders 1: C# Nedir ve Nasıl Çalışır?",
+          content: `C# (C-Sharp), Microsoft tarafından geliştirilen modern, nesne yönelimli ve güvenli bir programlama dilidir.
+
+### Temel Özellikleri:
+* **Nesne Yönelimli (OOP):** Sınıflar, nesneler, kalıtım ve çok biçimlilik gibi prensipleri temel alır.
+* **Tip Güvenli (Type-Safe):** Değişken türleri sıkı bir şekilde denetlenir ve bellek hataları önlenir.
+* **Cross-Platform:** .NET Core ile birlikte C# kodları Windows, macOS ve Linux platformlarında çalıştırılabilir.
+
+### Çalışma Mantığı:
+C# kodu derlendiğinde doğrudan makine diline değil, **MSIL (Microsoft Intermediate Language)** adı verilen ara bir dile çevrilir. Çalışma anında ise **CLR (Common Language Runtime)** içerisindeki **JIT (Just-In-Time) Compiler** yardımıyla hedef işletim sisteminin makine koduna dönüştürülerek çalıştırılır.`
+        },
+        {
+          id: "cs-2",
+          title: "Ders 2: Değişken Nedir ve Ne Amaçla Kullanılır?",
+          content: `Değişkenler, program içerisinde işlenecek verilerin geçici olarak bellekte (RAM) saklandığı isimlendirilmiş bellek alanlarıdır.
+
+### C# Veri Tipleri:
+C# dilinde değişkenlerin tipi önceden belirtilmek zorundadır. En yaygın kullanılan veri tipleri şunlardır:
+* **int:** Tam sayıları tutar (Örn: \`int yas = 25;\`)
+* **double / decimal:** Ondalıklı sayıları tutar (Örn: \`double fiyat = 99.99;\`)
+* **string:** Metinleri tutar (Örn: \`string isim = "Yusuf";\`)
+* **bool:** Mantıksal \`true\` veya \`false\` değerlerini tutar (Örn: \`bool aktifMi = true;\`)
+* **char:** Tek bir karakter tutar (Örn: \`char secim = 'A';\`)
+
+### Değişken Tanımlama Kuralları:
+1. Değişken ismi sayı ile başlayamaz.
+2. Türkçe karakterler veya özel semboller içermemelidir (alt çizgi \`_\` hariç).
+3. C# anahtar kelimeleri (class, void, int vb.) değişken adı olarak kullanılamaz.`
+        },
+        {
+          id: "cs-3",
+          title: "Ders 3: Karar Yapıları (if-else)",
+          content: `Karar yapıları, programımızın belirli koşullara göre farklı kod bloklarını çalıştırmasını sağlar.
+
+### if-else Kullanımı:
+\`\`\`csharp
+int not = 75;
+if (not >= 50)
+{
+    Console.WriteLine("Dersi Geçtiniz!");
+}
+else
+{
+    Console.WriteLine("Ders Tekrarı Gerekiyor.");
+}
+\`\`\`
+
+### Mantıksal Operatörler:
+* **==** : Eşit mi?
+* **!=** : Eşit değil mi?
+* **&&** : VE (Her iki koşul da doğru olmalı)
+* **||** : VEYA (Koşullardan en az biri doğru olmalı)`
+        },
+        {
+          id: "cs-4",
+          title: "Ders 4: Döngüler (Loops)",
+          content: `Döngüler, belirli bir kod bloğunun koşul sağlandığı sürece tekrarlı olarak çalışmasını sağlayan yapılardır.
+
+### For Döngüsü:
+Belirli sayıda tekrarlanacak işlemler için tercih edilir:
+\`\`\`csharp
+for (int i = 1; i <= 5; i++)
+{
+    Console.WriteLine("Döngü Adımı: " + i);
+}
+\`\`\`
+
+### While Döngüsü:
+Koşul doğru olduğu sürece çalışmaya devam eder:
+\`\`\`csharp
+int sayac = 1;
+while (sayac <= 5)
+{
+    Console.WriteLine("Sayaç: " + sayac);
+    sayac++;
+}
+\`\`\``
+        },
+        {
+          id: "cs-5",
+          title: "Ders 5: Metotlar (Functions)",
+          content: `Metotlar, programımızdaki kod kalabalığını önleyen ve tekrar kullanılabilir kod blokları oluşturmamızı sağlayan yapılardır.
+
+### Metot Tanımlama ve Kullanımı:
+\`\`\`csharp
+// Geriye değer döndürmeyen (void) metot
+static void Selamla(string isim)
+{
+    Console.WriteLine("Merhaba " + isim);
+}
+
+// Geriye değer döndüren metot
+static int Topla(int sayi1, int sayi2)
+{
+    return sayi1 + sayi2;
+}
+
+// Metotların çağrılması
+Selamla("Yusuf");
+int sonuc = Topla(5, 10);
+Console.WriteLine("Sonuç: " + sonuc);
+\`\`\``
+        },
+        {
+          id: "cs-6",
+          title: "Ders 6: Sınıflar ve Nesne Yönelimli Programlama (OOP)",
+          content: `Nesne Yönelimli Programlama (OOP), gerçek dünyadaki nesneleri yazılıma aktarma modelidir. Sınıflar (Class) nesnelerimizin şablonudur.
+
+### Sınıf Tanımlama ve Nesne Oluşturma:
+\`\`\`csharp
+class Ogrenci
+{
+    public string Ad { get; set; }
+    public int Numara { get; set; }
+
+    public void BilgiYazdir()
+    {
+        Console.WriteLine($"Öğrenci: {Ad}, Numara: {Numara}");
+    }
+}
+
+// Nesne Oluşturma:
+Ogrenci ogr = new Ogrenci();
+ogr.Ad = "Yusuf";
+ogr.Numara = 123;
+ogr.BilgiYazdir();
+\`\`\``
         }
+      ]
+    },
+    sql: {
+      title: "SQL Veritabanı Temelleri",
+      desc: "İlişkisel veritabanı tasarımı, tablo oluşturma ve SQL sorgulama dili.",
+      icon: "🗄️",
+      lessons: [
+        {
+          id: "sql-1",
+          title: "Ders 1: SQL Nedir ve Ne İşe Yarar?",
+          content: `SQL (Structured Query Language), ilişkisel veritabanlarında (RDBMS) verileri sorgulamak, eklemek, güncellemek ve yönetmek için kullanılan standart bir dildir.
+
+### Temel Kavramlar:
+* **Veritabanı (Database):** Birbiriyle ilişkili verilerin düzenli bir şekilde saklandığı yapıdır.
+* **Tablo (Table):** Verilerin satır (row) ve sütun (column) yapısında depolandığı nesnelerdir.
+* **Primary Key (Birincil Anahtar):** Tablodaki her satırı benzersiz bir şekilde tanımlayan sütundur.`
+        },
+        {
+          id: "sql-2",
+          title: "Ders 2: SELECT Sorgusu ve Filtreleme",
+          content: `SELECT ifadesi, veritabanındaki tablolardan veri okumak ve listelemek için kullanılır.
+
+### Temel SELECT Kullanımı:
+\`\`\`sql
+-- Tablodaki tüm sütunları ve satırları listeler:
+SELECT * FROM Kullanicilar;
+
+-- Sadece belirli sütunları listeler:
+SELECT Ad, Soyad, Eposta FROM Kullanicilar;
+\`\`\`
+
+### WHERE ile Filtreleme:
+Koşula uyan verileri filtrelemek için \`WHERE\` kullanılır:
+\`\`\`sql
+SELECT * FROM Kullanicilar 
+WHERE Yas >= 18 AND Sehir = 'İstanbul';
+\`\`\``
+        },
+        {
+          id: "sql-3",
+          title: "Ders 3: INSERT, UPDATE ve DELETE İşlemleri",
+          content: `Veritabanındaki verileri yönetmek ve güncellemek için kullanılan DML (Data Manipulation Language) komutlarıdır.
+
+### Veri Ekleme (INSERT):
+\`\`\`sql
+INSERT INTO Kullanicilar (Ad, Soyad, Yas) 
+VALUES ('Yusuf', 'Yetkin', 28);
+\`\`\`
+
+### Veri Güncelleme (UPDATE):
+*ÖNEMLİ: WHERE koşulu eklenmezse tüm tablo güncellenir!*
+\`\`\`sql
+UPDATE Kullanicilar 
+SET Yas = 29 
+WHERE Id = 5;
+\`\`\`
+
+### Veri Silme (DELETE):
+*ÖNEMLİ: WHERE koşulu eklenmezse tüm veriler silinir!*
+\`\`\`sql
+DELETE FROM Kullanicilar 
+WHERE Id = 5;
+\`\`\``
+        },
+        {
+          id: "sql-4",
+          title: "Ders 4: JOIN İşlemleri ve Tablo İlişkileri",
+          content: `İlişkisel veritabanlarında veriler farklı tablolarda tutulur. Tabloları anahtar alanlar üzerinden birleştirmek için \`JOIN\` işlemleri kullanılır.
+
+### INNER JOIN Kullanımı:
+İki tablodaki eşleşen kayıtları getirmek için kullanılır:
+\`\`\`sql
+SELECT Siparisler.Id, Kullanicilar.Ad, Siparisler.Tutar
+FROM Siparisler
+INNER JOIN Kullanicilar ON Siparisler.KullaniciId = Kullanicilar.Id;
+\`\`\`
+
+### LEFT JOIN Kullanımı:
+Sol tablodaki tüm kayıtları ve sağ tablodaki eşleşen kayıtları getirir:
+\`\`\`sql
+SELECT Kullanicilar.Ad, Siparisler.Id
+FROM Kullanicilar
+LEFT JOIN Siparisler ON Kullanicilar.Id = Siparisler.KullaniciId;
+\`\`\``
+        },
+        {
+          id: "sql-5",
+          title: "Ders 5: GROUP BY ve Aggregation Fonksiyonları",
+          content: `Verileri gruplamak ve bu gruplar üzerinde hesaplamalar yapmak için \`GROUP BY\` ve çeşitli matematiksel fonksiyonlar (COUNT, SUM, AVG) kullanılır.
+
+### Örnek Sorgular:
+\`\`\`sql
+-- Her şehirden kaç kullanıcı olduğunu bulur:
+SELECT Sehir, COUNT(*) AS UyeSayisi
+FROM Kullanicilar
+GROUP BY Sehir;
+
+-- Şehirlere göre yaş ortalamasını bulur:
+SELECT Sehir, AVG(Yas) AS OrtYas
+FROM Kullanicilar
+GROUP BY Sehir;
+\`\`\``
+        }
+      ]
+    }
+  };
+
+  const formatMarkdown = (text) => {
+    if (!text) return "";
+    
+    // Code block parser
+    const parts = text.split(/(```csharp[\s\S]*?```|```sql[\s\S]*?```)/g);
+    
+    return parts.map(part => {
+      if (part.startsWith('```csharp')) {
+        const code = part.replace('```csharp', '').replace('```', '').trim();
+        return `<pre class="bg-black/60 border border-[#103a26] rounded-xl p-4 my-4 font-mono text-xs text-[#5cffba] overflow-x-auto">${code}</pre>`;
+      } else if (part.startsWith('```sql')) {
+        const code = part.replace('```sql', '').replace('```', '').trim();
+        return `<pre class="bg-black/60 border border-[#103a26] rounded-xl p-4 my-4 font-mono text-xs text-[#ffd166] overflow-x-auto">${code}</pre>`;
+      } else {
+        return part.split('\n').map(line => {
+          let trimmed = line.trim();
+          if (!trimmed) return "";
+          if (trimmed.startsWith('###')) {
+            return `<h3 class="text-base font-bold text-[#eafff5] mt-5 mb-2.5 font-disp">${trimmed.substring(3).trim()}</h3>`;
+          }
+          if (trimmed.startsWith('*')) {
+            return `<li class="ml-5 list-disc text-[#9fc4b5] text-sm mb-1.5 font-mono">${trimmed.substring(1).trim()}</li>`;
+          }
+          if (/^\d+\./.test(trimmed)) {
+            const match = trimmed.match(/^(\d+)\.(.*)/);
+            return `<li class="ml-5 list-decimal text-[#9fc4b5] text-sm mb-1.5 font-mono">${match[2].trim()}</li>`;
+          }
+          return `<p class="text-sm text-[#74998a] leading-relaxed mb-3 font-mono">${line}</p>`;
+        }).join('');
       }
-    });
-    daily[i] = pointsSum;
+    }).join('')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code class="bg-black/40 border border-[#103a26] text-[#00ff88] px-1.5 py-0.5 rounded font-mono text-xs">$1</code>');
+  };
+
+  const handleMarkCompleted = (lessonId) => {
+    if (!completedLessons.includes(lessonId)) {
+      const updated = [...completedLessons, lessonId];
+      setCompletedLessons(updated);
+      localStorage.setItem('ytk_completed_lessons', JSON.stringify(updated));
+    }
+  };
+
+  const handleNextLesson = () => {
+    handleMarkCompleted(activeLesson.id);
+    if (activeLessonIndex < activeCourse.lessons.length - 1) {
+      setActiveLessonIndex(prev => prev + 1);
+    }
+  };
+
+  const activeCourse = COURSES[selectedSubject];
+  const activeLesson = activeCourse ? activeCourse.lessons[activeLessonIndex] : null;
+
+  if (selectedSubject === null) {
+    return (
+      <>
+        <AppHeader navigate={navigate} active="dashboard" />
+        <main className="max-w-[1280px] mx-auto px-6 py-10 relative">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,255,136,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,255,136,0.02)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+          
+          <div className="relative z-10 text-center max-w-2xl mx-auto mb-12">
+            <h1 className="text-3xl md:text-4xl font-disp font-bold text-[#eafff5] mb-4">
+              YTK <span className="text-[#00ff88]">Academy</span> Öğrenme Paneli
+            </h1>
+            <p className="text-sm md:text-base text-[#74998a] leading-relaxed">
+              C# veya SQL konularından birini seçerek kişiselleştirilmiş yazılım eğitim yolculuğuna hemen başla.
+            </p>
+          </div>
+
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {Object.entries(COURSES).map(([key, course]) => {
+              const total = course.lessons.length;
+              const completedCount = course.lessons.filter(l => completedLessons.includes(l.id)).length;
+              const pct = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+              
+              return (
+                <div 
+                  key={key} 
+                  className="rounded-2xl border border-[#0c2719] bg-gradient-to-br from-[#07150e] to-[#04100a] p-8 hover:border-[#00ff88] transition-all duration-300 group flex flex-col justify-between min-h-[320px] shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <span className="text-4xl filter drop-shadow-[0_0_8px_rgba(0,255,136,0.2)]">{course.icon}</span>
+                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20">
+                        {total} DERS
+                      </span>
+                    </div>
+                    
+                    <h2 className="text-xl font-disp font-bold text-[#eafff5] mb-3 group-hover:text-[#00ff88] transition-colors">
+                      {course.title}
+                    </h2>
+                    
+                    <p className="text-xs text-[#74998a] leading-relaxed mb-6 font-mono">
+                      {course.desc}
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="mb-4">
+                      <div className="flex justify-between text-xs text-[#74998a] mb-1.5 font-mono">
+                        <span>İlerleme</span>
+                        <span className="text-[#00ff88] font-bold">{completedCount}/{total} (%{pct})</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-[#0c2719] overflow-hidden">
+                        <div 
+                          className="h-full rounded-full bg-gradient-to-r from-[#00d978] to-[#00ff88] transition-all duration-500 shadow-[0_0_10px_#00ff88]" 
+                          style={{ width: `${pct}%` }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    <button 
+                      onClick={() => {
+                        setSelectedSubject(key);
+                        setActiveLessonIndex(0);
+                      }}
+                      className="w-full py-3 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-[#021008] bg-[#00ff88] hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] transition-all duration-300"
+                    >
+                      {pct > 0 ? "ÖĞRENMEYE DEVAM ET →" : "EĞİTİME BAŞLA →"}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </main>
+        <SKFooter navigate={navigate} />
+      </>
+    );
   }
-  const dayLabels = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz','Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
-  const w = 620, h = 160, pad = 8;
-  const max = Math.max(...daily), min = Math.min(...daily);
-  const pts = daily.map((val, i) => {
-    const x = pad + (i * (w - pad * 2)) / 13;
-    const y = h - pad - (max > 0 ? (val / max) * (h - pad * 2) : 0);
-    return [x, y];
-  });
-  const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
-  const area = line + ` L${(w - pad).toFixed(1)} ${h - pad} L${pad} ${h - pad} Z`;
 
   return (
     <>
       <AppHeader navigate={navigate} active="dashboard" />
-      <main className="max-w-[1280px] mx-auto px-6 py-10">
-        {/* welcome */}
-        <div className="flex items-end justify-between flex-wrap gap-4 mb-8">
-          <div>
-            <p className="font-mono text-sm text-[#74998a] mb-1">root@ytkacademy: <span className="text-[#00ff88]">~/dashboard</span></p>
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-[clamp(28px,4vw,42px)] text-[#eafff5]">Hoş geldin, <span className="text-[#00ff88]">{user.name}</span></h1>
-            </div>
-          </div>
-          <button onClick={() => document.getElementById('categories-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="font-mono text-sm font-bold text-[#021008] bg-[#00ff88] px-6 py-3 clip-btn hover:shadow-[0_0_28px_-4px_var(--glow)] transition-all">Yeni Görev Başlat →</button>
-        </div>
+      <main className="max-w-[1280px] mx-auto px-6 py-10 relative">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,255,136,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,255,136,0.02)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
-        {/* VIP Bire Bir Mentörlük Banner */}
-        <div 
-          onClick={() => window.dispatchEvent(new Event('open_vip_mentor_modal'))}
-          className="mb-8 p-5 rounded-xl border cursor-pointer transition-all duration-500 flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden group select-none animate-[borderGlow_3s_infinite_ease-in-out]"
-          style={{
-            background: 'linear-gradient(135deg, rgba(8,32,20,0.95) 0%, rgba(18,50,30,0.9) 50%, rgba(35,60,25,0.85) 100%)',
-          }}
-        >
-          {/* Style block for local custom keyframe animations */}
-          <style dangerouslySetInnerHTML={{__html: `
-            @keyframes borderGlow {
-              0%, 100% { border-color: rgba(255, 209, 102, 0.25); box-shadow: 0 0 15px rgba(255, 209, 102, 0.1), inset 0 0 15px rgba(255, 209, 102, 0.05); }
-              50% { border-color: rgba(255, 209, 102, 1); box-shadow: 0 0 25px rgba(255, 209, 102, 0.45), inset 0 0 20px rgba(255, 209, 102, 0.15); }
-            }
-            @keyframes badgeBlink {
-              0%, 100% { opacity: 0.7; transform: scale(0.97); }
-              50% { opacity: 1; transform: scale(1.03); filter: brightness(1.2); }
-            }
-            @keyframes textFlash {
-              0%, 100% { text-shadow: 0 0 4px rgba(255, 209, 102, 0.2); opacity: 0.8; }
-              50% { text-shadow: 0 0 12px rgba(255, 209, 102, 0.8); opacity: 1; color: #ffffff; }
-            }
-            @keyframes scanline {
-              0% { transform: translateY(-100%); }
-              100% { transform: translateY(100%); }
-            }
-          `}} />
-
-          {/* Grid overlay for digital tech look */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,255,136,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,255,136,0.03)_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none"></div>
-          
-          {/* Laser scanline animation */}
-          <div className="absolute inset-0 w-full h-0.5 bg-[#ffd166]/10 opacity-30 pointer-events-none animate-[scanline_6s_linear_infinite]" style={{}}></div>
-
-          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-5 w-full">
-            {/* Status indicator */}
-            <div className="flex items-center gap-2.5 shrink-0">
-              <span className="relative flex h-3.5 w-3.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffd166] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#ffd166]"></span>
-              </span>
-              <div 
-                className="px-3 py-1.5 rounded-lg border border-[#ffd166]/40 bg-[#ffd166]/10 text-[#ffd166] text-xs font-mono font-bold tracking-wider uppercase animate-[badgeBlink_2s_infinite_ease-in-out]"
-                style={{}}
-              >
-                ⚡ CANLI BİRE BİR MENTÖRLÜK
-              </div>
-            </div>
-
-            {/* Description & features */}
-            <div className="flex-1 min-w-0">
-              <h2 className="text-sm md:text-base font-disp font-bold text-[#eafff5] flex flex-wrap items-center gap-2 animate-[textFlash_3s_infinite_ease-in-out]" style={{}}>
-                Online Bire Bir Siber Güvenlik Eğitimi & Kariyer Yolculuğu 👑
-              </h2>
-              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-[#74998a] font-mono">
-                <span className="flex items-center gap-1.5"><b className="text-[#ffd166]">🕒</b> Saatlik veya Aylık Kurs</span>
-                <span className="flex items-center gap-1.5"><b className="text-[#ffd166]">🎯</b> Kişiye Özel Öğrenme Planı & İlerleme</span>
-                <span className="flex items-center gap-1.5"><b className="text-[#ffd166]">🎓</b> Resmi Başarı Sertifikası</span>
-                <span className="flex items-center gap-1.5"><b className="text-[#ffd166]">💼</b> Kariyer Planlama & İşe Giriş Desteği</span>
-              </div>
-            </div>
-          </div>
-
+        <div className="relative z-10 flex items-center justify-between mb-8 border-b border-[#0c2719] pb-4">
           <button 
-            className="w-full lg:w-auto px-5 py-3 rounded-lg bg-[#ffd166] text-[#021008] text-xs font-mono font-bold uppercase tracking-wider hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,102,0.6)] transition-all shrink-0 animate-pulse"
+            onClick={() => setSelectedSubject(null)} 
+            className="flex items-center gap-2 text-xs font-mono font-bold text-[#74998a] hover:text-[#00ff88] transition-colors"
           >
-            Planla & Detayları Gör ➔
+            ← Konu Seçimine Dön
           </button>
-        </div>
-
-        {/* summary + goals */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-5 mb-10">
-          <div className="rounded-2xl border border-[#0c2719] p-7" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-            <SectionLabel>Özet İstatistik</SectionLabel>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-              {[
-                { l: 'Toplam Puan', v: user.points, c: '#00ff88' },
-                { l: 'Sıralama', v: '#' + user.rank, c: '#eafff5' },
-                { l: 'Çözülen Görev', v: user.solved, c: '#eafff5' },
-                { l: 'Level', v: user.level + '/' + user.maxLevel, c: '#5cffba' },
-              ].map((s, i) => (
-                <div key={i}>
-                  <div className="font-disp font-bold text-3xl tracking-tight" style={{ color: s.c, textShadow: s.c === '#00ff88' ? '0 0 22px rgba(0,255,136,.3)' : 'none' }}>{s.v}</div>
-                  <div className="text-xs text-[#74998a] mt-1.5 tracking-wide">{s.l}</div>
-                </div>
-              ))}
-            </div>
-            {/* level progress */}
-            <div className="mt-6 pt-5 border-t border-[#0c2719]">
-              <div className="flex justify-between text-xs text-[#74998a] mb-2"><span>Level {user.level} ilerlemesi</span><span className="text-[#00ff88]">{user.points % 100}%</span></div>
-              <div className="h-2 rounded-full bg-[#0c2719] overflow-hidden"><div className="h-full rounded-full bg-gradient-to-r from-[#00d978] to-[#00ff88] shadow-[0_0_12px_var(--glow)]" style={{ width: (user.points % 100) + '%' }}></div></div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-[#0c2719] p-7" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-            <SectionLabel>Hedefler</SectionLabel>
-            <div className="space-y-4">
-              {[
-                { l: 'Bu ay kazanılan', v: '+' + user.points + ' puan', ic: '📈' },
-                { l: 'Toplam rozet', v: user.badges + ' / 32', ic: '🏅' },
-                { l: 'Günlük seri', v: user.streak + ' gün 🔥', ic: '⚡' },
-              ].map((g, i) => (
-                <div key={i} className="flex items-center justify-between p-3.5 rounded-lg bg-[#04100a] border border-[#0c2719]">
-                  <span className="flex items-center gap-3 text-sm text-[#74998a]"><span>{g.ic}</span>{g.l}</span>
-                  <span className="font-mono text-sm font-bold text-[#eafff5]">{g.v}</span>
-                </div>
-              ))}
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{activeCourse.icon}</span>
+            <span className="text-sm font-disp font-bold text-[#eafff5]">{activeCourse.title}</span>
           </div>
         </div>
 
-        {/* recommendations (sequential unsolved rooms) */}
-        <div className="mb-10">
-          <h2 className="text-2xl text-[#eafff5] mb-5">Sana Uygun Görevler</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {(() => {
-              const allRooms = window.SK_ALL_ROOMS || [];
-              const solved = solvedList;
-              const unsolvedRooms = allRooms.filter(r => !solved.includes(r.id)).slice(0, 2);
-              return unsolvedRooms.length > 0 ? (
-                unsolvedRooms.map((t, i) => {
-                  const roomProgress = progressMap[t.id] || 0;
-                  const hasStarted = roomProgress > 0 && roomProgress < 100;
-                  return (
-                    <div key={i} className={"rounded-xl border p-6 transition-all group " + (hasStarted ? "border-[#00ff88] hover:border-[#00ff88]" : "border-[#0c2719] hover:border-[#5cffba]")} style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="text-lg">{hasStarted ? '🎮' : '💡'}</span>
-                            <h3 className={"text-lg text-[#eafff5] transition-colors " + (hasStarted ? "group-hover:text-[#00ff88]" : "group-hover:text-[#5cffba]")} style={{ lineHeight: 1.25 }}>{t.name}</h3>
-                          </div>
-                          <span className="text-xs text-[#74998a]">{t.catSlug === 'web-exploitation' ? '🌐 Web Exploitation' : t.catSlug === 'network-pentest' ? '🔗 Ağ Sızma Testi' : '💻 Sistem Güvenliği'}</span>
-                        </div>
-                        {hasStarted ? (
-                          <span className="text-xs px-2 py-1 rounded bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20">Devam Ediyor</span>
-                        ) : (
-                          <span className="text-xs px-2 py-1 rounded bg-[#5cffba]/10 text-[#5cffba] border border-[#5cffba]/20">Sıradaki</span>
-                        )}
-                      </div>
-                      
-                      {hasStarted ? (
-                        <>
-                          <div className="flex justify-between text-xs text-[#74998a] mb-2"><span>İlerleme</span><span className="text-[#00ff88]">{roomProgress}%</span></div>
-                          <div className="h-2 rounded-full bg-[#0c2719] overflow-hidden mb-5"><div className="h-full rounded-full bg-gradient-to-r from-[#00d978] to-[#00ff88]" style={{ width: roomProgress + '%' }}></div></div>
-                          <button onClick={() => navigate('roomArticle', t)} className="w-full font-mono text-sm font-bold text-[#021008] bg-[#00ff88] py-2.5 rounded-lg hover:shadow-[0_0_24px_-4px_var(--glow)] transition-all">Devam Et →</button>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-xs text-[#74998a] mb-4">{t.desc || 'Temel pratikleri öğren ve siber güvenlik becerilerini geliştir.'}</p>
-                          <div className="flex items-center justify-between text-xs text-[#5c8a74] mb-4">
-                            <span>◆ {t.points} Puan</span>
-                            <span>👥 {(t.users || 0).toLocaleString('tr-TR')} çözdü</span>
-                          </div>
-                          <button onClick={() => navigate('roomArticle', t)} className="w-full font-mono text-sm font-bold text-[#021008] bg-[#5cffba] py-2.5 rounded-lg hover:shadow-[0_0_24px_-4px_rgba(92,255,186,.4)] transition-all">Başla →</button>
-                        </>
-                      )}
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="col-span-full py-8 text-center border border-dashed border-[#103a26] rounded-xl bg-[#020806]/40">
-                  <span className="text-3xl block mb-2">🏆</span>
-                  <p className="text-sm text-[#74998a] mb-1">Müthiş! Kampüsteki tüm görevleri başarıyla tamamladın.</p>
-                  <button onClick={() => navigate('leaderboard')} className="text-xs text-[#00ff88] hover:underline">Liderlik tablosunu incele →</button>
-                </div>
-              );
-            })()}
-          </div>
-        </div>
-
-        {/* Pathway Section (Uzmanın Yolu) - Premium Showcase */}
-        <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-5">
-            <span className="text-xl">👑</span>
-            <div>
-              <h2 className="text-2xl text-[#ffd166] font-disp font-bold tracking-wide">Uzmanın Yolu (VIP)</h2>
-              <p className="text-xs text-[#9fc4b5] mt-1">Sıfırdan siber güvenlik uzmanlığına giden, canlı ağ testleri ve mentor destekli VIP yolculuk.</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 gap-6">
-            {(window.SK_PATHWAYS || []).map((pw, i) => {
-              const allItems = pw.phases.flatMap(p => p.items);
-              const solvedCount = allItems.filter(it => {
-                if (it.type === 'room') return solvedList.includes(it.id);
-                if (it.type === 'doc') return (JSON.parse(localStorage.getItem('sk_completed_docs') || '[]')).includes(it.id);
-                return false;
-              }).length;
-              const totalCount = allItems.length;
-              const pct = totalCount > 0 ? Math.round((solvedCount / totalCount) * 100) : 0;
-              const currentPhase = pw.phases.find(p => {
-                const done = p.items.every(it => it.type === 'room' ? solvedList.includes(it.id) : it.type === 'doc' ? (JSON.parse(localStorage.getItem('sk_completed_docs') || '[]')).includes(it.id) : false);
-                return !done;
-              });
-
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
+          {/* Sidebar: Lessons List */}
+          <div className="rounded-xl border border-[#0c2719] bg-[#04100a] p-4 space-y-2 max-h-[600px] overflow-y-auto">
+            <div className="text-[10px] font-mono text-[#5c8a74] px-2 uppercase tracking-wider mb-2">// DERS LİSTESİ</div>
+            {activeCourse.lessons.map((lesson, idx) => {
+              const isCurrent = idx === activeLessonIndex;
+              const isDone = completedLessons.includes(lesson.id);
+              
               return (
-                <div key={i} onClick={() => navigate('pathway', pw)} className="cursor-pointer rounded-2xl border border-[#ffd166]/20 p-6 md:p-8 hover:border-[#ffd166] hover:shadow-[0_0_35px_rgba(255,209,102,0.12)] transition-all group relative overflow-hidden" style={{ background: 'linear-gradient(165deg, #091a13 0%, #030e09 100%)' }}>
-                  {/* VIP Glow Decorative Elements */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#ffd166]/5 rounded-full blur-3xl pointer-events-none group-hover:bg-[#ffd166]/8 transition-all"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#00ff88]/5 rounded-full blur-2xl pointer-events-none"></div>
-
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-                    <div className="flex items-start gap-4">
-                      <span className="w-14 h-14 rounded-xl grid place-items-center text-3xl border border-[#ffd166]/20 bg-[#ffd166]/5 shadow-[0_0_15px_rgba(255,209,102,0.1)] group-hover:scale-105 transition-transform">{pw.icon}</span>
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="text-lg md:text-xl text-[#eafff5] font-disp font-bold group-hover:text-[#ffd166] transition-colors">{pw.name}</h3>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-[#ffd166] bg-[#ffd166]/10 border border-[#ffd166]/30 font-mono tracking-wider">👑 VIP PROGRAMI</span>
-                        </div>
-                        <p className="text-sm text-[#74998a] mt-1.5 max-w-2xl">{pw.desc}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-start md:items-end gap-1.5 min-w-[150px] md:text-right">
-                      <span className="text-[10px] font-mono text-[#5c8a74] uppercase tracking-wider block">MÜFREDAT İLERLEMESİ</span>
-                      <span className="text-xl font-mono font-bold text-[#ffd166]">{solvedCount}/{totalCount} Adım</span>
-                      <span className="text-xs text-[#5cffba] font-mono">%{pct} Tamamlandı</span>
-                    </div>
-                  </div>
-
-                  {/* Curriculums Preview / Timeline */}
-                  <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 relative z-10">
-                    {pw.phases.map((phase, pIdx) => {
-                      const isComplete = phase.items.every(it => it.type === 'room' ? solvedList.includes(it.id) : it.type === 'doc' ? (JSON.parse(localStorage.getItem('sk_completed_docs') || '[]')).includes(it.id) : false);
-                      return (
-                        <div key={phase.id} className={`p-3 rounded-lg border ${isComplete ? 'border-[#00ff88]/30 bg-[#00ff88]/5' : 'border-[#103a26]/60 bg-[#020806]/40'} transition-all`}>
-                          <div className="flex items-center justify-between mb-1.5">
-                            <span className="text-[10px] font-mono text-[#5c8a74]">FAZ {pIdx + 1}</span>
-                            <span className="text-xs">{isComplete ? '🟢' : '⚪'}</span>
-                          </div>
-                          <div className="text-xs text-[#eafff5] font-semibold truncate" title={phase.name}>{phase.name}</div>
-                          <div className="text-[10px] text-[#74998a] mt-1">{phase.items.length} Görev</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="mt-6 w-full h-1.5 rounded-full bg-[#0c2719] overflow-hidden relative z-10">
-                    <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#ffd166,#00ff88)' }}></div>
-                  </div>
-                  
-                  <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#5c8a74] relative z-10">
-                    <div className="flex flex-wrap gap-x-4 gap-y-1">
-                      <span>🎯 Toplam 4 Canlı Hacking Hedefi</span>
-                      <span>•</span>
-                      <span>👥 Bire Bir Mentor Desteği</span>
-                    </div>
-                    <span className="font-mono text-[#ffd166] group-hover:translate-x-1.5 transition-transform flex items-center gap-1 self-end sm:self-auto">Yolu İncele →</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Categories Section (Kategori Seç & Başla) */}
-        <div id="categories-section" className="mb-10 scroll-mt-24">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h2 className="text-2xl text-[#eafff5] font-disp font-bold">Kategori Seç & Başla</h2>
-              <p className="text-xs text-[#74998a] mt-1">İlgilendiğin siber güvenlik alanındaki laboratuvarları seç ve çözmeye başla.</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {categories.map((c, i) => {
-              const catPct = c.count > 0 ? Math.round((c.solvedCount / c.count) * 100) : 0;
-              return (
-                <button key={i} onClick={() => navigate('category', c)} className="text-left rounded-xl border border-[#0c2719] p-6 hover:border-[#00ff88] hover:-translate-y-1 transition-all group relative overflow-hidden" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-                  {/* Decorative faint background glow */}
-                  <div className="absolute top-[-50%] right-[-50%] w-48 h-48 bg-[#00ff88]/5 rounded-full blur-2xl pointer-events-none group-hover:bg-[#00ff88]/10 transition-all"></div>
-                  
-                  <div className="flex items-start justify-between mb-4">
-                    <span className="w-12 h-12 rounded-lg grid place-items-center text-2xl border border-[#103a26] bg-[rgba(0,255,136,.04)] group-hover:border-[#00ff88]/40 transition-colors">{c.icon}</span>
-                    <div className="text-right">
-                      <span className="text-[10px] font-mono text-[#5c8a74] uppercase tracking-wider block">Tamamlanma</span>
-                      <span className="text-sm font-mono font-bold text-[#00ff88] group-hover:text-[#5cffba] transition-colors">%{catPct}</span>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-base text-[#eafff5] font-bold mb-1.5 group-hover:text-[#00ff88] transition-colors">{c.name}</h3>
-                  <p className="text-xs text-[#74998a] line-clamp-2 leading-relaxed mb-4">{c.desc}</p>
-                  
-                  <div className="w-full h-1.5 rounded-full bg-[#0c2719] overflow-hidden mb-3.5">
-                    <div className="h-full rounded-full bg-[#00ff88] transition-all duration-500" style={{ width: `${catPct}%` }}></div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs text-[#5c8a74]">
-                    <span>{c.solvedCount} / {c.count} laboratuvar</span>
-                    <span className="font-mono text-[#00ff88] group-hover:translate-x-1 transition-transform">Pratik Yap →</span>
-                  </div>
+                <button
+                  key={lesson.id}
+                  onClick={() => setActiveLessonIndex(idx)}
+                  className={`w-full text-left p-3 rounded-lg border text-xs font-mono transition-all flex items-center justify-between gap-3 ${
+                    isCurrent 
+                      ? "border-[#00ff88] bg-[#00ff88]/5 text-[#00ff88] font-bold" 
+                      : "border-transparent text-[#74998a] hover:text-[#cdeede] hover:bg-[#07150e]"
+                  }`}
+                >
+                  <span className="truncate">{lesson.title}</span>
+                  {isDone ? (
+                    <span className="text-[#00ff88] font-bold shrink-0">✓</span>
+                  ) : (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0c2719] shrink-0"></span>
+                  )}
                 </button>
               );
             })}
           </div>
-        </div>
 
-        {/* badges + chart */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-5">
-          <div className="rounded-2xl border border-[#0c2719] p-7" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-            <SectionLabel>Rozetler & Başarımlar</SectionLabel>
-            <div className="space-y-2.5">
-              {badges.map((b, i) => (
-                <div key={i} className={"flex items-center justify-between p-3 rounded-lg border " + (b.done ? 'border-[#103a26] bg-[rgba(0,255,136,.03)]' : 'border-[#0c2719] opacity-60')}>
-                  <span className="flex items-center gap-3"><span className="text-lg grayscale-0" style={{ filter: b.done ? 'none' : 'grayscale(1)' }}>{b.icon}</span><span className={"text-sm " + (b.done ? 'text-[#eafff5]' : 'text-[#74998a]')}>{b.name}</span></span>
-                  <span className={"font-mono text-xs " + (b.done ? 'text-[#00ff88]' : 'text-[#5c8a74]')}>{b.done ? '✓ ' + b.when : '✗ ' + b.when}</span>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2 mt-5 pt-5 border-t border-[#0c2719]">
-              <button onClick={() => navigate('badges')} className="flex-1 text-xs text-[#cdeede] border border-[#103a26] py-2.5 rounded-lg hover:border-[#00ff88] hover:text-[#00ff88] transition-colors">Tüm Rozetler →</button>
-              <button onClick={() => navigate('certificates')} className="flex-1 text-xs text-[#cdeede] border border-[#103a26] py-2.5 rounded-lg hover:border-[#00ff88] hover:text-[#00ff88] transition-colors">Sertifikalarım →</button>
-            </div>
-          </div>
+          {/* Main Content Area */}
+          <div className="rounded-2xl border border-[#0c2719] bg-gradient-to-br from-[#07150e] to-[#04100a] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+            {activeLesson ? (
+              <>
+                <h1 className="text-xl md:text-2xl font-disp font-bold text-[#eafff5] mb-6 border-b border-[#0c2719] pb-4">
+                  {activeLesson.title}
+                </h1>
+                
+                <div 
+                  className="prose-custom mb-8"
+                  dangerouslySetInnerHTML={{ __html: formatMarkdown(activeLesson.content) }}
+                />
 
-          <div className="rounded-2xl border border-[#0c2719] p-7" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
-            <SectionLabel>Günlere Göre Aktivite</SectionLabel>
-            <div className="flex items-baseline gap-3 mb-4">
-              <span className="font-disp font-bold text-3xl text-[#00ff88]">+{daily.reduce((a, b) => a + b, 0)}</span>
-              <span className="text-xs text-[#74998a]">son 14 günde kazanılan puan</span>
-            </div>
-            <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-auto">
-              <defs>
-                <linearGradient id="actFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#00ff88" stopOpacity="0.32" />
-                  <stop offset="100%" stopColor="#00ff88" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              {[0.25, 0.5, 0.75].map((g, i) => (<line key={i} x1={pad} x2={w - pad} y1={pad + g * (h - pad * 2)} y2={pad + g * (h - pad * 2)} stroke="#0c2719" strokeWidth="1" />))}
-              <path d={area} fill="url(#actFill)" />
-              <path d={line} fill="none" stroke="#00ff88" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 6px rgba(0,255,136,.5))' }} />
-              {pts.map((p, i) => (<circle key={i} cx={p[0]} cy={p[1]} r={i === pts.length - 1 ? 4 : 2.5} fill={i === pts.length - 1 ? '#eafff5' : '#00ff88'} />))}
-            </svg>
-            <div className="flex justify-between mt-2 text-[10px] text-[#5c8a74] font-mono px-1">
-              {dayLabels.map((m, i) => (<span key={i} className={i % 2 ? 'opacity-0 md:opacity-100' : ''}>{m}</span>))}
-            </div>
-
-            {/* Divider */}
-            <div className="h-px bg-[#0c2719] my-6"></div>
-
-            {/* Weekly Target / Stats grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <div className="text-[11px] text-[#74998a] mb-2.5 font-mono">// HAFTALIK HEDEF</div>
-                <div className="rounded-xl border border-[#103a26] p-4 bg-[#020806]/40">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-[#eafff5] font-medium">3 Web Görevi Çöz</span>
-                    <span className="text-xs font-mono text-[#00ff88] font-bold">{(() => {
-                      const webSolvedCount = solvedList.filter(id => id.startsWith('web-')).length;
-                      return `${webSolvedCount % 3}/3`;
-                    })()}</span>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#0c2719]">
+                  <div className="text-xs text-[#74998a] font-mono">
+                    {completedLessons.includes(activeLesson.id) ? (
+                      <span className="text-[#00ff88] font-bold flex items-center gap-1">
+                        ✓ Bu dersi tamamladınız
+                      </span>
+                    ) : (
+                      <span>Bu dersi henüz tamamlamadınız.</span>
+                    )}
                   </div>
-                  <div className="h-2 rounded-full bg-[#0c2719] overflow-hidden mb-2">
-                    <div className="h-full rounded-full bg-[#00ff88] shadow-[0_0_10px_#00ff88]" style={{ width: `${Math.min(100, (solvedList.filter(id => id.startsWith('web-')).length % 3) * 33.3)}%` }}></div>
+                  
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    {!completedLessons.includes(activeLesson.id) && (
+                      <button
+                        onClick={() => handleMarkCompleted(activeLesson.id)}
+                        className="flex-1 sm:flex-initial px-5 py-2.5 rounded-lg border border-[#00ff88] text-[#00ff88] hover:bg-[#00ff88]/10 text-xs font-mono font-bold transition-all"
+                      >
+                        Tamamlandı İşaretle
+                      </button>
+                    )}
+                    
+                    {activeLessonIndex < activeCourse.lessons.length - 1 ? (
+                      <button
+                        onClick={handleNextLesson}
+                        className="flex-1 sm:flex-initial px-5 py-2.5 rounded-lg bg-[#00ff88] text-[#021008] hover:shadow-[0_0_16px_rgba(0,255,136,0.3)] text-xs font-mono font-bold transition-all"
+                      >
+                        Sonraki Ders →
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          handleMarkCompleted(activeLesson.id);
+                          setSelectedSubject(null);
+                        }}
+                        className="flex-1 sm:flex-initial px-5 py-2.5 rounded-lg bg-[#ffd166] text-[#021008] hover:shadow-[0_0_16px_rgba(255,209,102,0.3)] text-xs font-mono font-bold transition-all"
+                      >
+                        Kursu Bitir 🏆
+                      </button>
+                    )}
                   </div>
-                  <div className="text-[11px] text-[#74998a]">Ödül: <span className="text-[#5cffba] font-mono font-bold">◆ {50 * (Math.floor(solvedList.filter(id => id.startsWith('web-')).length / 3) + 1)} Puan</span></div>
                 </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-sm text-[#74998a] font-mono">Lütfen bir ders seçin.</p>
               </div>
-
-              <div>
-                <div className="text-[11px] text-[#74998a] mb-2.5 font-mono">// AKTİVİTE ANALİZİ</div>
-                <div className="rounded-xl border border-[#103a26] p-4 bg-[#020806]/40 space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-[#74998a]">En Aktif Gün</span>
-                    <span className="text-[#eafff5] font-mono font-bold">{user.streak > 0 && solvedList.length > 0 ? ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'][new Date().getDay() === 0 ? 6 : new Date().getDay() - 1] : 'Veri yok'}</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-[#74998a]">Çözüm Oranı</span>
-                    <span className={"font-mono font-bold " + (solvedList.length > 0 ? 'text-[#00ff88]' : 'text-[#5c8a74]')}>{solvedList.length > 0 ? '+%' + Math.min(99, Math.round(solvedList.length * 5)) + ' artış' : '%0'}</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-[#74998a]">Ort. Süre / Gün</span>
-                    <span className="text-[#eafff5] font-mono font-bold">{solvedList.length > 0 ? Math.round(solvedList.length * 3.5) + ' dk' : '0 dk'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </main>
@@ -7438,17 +7463,24 @@ const DocPage = ({ navigate, data }) => {
   );
 };
 
+const DisabledPageRedirect = ({ navigate }) => {
+  useEffect(() => {
+    navigate('dashboard');
+  }, []);
+  return null;
+};
+
 /* ============ REGISTER PAGES ============ */
 Object.assign(PAGES, {
   dashboard: DashboardPage,
-  room: RoomPage,
-  roomArticle: RoomArticlePage,
-  leaderboard: LeaderboardPage,
-  chat: ChatPage,
-  category: CategoryPage,
-  pathway: PathwayPage,
-  admin: AdminPage,
-  doc: DocPage,
+  room: DisabledPageRedirect,
+  roomArticle: DisabledPageRedirect,
+  leaderboard: DisabledPageRedirect,
+  chat: DisabledPageRedirect,
+  category: DisabledPageRedirect,
+  pathway: DisabledPageRedirect,
+  admin: DisabledPageRedirect,
+  doc: DisabledPageRedirect,
 });
 
 /* ============ SHARED EXPORTS (for app-pages.jsx, separate babel scope) ============ */
