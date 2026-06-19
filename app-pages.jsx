@@ -2677,7 +2677,7 @@ const PricingPage = ({ navigate }) => {
       price: 0,
       oldPrice: null,
       period: null,
-      img: '/plan-ucretsiz.jpg',
+      img: '/yeniucretsiz.png',
       desc: 'Mevcut seviyenizi analiz edip, hedefinize en uygun öğrenme planını ve yol haritasını hazırlıyoruz.',
       features: [
         'Yetenek & Seviye Analizi',
@@ -2696,7 +2696,7 @@ const PricingPage = ({ navigate }) => {
       price: 1500,
       oldPrice: 3000,
       period: '60 dk',
-      img: '/plan-1500tl.jpg',
+      img: '/1500TL.png',
       desc: 'Kod inceleme, canlı soru-cevap ve C# & .NET Core sorun giderme odaklı bire bir destek seansı.',
       features: [
         '60 Dakika Canlı Bire Bir Görüşme',
@@ -2716,7 +2716,7 @@ const PricingPage = ({ navigate }) => {
       price: 20000,
       oldPrice: 40000,
       period: 'Aylık',
-      img: '/plan-3000tl.jpg',
+      img: '/3000TL.png',
       desc: 'Seni backend developer seviyesinden, kurumsal fintech mimarileri tasarlayan mühendis seviyesine çıkaran program.',
       features: [
         '20 Saat Bire Bir Canlı Mentörlük',
@@ -3111,7 +3111,7 @@ const ProductDetailPage = ({ navigate, data }) => {
     'career-analysis': {
       name: '15 Dakika Ücretsiz Kariyer Analizi',
       price: 0, oldPrice: null,
-      img: '/freeeducationiamge-fiyatlandırma.jpg',
+      img: '/yeniucretsiz.png',
       desc: 'Yetenek ve seviyenizi analiz edip, hedefinize en uygun kariyer yönünü belirliyoruz. Kişisel öğrenme yol haritanızı çiziyor ve mentörlük uyumumuzu değerlendiriyoruz.',
       features: ['Yetenek & Seviye Analizi', 'Kariyer Yönü ve Rehberlik', 'Kişisel Öğrenme Yol Haritası', 'Mentörlük Uyum Değerlendirmesi'],
       isFree: true
@@ -3119,7 +3119,7 @@ const ProductDetailPage = ({ navigate, data }) => {
     'one-on-one': {
       name: '60 Dakikalık Bire Bir Mentörlük',
       price: 1500, oldPrice: 3000,
-      img: '/mentoregitimi-fiyatlandırma.jpg',
+      img: '/1500TL.png',
       desc: 'Kod inceleme, canlı soru-cevap ve C# & .NET Core sorun giderme odaklı bire bir destek seansı.',
       features: ['60 Dakika Canlı Bire Bir Görüşme', 'Kod & Proje İncelemesi (Code Review)', 'C#, .NET & SQL Geliştirici Desteği', 'Kariyer & Sektör Tavsiyeleri', 'Soru-Cevap & Sorun Giderme Seansı'],
       isFree: false
@@ -3127,7 +3127,7 @@ const ProductDetailPage = ({ navigate, data }) => {
     'fintech-program': {
       name: '20 Saatlik Bire Bir Mentorluk',
       price: 20000, oldPrice: 40000,
-      img: '/uzmanegitim-fiyatlandırma.jpg',
+      img: '/3000TL.png',
       desc: 'Seni backend developer seviyesinden, kurumsal fintech mimarileri tasarlayan mühendis seviyesine çıkaran program.',
       features: ['20 Saat Bire Bir Canlı Mentörlük', 'Gerçekçi Backend Sistem Tasarımı', 'Ödeme & Transaction Mimarisi', 'Mikroservisler & Event-Driven Sistemler', 'Production-Ready Proje Geliştirme', 'Mimari Değerlendirme & Kod Analizi', 'Kariyer & Teknik Mülakat Hazırlığı'],
       isFree: false
@@ -3140,13 +3140,21 @@ const ProductDetailPage = ({ navigate, data }) => {
   }
 
   const handleAction = () => {
-    if (product.isFree) {
-      if (user) { navigate('dashboard'); } else {
-        window.__SK_REGISTER_INFO = 'Kayıt olarak platformdaki ücretsiz eğitimlere erişebilirsiniz.';
-        navigate('register');
-      }
+    if (productId === 'career-analysis') {
+      window.open('https://wa.me/905389351189?text=Merhaba%2C%2015%20Dakika%20%C3%9Ccretsiz%20Kariyer%20Analizi%20randevusu%20almak%20istiyorum.', '_blank');
+    } else if (productId === 'one-on-one') {
+      window.open('https://wa.me/905389351189?text=Merhaba%2C%2060%20Dakikal%C4%B1k%20Bire%20Bir%20Ment%C3%B6rl%C3%BCk%20i%C3%A7in%20%C3%B6n%20g%C3%B6r%C3%BC%C5%9Fme%20ba%C5%9Fvurusu%20yapmak%20istiyorum.', '_blank');
+    } else if (productId === 'fintech-program') {
+      window.open('https://wa.me/905389351189?text=Merhaba%2C%2020%20Saatlik%20Bire%20Bir%20Mentorluk%20Program%C4%B1%20i%C3%A7in%20%C3%B6n%20g%C3%B6r%C3%BC%C5%9Fme%20ba%C5%9Fvurusu%20yapmak%20istiyorum.', '_blank');
     } else {
-      navigate('pricing');
+      if (product.isFree) {
+        if (user) { navigate('dashboard'); } else {
+          window.__SK_REGISTER_INFO = 'Kayıt olarak platformdaki ücretsiz eğitimlere erişebilirsiniz.';
+          navigate('register');
+        }
+      } else {
+        navigate('pricing');
+      }
     }
   };
 
@@ -3172,7 +3180,7 @@ const ProductDetailPage = ({ navigate, data }) => {
                 <span className="text-4xl font-bold text-[#eafff5] font-mono">{product.price === 0 ? 'Ücretsiz' : product.price.toLocaleString('tr-TR') + ' TL'}</span>
               </div>
               <button onClick={handleAction} className="font-mono text-sm font-bold text-[#021008] bg-[#00ff88] px-8 py-4 rounded-xl hover:shadow-[0_0_30px_var(--glow)] transition-all">
-                {product.isFree ? (user ? 'Panele Git' : 'Eğitime Başla ⚡') : 'Satın Al ⚡'}
+                {product.isFree ? (user ? 'Panele Git' : 'Eğitime Başla ⚡') : 'Ön Görüşme Başvurusu Yap ⚡'}
               </button>
             </div>
           </div>
@@ -3296,6 +3304,396 @@ const SetPasswordPage = ({ navigate, data }) => {
   );
 };
 
+/* ============ ASSESSMENT PAGE ============ */
+const AssessmentPage = ({ navigate, data }) => {
+  const HeaderCmp = window.SKHeader || (() => null);
+  const FooterCmp = window.SKFooter || (() => null);
+  const token = data && data.token;
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [assessmentInfo, setAssessmentInfo] = useState(null);
+  const [selectedAnswers, setSelectedAnswers] = useState(new Array(8).fill(null));
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    if (!token) {
+      setError('Geçersiz test tokenı.');
+      setLoading(false);
+      return;
+    }
+
+    fetch(`/api/assessment/${token}`)
+      .then(res => res.json())
+      .then(d => {
+        if (d.error) {
+          setError(d.error);
+        } else {
+          setAssessmentInfo(d);
+        }
+      })
+      .catch(() => setError('Test bilgileri alınırken hata oluştu.'))
+      .finally(() => setLoading(false));
+  }, [token]);
+
+  const handleOptionSelect = (optionIdx) => {
+    const updated = [...selectedAnswers];
+    updated[currentQuestionIndex] = optionIdx;
+    setSelectedAnswers(updated);
+  };
+
+  const handleNext = () => {
+    if (currentQuestionIndex < assessmentInfo.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (selectedAnswers.includes(null)) {
+      alert('Lütfen tüm soruları cevaplayın.');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`/api/assessment/${token}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers: selectedAnswers })
+      });
+      const d = await res.json();
+      if (d.success) {
+        setResult(d);
+      } else {
+        alert(d.error || 'Test gönderilirken hata oluştu.');
+      }
+    } catch {
+      alert('Bağlantı hatası. Lütfen tekrar deneyin.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <><HeaderCmp navigate={navigate} />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#00ff88] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+      <FooterCmp navigate={navigate} /></>
+    );
+  }
+
+  if (error) {
+    return (
+      <><HeaderCmp navigate={navigate} />
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center w-full max-w-md border border-red-500/20 bg-red-500/5 rounded-2xl p-8">
+          <span className="text-red-500 text-5xl mb-4 block">⚠️</span>
+          <h1 className="text-xl text-[#eafff5] font-disp font-bold mb-3">Hata</h1>
+          <p className="text-[#74998a] text-sm mb-6">{error}</p>
+          <button onClick={() => navigate('home')} className="text-[#00ff88] hover:underline font-mono">← Anasayfaya Dön</button>
+        </div>
+      </div>
+      <FooterCmp navigate={navigate} /></>
+    );
+  }
+
+  if (assessmentInfo && assessmentInfo.completed) {
+    return (
+      <><HeaderCmp navigate={navigate} />
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center w-full max-w-md border border-[#0c2719] bg-[#04100a] rounded-2xl p-8" style={{ background: 'linear-gradient(165deg,#07150e,#020806)' }}>
+          <div className="w-16 h-16 rounded-full bg-[#ffd166]/10 border-2 border-[#ffd166] grid place-items-center mx-auto mb-5">
+            <span className="text-[#ffd166] text-3xl">✓</span>
+          </div>
+          <h1 className="text-2xl text-[#eafff5] font-disp font-bold mb-3">Test Tamamlanmış</h1>
+          <p className="text-[#9fc4b5] text-sm mb-6">Bu testi daha önce çözdünüz. Skorunuz: <strong className="text-[#ffd166]">{assessmentInfo.score}/8</strong></p>
+          {assessmentInfo.roadmapToken ? (
+            <button onClick={() => navigate('roadmap', { token: assessmentInfo.roadmapToken })} className="w-full font-mono text-sm font-bold text-[#021008] bg-[#00ff88] py-3.5 rounded-xl hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] transition-all">
+              Yol Haritamı Görüntüle ➔
+            </button>
+          ) : (
+            <p className="text-[#5c8a74] text-xs">Yol haritası yüklenemedi. Lütfen yöneticinizle görüşün.</p>
+          )}
+        </div>
+      </div>
+      <FooterCmp navigate={navigate} /></>
+    );
+  }
+
+  if (result) {
+    return (
+      <><HeaderCmp navigate={navigate} />
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center w-full max-w-md border border-[#0c2719] bg-[#04100a] rounded-2xl p-8" style={{ background: 'linear-gradient(165deg,#07150e,#020806)' }}>
+          <div className="w-16 h-16 rounded-full bg-[#00ff88]/10 border-2 border-[#00ff88] grid place-items-center mx-auto mb-5">
+            <span className="text-[#00ff88] text-3xl">🎉</span>
+          </div>
+          <h1 className="text-2xl text-[#eafff5] font-disp font-bold mb-3">Tebrikler!</h1>
+          <p className="text-[#9fc4b5] text-sm mb-6">Test başarıyla gönderildi. Doğru sayısı: <strong className="text-[#00ff88]">{result.score}/{result.total}</strong></p>
+          <button onClick={() => navigate('roadmap', { token: result.roadmapToken })} className="w-full font-mono text-sm font-bold text-[#021008] bg-[#00ff88] py-3.5 rounded-xl hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] transition-all">
+            Kişiselleştirilmiş Yol Haritanı Gör ➔
+          </button>
+        </div>
+      </div>
+      <FooterCmp navigate={navigate} /></>
+    );
+  }
+
+  const currentQuestion = assessmentInfo.questions[currentQuestionIndex];
+  const answeredCount = selectedAnswers.filter(a => a !== null).length;
+  const progressPercent = Math.round((answeredCount / assessmentInfo.questions.length) * 100);
+
+  return (
+    <><HeaderCmp navigate={navigate} />
+    <div className="min-h-screen flex items-center justify-center px-4 py-20 relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] z-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center,rgba(0,255,136,.06),transparent 62%)' }}></div>
+      
+      <div className="w-full max-w-2xl rounded-2xl border border-[#0c2719] p-8 relative z-[2]" style={{ background: 'linear-gradient(165deg,#07150e,#020806)' }}>
+        
+        {/* Test Header */}
+        <div className="flex items-center justify-between border-b border-[#0c2719] pb-5 mb-6">
+          <div>
+            <span className="font-mono text-xs text-[#00ff88] tracking-[0.2em] uppercase mb-1 block">// SEVİYE TESPİT TESTİ</span>
+            <h1 className="text-xl text-[#eafff5] font-disp font-bold">Hoş Geldiniz, {assessmentInfo.userName}</h1>
+            <p className="text-xs text-[#74998a] mt-0.5">Seviyenize göre size özel yol haritası otomatik üretilecektir.</p>
+          </div>
+          <span className="text-xs font-mono px-3 py-1.5 rounded-md border border-[#103a26] bg-[#07150e] text-[#ffd166] uppercase font-bold">{assessmentInfo.level === 'beginner' ? 'Temel' : assessmentInfo.level === 'intermediate' ? 'Orta' : 'İleri'} Seviye</span>
+        </div>
+
+        {/* Progress bar */}
+        <div className="mb-8">
+          <div className="flex justify-between text-xs font-mono text-[#74998a] mb-2">
+            <span>İlerleme: %{progressPercent}</span>
+            <span>{answeredCount} / {assessmentInfo.questions.length} Cevaplandı</span>
+          </div>
+          <div className="w-full h-1.5 bg-[#07150e] border border-[#103a26] rounded-full overflow-hidden">
+            <div className="h-full bg-[#00ff88] transition-all duration-300" style={{ width: `${progressPercent}%` }}></div>
+          </div>
+        </div>
+
+        {/* Question Panel */}
+        <div className="mb-8">
+          <div className="flex items-start gap-3 mb-4">
+            <span className="font-mono text-lg font-bold text-[#00ff88] mt-0.5">{currentQuestion.question_index}.</span>
+            <h2 className="text-md text-[#eafff5] font-medium leading-relaxed">{currentQuestion.question}</h2>
+          </div>
+
+          <div className="space-y-3 pl-7">
+            {currentQuestion.options.map((option, idx) => (
+              <button 
+                key={idx} 
+                onClick={() => handleOptionSelect(idx)}
+                className={`w-full text-left font-mono text-sm p-4 rounded-xl border transition-all flex items-center justify-between ${selectedAnswers[currentQuestionIndex] === idx ? 'border-[#00ff88] bg-[#00ff88]/5 text-[#00ff88]' : 'border-[#103a26] hover:border-[#ffd166] text-[#9fc4b5]'}`}
+              >
+                <span>{option}</span>
+                <span className={`w-5 h-5 rounded-full border flex-none flex items-center justify-center ${selectedAnswers[currentQuestionIndex] === idx ? 'border-[#00ff88]' : 'border-[#103a26]'}`}>
+                  {selectedAnswers[currentQuestionIndex] === idx && <span className="w-2.5 h-2.5 rounded-full bg-[#00ff88]"></span>}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex items-center justify-between border-t border-[#0c2719] pt-6">
+          <button 
+            onClick={handlePrev} 
+            disabled={currentQuestionIndex === 0} 
+            className="font-mono text-xs text-[#74998a] border border-[#103a26] px-4 py-2.5 rounded-lg hover:border-[#ffd166] hover:text-[#ffd166] disabled:opacity-30 disabled:hover:border-[#103a26] disabled:hover:text-[#74998a] transition-all"
+          >
+            ◀ Önceki Soru
+          </button>
+          
+          {currentQuestionIndex < assessmentInfo.questions.length - 1 ? (
+            <button 
+              onClick={handleNext}
+              disabled={selectedAnswers[currentQuestionIndex] === null}
+              className="font-mono text-xs text-[#021008] bg-[#00ff88] px-5 py-2.5 rounded-lg hover:shadow-[0_0_15px_var(--glow)] disabled:opacity-40 transition-all font-bold"
+            >
+              Sonraki Soru ▶
+            </button>
+          ) : (
+            <button 
+              onClick={handleSubmit}
+              disabled={selectedAnswers.includes(null) || submitting}
+              className="font-mono text-xs text-[#021008] bg-[#ffd166] px-6 py-2.5 rounded-lg hover:shadow-[0_0_20px_rgba(255,209,102,0.4)] disabled:opacity-40 transition-all font-bold"
+            >
+              {submitting ? 'Gönderiliyor...' : 'Testi Bitir & Yol Haritasını Gör 🏆'}
+            </button>
+          )}
+        </div>
+
+      </div>
+    </div>
+    <FooterCmp navigate={navigate} /></>
+  );
+};
+
+/* ============ ROADMAP PAGE ============ */
+const RoadmapPage = ({ navigate, data }) => {
+  const HeaderCmp = window.SKHeader || (() => null);
+  const FooterCmp = window.SKFooter || (() => null);
+  const token = data && data.token;
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [roadmap, setRoadmap] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!token) {
+      setError('Geçersiz yol haritası tokenı.');
+      setLoading(false);
+      return;
+    }
+
+    fetch(`/api/roadmap/${token}`)
+      .then(res => res.json())
+      .then(d => {
+        if (d.error) {
+          setError(d.error);
+        } else {
+          setRoadmap(d);
+        }
+      })
+      .catch(() => setError('Yol haritası yüklenirken hata oluştu.'))
+      .finally(() => setLoading(false));
+  }, [token]);
+
+  const handleCopyLink = () => {
+    const shareUrl = `${window.location.origin}/roadmap/${token}`;
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+  };
+
+  if (loading) {
+    return (
+      <><HeaderCmp navigate={navigate} />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#00ff88] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+      <FooterCmp navigate={navigate} /></>
+    );
+  }
+
+  if (error) {
+    return (
+      <><HeaderCmp navigate={navigate} />
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center w-full max-w-md border border-red-500/20 bg-red-500/5 rounded-2xl p-8">
+          <span className="text-red-500 text-5xl mb-4 block">⚠️</span>
+          <h1 className="text-xl text-[#eafff5] font-disp font-bold mb-3">Hata</h1>
+          <p className="text-[#74998a] text-sm mb-6">{error}</p>
+          <button onClick={() => navigate('home')} className="text-[#00ff88] hover:underline font-mono">← Anasayfaya Dön</button>
+        </div>
+      </div>
+      <FooterCmp navigate={navigate} /></>
+    );
+  }
+
+  const { roadmap_json, user_name, level, created_at } = roadmap;
+
+  return (
+    <><HeaderCmp navigate={navigate} />
+    <div className="min-h-screen py-20 relative overflow-hidden">
+      {/* Background radial glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] z-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at center,rgba(0,255,136,.06),transparent 65%)' }}></div>
+
+      <div className="max-w-4xl mx-auto px-6 relative z-[2]">
+        
+        {/* Roadmap Top Banner */}
+        <div className="rounded-3xl border border-[#0c2719] p-8 md:p-10 mb-12 flex flex-col md:flex-row items-center justify-between gap-6" style={{ background: 'linear-gradient(165deg,#07150e,#04100a)' }}>
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-[#00ff88] font-mono text-xs uppercase tracking-widest">// KİŞİYE ÖZEL MÜFREDAT</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]"></span>
+              <span className="text-[#74998a] font-mono text-xs">{new Date(created_at).toLocaleDateString('tr-TR')}</span>
+            </div>
+            <h1 className="text-2xl md:text-3xl text-[#eafff5] font-disp font-bold leading-tight">YTK Academy Özel Yol Haritası</h1>
+            <p className="text-sm text-[#74998a] mt-2">Bu plan, <strong>{user_name}</strong> için yapılan seviye tespiti sonucuna göre otomatik olarak optimize edilmiştir.</p>
+            <div className="flex gap-2.5 mt-4">
+              <span className="font-mono text-xs px-3 py-1 bg-black/40 border border-[#103a26] text-[#00ff88] rounded-md uppercase font-bold">{level === 'beginner' ? 'Temel' : level === 'intermediate' ? 'Orta' : 'İleri'} Seviye</span>
+              <span className="font-mono text-xs px-3 py-1 bg-black/40 border border-[#103a26] text-[#ffd166] rounded-md font-bold">{roadmap_json.weeks.length} Haftalık Plan</span>
+            </div>
+          </div>
+          <button 
+            onClick={handleCopyLink} 
+            className="flex-none font-mono text-xs font-bold text-[#021008] bg-[#ffd166] px-6 py-4 rounded-xl hover:shadow-[0_0_24px_rgba(255,209,102,0.45)] transition-all flex items-center gap-2"
+          >
+            <span>{copied ? 'Link Kopyalandı! ✓' : 'Yol Haritamı Paylaş 🔗'}</span>
+          </button>
+        </div>
+
+        {/* Weekly schedule timeline */}
+        <div className="space-y-8 mb-16 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-[2px] before:bg-[#0c2719]">
+          {roadmap_json.weeks.map((weekData, idx) => (
+            <div key={idx} className="relative pl-12 group">
+              
+              {/* timeline point */}
+              <div className="absolute left-[8px] top-1.5 w-5 h-5 rounded-full border-2 border-[#103a26] bg-[#020806] flex items-center justify-center z-[2] group-hover:border-[#00ff88] transition-all">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#103a26] group-hover:bg-[#00ff88] transition-all"></div>
+              </div>
+
+              {/* Card content */}
+              <div className="rounded-2xl border border-[#0c2719] hover:border-[#103a26] p-6 transition-all" style={{ background: 'linear-gradient(165deg,#07150e,#030c08)' }}>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#0c2719]/40 pb-3 mb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-sm font-bold text-[#00ff88]">Hafta {weekData.week}</span>
+                    <h3 className="text-base text-[#eafff5] font-disp font-bold">{weekData.title}</h3>
+                  </div>
+                  {weekData.resource && (
+                    <span className="font-mono text-[10px] text-[#5cffba] bg-[#00ff88]/10 border border-[#00ff88]/20 px-2 py-0.5 rounded font-bold uppercase">{weekData.resource}</span>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <h4 className="text-xs text-[#74998a] font-mono">// Öğrenilecek Konular & Kazanımlar:</h4>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-[#9fc4b5] pl-1.5">
+                    {weekData.topics.map((topic, tIdx) => (
+                      <li key={tIdx} className="flex items-start gap-2">
+                        <span className="text-[#00ff88] text-[10px] mt-1.5">▪</span>
+                        <span>{topic}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Footer Call */}
+        <div className="rounded-2xl border border-[#103a26] p-8 text-center mb-10" style={{ background: 'linear-gradient(90deg,#07150e,#04100a)' }}>
+          <h3 className="text-xl text-[#eafff5] font-disp font-bold mb-2">Bu Yol Haritasını Mentör Eşliğinde Bire Bir Öğrenin</h3>
+          <p className="text-xs text-[#74998a] leading-relaxed mb-6 max-w-lg mx-auto font-mono">Haftalık bire bir canlı dersler, kod incelemeleri ve gerçek fintech projeleri ile kariyer yolculuğunuzda en hızlı şekilde ilerleyin.</p>
+          <button 
+            onClick={() => window.open('https://wa.me/905389351189?text=Merhaba%20Yusuf%20Hocam%2C%20bana%20özel%20hazırlanan%20yol%20haritasını%20inceledim.%20Bire%20bir%20mentörlük%20programı%20hakkında%20görüşmek%20istiyorum.', '_blank')}
+            className="font-mono text-xs font-bold text-[#021008] bg-[#00ff88] px-7 py-3.5 rounded-xl hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] transition-all inline-flex items-center gap-2"
+          >
+            <span>Mentörle Bire Bir Görüşme Planla 📞</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+    <FooterCmp navigate={navigate} /></>
+  );
+};
+
 const DisabledPageRedirect = ({ navigate }) => {
   useEffect(() => {
     navigate('dashboard');
@@ -3318,4 +3716,6 @@ Object.assign(PAGES, {
   pricing: PricingPage,
   product: ProductDetailPage,
   'set-password': SetPasswordPage,
+  assessment: AssessmentPage,
+  roadmap: RoadmapPage,
 });

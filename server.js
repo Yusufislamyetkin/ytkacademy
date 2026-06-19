@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_cyber_key_2026';
+const JWT_SECRET = (process.env.JWT_SECRET || 'super_secret_cyber_key_2026').trim();
 
 // DB Connection Pool
 const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING;
@@ -72,6 +72,70 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+// Helper to log user activities
+async function logUserActivity(userId, activityType, details) {
+  try {
+    await pool.query(
+      'INSERT INTO user_activities (user_id, activity_type, details) VALUES ($1, $2, $3)',
+      [userId, activityType, details]
+    );
+  } catch (err) {
+    console.error('Aktivite kaydedilemedi:', err);
+  }
+}
+
+// Helper to generate personalized roadmap
+function generateRoadmapData(userName, level, score) {
+  let title = `YTK Academy | ${userName} İçin Özel Yol Haritası`;
+  let weeks = [];
+  
+  if (level === 'beginner') {
+    weeks = [
+      { week: 1, title: 'C# Giriş & Geliştirme Ortamı', topics: ['Visual Studio Kurulumu & Arayüzü', '.NET Core SDK Nedir?', 'İlk Konsol Uygulaması (Hello World)', 'Kod Satırı Kuralları ve Açıklama Satırları'], resource: 'C# 101 Rehberi' },
+      { week: 2, title: 'Veri Tipleri ve Değişkenler', topics: ['Değişken Nedir ve Bellek Mantığı', 'Tamsayı (int, long) ve Ondalıklı (double, float) Tipler', 'Metinsel (string, char) ve Mantıksal (bool) Tipler', 'Tip Dönüşümleri (Type Casting)'], resource: 'Değişkenler ve Tip Güvenliği Dökümanı' },
+      { week: 3, title: 'Karar Yapıları & Koşul Kontrolleri', topics: ['if-else Yapısı ve Mantıksal Operatörler', 'switch-case Kullanımı', 'Ternary Operatör (? :)', 'Karar Yapılarında Hata Yönetimi'], resource: 'Koşul Blokları Uygulamalı Örnekler' },
+      { week: 4, title: 'Döngüler (Loops)', topics: ['for Döngüsü ve Sayaç Mantığı', 'while ve do-while Döngüleri', 'break ve continue İfadeleri', 'Sonsuz Döngü Tehlikesi ve Çözümleri'], resource: 'Döngüler Lab Görevleri' },
+      { week: 5, title: 'Diziler & Koleksiyonlar', topics: ['Tek Boyutlu Diziler (Arrays)', 'List<T> Koleksiyonu Kullanımı', 'Dizi ve Liste Farkları', 'Koleksiyon Metotları (Add, Remove, Contains)'], resource: 'Koleksiyonlar ve Bellek Yönetimi' },
+      { week: 6, title: 'Metotlar (Functions)', topics: ['Metot Tanımlama ve Çağırma', 'Parametre Alan ve Değer Döndüren Metotlar', 'Geri Dönüş Tipi (void, int, string vb.)', 'Metot Aşırı Yükleme (Method Overloading)'], resource: 'Metot Tasarım Prensipleri' },
+      { week: 7, title: 'Sınıflar & Nesneler (OOP Giriş)', topics: ['Class ve Object Kavramları', 'Property ve Field Tanımlama', 'Erişim Belirleyiciler (public, private)', 'Yapıcı Metotlar (Constructor - ctor)'], resource: 'OOP Temel Kavramlar Sunumu' },
+      { week: 8, title: 'Nesne Yönelimli Programlama (Kalıtım ve Kapsülleme)', topics: ['Kalıtım (Inheritance) - Miras Alma', 'Kapsülleme (Encapsulation) - backing fields ve properties', 'Metot Ezme (Method Overriding) & virtual/override', 'base Anahtar Kelimesi'], resource: 'Kalıtım ve Kapsülleme Projesi' },
+      { week: 9, title: 'SQL & İlişkisel Veritabanları Giriş', topics: ['SQL Server Kurulumu & SSMS', 'Tablo Oluşturma (CREATE TABLE)', 'Veri Tipleri (varchar, int, datetime)', 'Birincil Anahtar (Primary Key)'], resource: 'İlişkisel Veritabanı Temelleri' },
+      { week: 10, title: 'SQL Veri Yönetimi (CRUD)', topics: ['SELECT Sorgusu ve WHERE Filtreleme', 'INSERT INTO ile Veri Ekleme', 'UPDATE ile Veri Güncelleme', 'DELETE ile Veri Silme'], resource: 'CRUD Sorguları Çalışma Kağıdı' },
+      { week: 11, title: 'Entity Framework Core Giriş', topics: ['ORM Nedir ve EF Core Rolü', 'DbContext ve DbSet Tanımları', 'Connection String ve Db Eşleşmesi', 'İlk Migration ve Veritabanı Oluşturma'], resource: 'EF Core Başlangıç Rehberi' },
+      { week: 12, title: 'EF Core ile CRUD İşlemleri', topics: ['EF Core ile Veri Ekleme, Listeleme', 'Veri Güncelleme ve Silme', 'DbSet Metotları', 'SaveChanges() Rolü ve Hata Yönetimi'], resource: 'EF Core CRUD Proje Uygulaması' }
+    ];
+  } else if (level === 'intermediate') {
+    weeks = [
+      { week: 1, title: 'İleri Seviye Nesne Yönelimli Programlama (OOP)', topics: ['Soyutlama (Abstraction) - abstract classes', 'Arayüzler (Interfaces) ve Çoklu Kalıtım Simülasyonu', 'Polimorfizm (Çok Biçimlilik) Derinlemesine', 'Interface vs Abstract Class Farkları'], resource: 'İleri OOP Prensipleri Kitabı' },
+      { week: 2, title: 'LINQ (Language Integrated Query) ile Veri Sorgulama', topics: ['LINQ Nedir ve Sözdizimi (Query & Method syntax)', 'Select, Where, OrderBy, GroupBy Metotları', 'Any, All, FirstOrDefault, SingleOrDefault', 'LINQ ile Bellek İçi Nesne ve Veritabanı Sorgulama'], resource: 'LINQ Hile Sayfası' },
+      { week: 3, title: 'ASP.NET Core Web API Giriş', topics: ['RESTful Mimari Prensipleri', 'Controller Sınıfları ve Route Tanımlama', 'HTTP Metotları (GET, POST, PUT, DELETE)', 'ActionResult ve Durum Kodları (Ok, BadRequest, NotFound)'], resource: 'Web API Geliştirici Kılavuzu' },
+      { week: 4, title: 'Dependency Injection (DI) & Loglama', topics: ['DI Tasarım Deseni ve IoC Container', 'Yaşam Döngüleri (Transient, Scoped, Singleton)', 'IConsoleLogger ve Serilog Entegrasyonu', 'API\'lerde Hata Yönetimi (Exception Middleware)'], resource: 'Dependency Injection ve Temiz Kod' },
+      { week: 5, title: 'İleri SQL Sorguları & Tablo İlişkileri', topics: ['JOIN Türleri (Inner, Left, Right, Full)', 'İlişkili Tablo Tasarımı (Bire Bir, Bire Çok, Çoka Çok)', 'Foreign Key ve Veri Bütünlüğü', 'GROUP BY ve Aggregation (COUNT, SUM, AVG)'], resource: 'JOIN ve Gruplama Alıştırmaları' },
+      { week: 6, title: 'Entity Framework Core İlişkili Verilerle Çalışma', topics: ['Eager Loading (Include, ThenInclude)', 'Lazy Loading ve Explicit Loading Farkları', 'Çoka Çok İlişkilerin EF Core\'da Yapılandırılması', 'Fluent API ile DB Ayarları'], resource: 'EF Core İlişkiler Rehberi' },
+      { week: 7, title: 'Asenkron Programlama (Async/Await)', topics: ['Asenkron Kodlama Nedir, Neden Gerekir?', 'Task, Task<T> ve ValueTask Tanımları', 'await ve async Anahtar Kelimeleri', 'Asenkron Metotlarda Hata Yönetimi'], resource: 'Asenkron C# Dökümanı' },
+      { week: 8, title: 'REST API Güvenliği & DTO Deseni', topics: ['DTO (Data Transfer Object) Tasarım Deseni', 'AutoMapper veya Manuel Eşleme', 'JWT (JSON Web Token) ile Kimlik Doğrulama', 'API Sınırlandırma (Rate Limiting) Giriş'], resource: 'API Güvenlik Standartları' }
+    ];
+  } else {
+    weeks = [
+      { week: 1, title: 'Clean Architecture (Temiz Mimari) Mimarisi', topics: ['Domain, Application, Infrastructure ve Presentation Katmanları', 'Katmanlar Arası Bağımlılık Kuralları', 'Rich Domain Model vs Anemic Domain Model', 'MediatR Kütüphanesi ve CQRS Deseni'], resource: 'Clean Architecture Proje Şablonu' },
+      { week: 2, title: 'İleri Entity Framework Core & Performans', topics: ['EF Core Interceptors ve Query Filters', 'AsNoTracking() ile Okuma Performansını Artırma', 'Bulk Operations ve Ham SQL Çalıştırma', 'Dağıtık Transaction Yönetimi (Unit of Work)'], resource: 'EF Core Performans İpuçları' },
+      { week: 3, title: 'Mikroservis Mimarisi Temelleri & Docker', topics: ['Monolit vs Mikroservis Mimari Karşılaştırması', 'Docker ile Containerization', 'Docker Compose ile Çoklu Servis Yönetimi', 'API Gateway (Ocelot / YARP) Kullanımı'], resource: 'Mikroservis & Docker Başlangıç Seti' },
+      { week: 4, title: 'Asenkron Mesajlaşma & Event-Driven Sistemler', topics: ['Message Broker Nedir ve RabbitMQ Kurulumu', 'Publish/Subscribe Deseni', 'MassTransit ile Event Haberleşmesi', 'Outbox Tasarım Deseni (Veri Tutarlılığı için)'], resource: 'RabbitMQ ile Event-Driven Proje' },
+      { week: 5, title: 'Redis Önbellekleme & Performans Mimarileri', topics: ['In-Memory vs Distributed Caching', 'Redis Server Kurulumu ve C# Entegrasyonu', 'Cache-Aside Deseni ve Veri Güncelliği Yönetimi', 'Redis Pub/Sub ile Gerçek Zamanlı Bildirimler'], resource: 'Redis Caching Uygulama Örneği' },
+      { week: 6, title: 'Fintech Ödeme Geçidi & Mülakat Simülasyonu', topics: ['PayTR veya Iyzico API Entegrasyonu Mimarisi', 'SHA256 Güvenlik İmzası ve Callback Doğrulama', 'Database Transaction (ACID) ve Hata Toleransı', 'Sistem Tasarımı (System Design) Mülakat Soruları'], resource: 'Fintech Entegrasyonu Kod Örneği' }
+    ];
+  }
+
+  return {
+    userName,
+    level,
+    score,
+    title,
+    weeks,
+    generatedAt: new Date().toISOString()
+  };
+}
+
 // Helper to fetch full user payload with dynamic ranking position (excluding admins)
 async function getUserPayload(userId) {
   const query = `
@@ -127,8 +191,305 @@ async function getUserPayload(userId) {
 }
 
 // ==========================================
-// AUTHENTICATION APIs
-// ==========================================
+// Setup database tables endpoint (secured via JWT_SECRET query param)
+app.get('/api/admin/setup-database-tables-custom-secret', async (req, res) => {
+  const { secret } = req.query;
+  if (secret !== JWT_SECRET) {
+    return res.status(403).json({ error: 'Unauthorized secret' });
+  }
+
+  try {
+    // 1. Create standard tables if not exists
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+          id SERIAL PRIMARY KEY,
+          email VARCHAR(100) UNIQUE NOT NULL,
+          password_hash VARCHAR(255) NOT NULL,
+          name VARCHAR(100) NOT NULL,
+          points INT DEFAULT 0,
+          solved_count INT DEFAULT 0,
+          level INT DEFAULT 1,
+          rank_val INT DEFAULT 1000,
+          badges INT DEFAULT 0,
+          streak INT DEFAULT 1,
+          name_changed BOOLEAN DEFAULT FALSE,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // Alter users table to add standard fields
+    const columns = [
+      { name: 'is_admin', type: 'BOOLEAN DEFAULT FALSE' },
+      { name: 'is_banned', type: 'BOOLEAN DEFAULT FALSE' },
+      { name: 'last_active_at', type: 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP' },
+      { name: 'is_vip', type: 'BOOLEAN DEFAULT FALSE' },
+      { name: 'is_premium', type: 'BOOLEAN DEFAULT FALSE' },
+      { name: 'password_set_token', type: 'VARCHAR(255)' },
+      { name: 'password_set_expires', type: 'TIMESTAMP' },
+      { name: 'subscription', type: "VARCHAR(50) DEFAULT 'free'" }
+    ];
+
+    for (const col of columns) {
+      await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS ${col.name} ${col.type}`);
+    }
+
+    // 2. Solved Rooms Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS solved_rooms (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          room_id VARCHAR(50) NOT NULL,
+          points_earned INT NOT NULL,
+          solved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT unique_user_room UNIQUE(user_id, room_id)
+      );
+    `);
+
+    // 3. Room Progress Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS room_progress (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          room_id VARCHAR(50) NOT NULL,
+          progress_percent INT DEFAULT 10,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT unique_user_progress UNIQUE(user_id, room_id)
+      );
+    `);
+
+    // 4. Chat Messages Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS chat_messages (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          message TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    await pool.query(`ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS is_vip BOOLEAN DEFAULT FALSE`);
+
+    // 5. Unlocked Hints Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS unlocked_hints (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          room_id VARCHAR(50) NOT NULL,
+          hint_index INT NOT NULL,
+          unlocked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT unique_user_hint UNIQUE(user_id, room_id, hint_index)
+      );
+    `);
+
+    // 6. Blogs Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS blogs (
+          id SERIAL PRIMARY KEY,
+          title VARCHAR(255) NOT NULL,
+          slug VARCHAR(255) UNIQUE NOT NULL,
+          excerpt TEXT,
+          content TEXT NOT NULL,
+          category VARCHAR(100) NOT NULL,
+          author VARCHAR(100) NOT NULL,
+          read_time VARCHAR(50) DEFAULT '5 dk',
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // 7. Doc Progress Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_doc_progress (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          doc_id VARCHAR(40) NOT NULL,
+          completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT unique_user_doc UNIQUE(user_id, doc_id)
+      );
+    `);
+
+    // 8. Orders Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS orders (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE SET NULL,
+          email VARCHAR(100) NOT NULL,
+          name VARCHAR(100),
+          plan_id VARCHAR(50) NOT NULL,
+          plan_name VARCHAR(255) NOT NULL,
+          amount INT NOT NULL,
+          currency VARCHAR(10) DEFAULT 'TL',
+          status VARCHAR(30) DEFAULT 'pending',
+          paytr_merchant_oid VARCHAR(100) UNIQUE,
+          paytr_hash VARCHAR(255),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          paid_at TIMESTAMP
+      );
+    `);
+
+    // 9. NEW TABLES: user_activities, assessments, user_assessments, user_roadmaps
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_activities (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          activity_type VARCHAR(100) NOT NULL,
+          details TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS assessments (
+          id SERIAL PRIMARY KEY,
+          level VARCHAR(50) NOT NULL,
+          question_index INT NOT NULL,
+          question TEXT NOT NULL,
+          options JSONB NOT NULL,
+          correct_option INT NOT NULL,
+          CONSTRAINT unique_level_question UNIQUE(level, question_index)
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_assessments (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          token VARCHAR(255) UNIQUE NOT NULL,
+          level VARCHAR(50) NOT NULL,
+          sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          completed_at TIMESTAMP,
+          answers JSONB,
+          score INT
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_roadmaps (
+          id SERIAL PRIMARY KEY,
+          user_id INT REFERENCES users(id) ON DELETE CASCADE,
+          token VARCHAR(255) UNIQUE NOT NULL,
+          level VARCHAR(50) NOT NULL,
+          roadmap_json JSONB NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // 10. Seed Demo Accounts
+    // Password: demo123456
+    const demoUserHash = '$2b$10$WEG4MmaW1oWlTUD8e4B5dukxbtX3E935SssLfFNxv7FeCBGeUB5py';
+    await pool.query(`
+      INSERT INTO users (
+          name, email, password_hash,
+          level, points, rank_val, streak, badges, solved_count,
+          is_admin, is_banned, is_premium, is_vip, subscription,
+          last_active_at, created_at
+      ) VALUES (
+          'Demo Kullanıcı',
+          'demo@siberkampus.com',
+          $1,
+          1, 0, 1000, 1, 0, 0,
+          false, false, false, false, 'free',
+          NOW(), NOW()
+      )
+      ON CONFLICT (email) DO NOTHING;
+    `, [demoUserHash]);
+
+    // Admin account: admin@ytkacademy.com / admin123456
+    const adminUserHash = await bcrypt.hash('admin123456', 10);
+    await pool.query(`
+      INSERT INTO users (
+          name, email, password_hash,
+          level, points, rank_val, streak, badges, solved_count,
+          is_admin, is_banned, is_premium, is_vip, subscription,
+          last_active_at, created_at
+      ) VALUES (
+          'Admin Yetkili',
+          'admin@ytkacademy.com',
+          $1,
+          10, 5000, 1, 10, 5, 0,
+          true, false, true, true, 'premium',
+          NOW(), NOW()
+      )
+      ON CONFLICT (email) DO NOTHING;
+    `, [adminUserHash]);
+
+    // Force update flags for admin@ytkacademy.com to ensure it's always admin even on conflict
+    await pool.query(`
+      UPDATE users 
+      SET is_admin = true, is_premium = true, is_vip = true, subscription = 'premium' 
+      WHERE email = 'admin@ytkacademy.com'
+    `);
+
+    // Dynamic admin promotion via query param
+    const { make_admin } = req.query;
+    if (make_admin) {
+      await pool.query(`
+        UPDATE users 
+        SET is_admin = true, is_premium = true, is_vip = true, subscription = 'premium' 
+        WHERE email = $1
+      `, [make_admin.toLowerCase().trim()]);
+    }
+
+    // 11. Seed Assessments questions if not already seeded
+    const questionsCount = await pool.query('SELECT COUNT(*) FROM assessments');
+    if (parseInt(questionsCount.rows[0].count) === 0) {
+      // Beginner questions
+      const beginnerQs = [
+        { q: "C# dilinde kod satırlarının sonuna hangi karakter konur?", o: [";", ".", ":", ","], c: 0 },
+        { q: "Aşağıdakilerden hangisi C#'ta bir tamsayı türüdür?", o: ["string", "double", "int", "bool"], c: 2 },
+        { q: "C# dilinde konsola yazı yazdırmak için hangi komut kullanılır?", o: ["Console.Write()", "print()", "System.Log()", "Echo()"], c: 0 },
+        { q: "Bir if koşulunun parantezi içerisine yazılan ifadenin türü ne olmalıdır?", o: ["int", "string", "bool", "double"], c: 2 },
+        { q: "Aşağıdakilerden hangisi bir döngü anahtar kelimesi değildir?", o: ["for", "while", "foreach", "class"], c: 3 },
+        { q: "C#'ta bir nesne örneği oluştururken hangi anahtar kelime kullanılır?", o: ["new", "create", "make", "instance"], c: 0 },
+        { q: "SQL'de veritabanından veri okumak için hangi komut kullanılır?", o: ["INSERT", "SELECT", "UPDATE", "DELETE"], c: 1 },
+        { q: "SQL'de tablodan belirli bir koşula göre veri çekmek için hangi cümle kullanılır?", o: ["GROUP BY", "ORDER BY", "WHERE", "HAVING"], c: 2 }
+      ];
+
+      // Intermediate questions
+      const intermediateQs = [
+        { q: "C#'ta sınıfın kendi örneğini referans etmek için hangi kelime kullanılır?", o: ["base", "this", "self", "parent"], c: 1 },
+        { q: "OOP'de bir sınıfın başka bir sınıftan kalıtım almasını sağlayan karakter hangisidir?", o: [":", "->", "@", "extends"], c: 0 },
+        { q: "LINQ sorgularında verileri filtrelemek için hangi metot kullanılır?", o: ["Select", "Where", "OrderBy", "GroupBy"], c: 1 },
+        { q: "Entity Framework'te veritabanındaki değişiklikleri kaydetmek için hangi metot çağrılır?", o: ["SaveChanges()", "Update()", "Commit()", "SubmitChanges()"], c: 0 },
+        { q: "SQL'de iki tabloyu bir anahtara göre birleştirmek için hangi Join türü varsayılandır?", o: ["LEFT JOIN", "INNER JOIN", "RIGHT JOIN", "FULL JOIN"], c: 1 },
+        { q: "C#'ta 'nullable' değer türleri tanımlamak için tip adının yanına hangi karakter konur?", o: ["!", "?", "*", "&"], c: 1 },
+        { q: "C# async metotların çağrılırken beklemesi için önüne hangi kelime konmalıdır?", o: ["async", "wait", "await", "task"], c: 2 },
+        { q: "SQL'de verileri gruplamak için hangi cümle kullanılır?", o: ["ORDER BY", "GROUP BY", "HAVING", "SORT BY"], c: 1 }
+      ];
+
+      // Advanced questions
+      const advancedQs = [
+        { q: "C#'ta Garbage Collector'ın (çöp toplayıcı) yönetmediği kaynakları serbest bırakmak için hangi arayüz (interface) uygulanır?", o: ["ICloneable", "IDisposable", "IComparable", "ISerializable"], c: 1 },
+        { q: "Entity Framework Core'da 'N+1 Sorgu Sorunu'nu çözmek için ilişkili verileri yüklerken hangi metot kullanılır?", o: ["Load()", "Include()", "Join()", "Select()"], c: 1 },
+        { q: "SQL Server'da sorgu performansını artırmak için tablonun fiziksel sıralamasını belirleyen indeks türü hangisidir?", o: ["Non-clustered Index", "Clustered Index", "Unique Index", "Filtered Index"], c: 1 },
+        { q: "C# dilinde 'Dependency Injection' yaşam döngülerinden hangisi her istekte (request) yeni bir örnek oluşturur?", o: ["Singleton", "Transient", "Scoped", "Static"], c: 2 },
+        { q: "Mikroservis mimarisinde, asenkron haberleşme ve kuyruk yönetimi için en yaygın kullanılan message broker hangisidir?", o: ["Redis", "RabbitMQ", "Elasticsearch", "SQL Server"], c: 1 },
+        { q: "Clean Architecture mimarisinde 'Domain' katmanı hangi katmanlara bağımlıdır?", o: ["Application", "Infrastructure", "Hiçbir katmana bağımlı değildir", "Presentation"], c: 2 },
+        { q: "Entity Framework Core'da veritabanı işlemlerini gruplayıp tek bir transaction altında çalıştırmak için hangisi kullanılır?", o: ["DbContextTransaction", "DbCommand", "Migration", "SaveChanges(false)"], c: 0 },
+        { q: "SQL'de sorgu sonucunu önbelleğe alan ve tablonun fiziksel olmayan sanal bir gösterimi olan nesne hangisidir?", o: ["Stored Procedure", "Trigger", "View", "Index"], c: 2 }
+      ];
+
+      const allQs = [
+        { level: 'beginner', qs: beginnerQs },
+        { level: 'intermediate', qs: intermediateQs },
+        { level: 'advanced', qs: advancedQs }
+      ];
+
+      for (const group of allQs) {
+        for (let idx = 0; idx < group.qs.length; idx++) {
+          const item = group.qs[idx];
+          await pool.query(
+            'INSERT INTO assessments (level, question_index, question, options, correct_option) VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING',
+            [group.level, idx + 1, item.q, JSON.stringify(item.o), item.c]
+          );
+        }
+      }
+    }
+
+    res.json({ success: true, message: 'Veritabanı tabloları başarıyla oluşturuldu ve veriler dolduruldu.' });
+  } catch (err) {
+    console.error('Db init hatası:', err);
+    res.status(500).json({ error: 'Veritabanı kurulurken hata oluştu: ' + err.message });
+  }
+});
 
 // Register
 app.post('/api/auth/register', async (req, res) => {
@@ -150,7 +511,8 @@ app.post('/api/auth/register', async (req, res) => {
     );
 
     const user = await getUserPayload(result.rows[0].id);
-    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.is_admin ? 'admin' : 'user' }, JWT_SECRET, { expiresIn: '7d' });
+    await logUserActivity(user.id, 'register', 'Yeni kullanıcı kaydoldu.');
 
     res.status(201).json({ token, user });
   } catch (err) {
@@ -180,9 +542,10 @@ app.post('/api/auth/login', async (req, res) => {
 
     // Set last_active_at immediately on login
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [user.id]);
+    await logUserActivity(user.id, 'login', 'Kullanıcı panele giriş yaptı.');
 
     const payload = await getUserPayload(user.id);
-    const token = jwt.sign({ id: payload.id, email: payload.email }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: payload.id, email: payload.email, role: payload.is_admin ? 'admin' : 'user' }, JWT_SECRET, { expiresIn: '7d' });
 
     res.json({
       token,
@@ -673,6 +1036,7 @@ app.post('/api/rooms/solve', authenticateToken, async (req, res) => {
     );
 
     const userPayload = await getUserPayload(req.user.id);
+    await logUserActivity(req.user.id, 'room_solve', `Oda çözüldü: ${room_id}. Puan kazandı: ${earnedPoints}.`);
 
     res.json({
       status: 'success',
@@ -930,7 +1294,7 @@ app.put('/api/blogs/:id', authenticateToken, async (req, res) => {
 // ADMIN APIs
 // ==========================================
 
-// Get all users list (admin only)
+// Get all users list + activity feed (admin only)
 app.get('/api/admin/users', authenticateToken, async (req, res) => {
   try {
     // Check if admin
@@ -973,7 +1337,8 @@ app.get('/api/admin/users', authenticateToken, async (req, res) => {
                (CASE WHEN COALESCE(s.sys_solved, 0) >= 10 THEN 1 ELSE 0 END) +
                (CASE WHEN u.streak >= 30 THEN 1 ELSE 0 END)
              ) as badges,
-             u.streak, u.is_admin, u.is_banned, (u.is_vip OR u.is_premium) as is_premium, u.is_vip, u.created_at
+             u.streak, u.is_admin, u.is_banned, (u.is_vip OR u.is_premium) as is_premium, u.is_vip, u.created_at,
+             (SELECT token FROM user_roadmaps WHERE user_id = u.id ORDER BY created_at DESC LIMIT 1) as roadmap_token
       FROM users u
       LEFT JOIN user_solves s ON u.id = s.user_id
       LEFT JOIN ranked_users r ON u.id = r.id
@@ -986,10 +1351,232 @@ app.get('/api/admin/users', authenticateToken, async (req, res) => {
       row.badges = bCount;
       return row;
     });
-    res.json(rows);
+
+    const activitiesResult = await pool.query(`
+      SELECT a.id, a.activity_type, a.details, a.created_at, u.name as user_name, u.email as user_email
+      FROM user_activities a
+      JOIN users u ON a.user_id = u.id
+      ORDER BY a.created_at DESC
+      LIMIT 100
+    `);
+
+    res.json({
+      users: rows,
+      activities: activitiesResult.rows
+    });
   } catch (err) {
     console.error('Kullanıcı listesi hatası:', err);
     res.status(500).json({ error: 'Kullanıcı listesi yüklenirken hata oluştu.' });
+  }
+});
+
+// Admin send assessment link
+app.post('/api/admin/send-assessment', authenticateToken, async (req, res) => {
+  const { target_user_id, level } = req.body;
+  if (!target_user_id || !level) {
+    return res.status(400).json({ error: 'Kullanıcı ID ve seviye gereklidir.' });
+  }
+
+  try {
+    const adminCheck = await pool.query('SELECT is_admin FROM users WHERE id = $1', [req.user.id]);
+    if (adminCheck.rows.length === 0 || !adminCheck.rows[0].is_admin) {
+      return res.status(403).json({ error: 'Bu işlem için yetkiniz bulunmamaktadır.' });
+    }
+
+    const token = crypto.randomBytes(16).toString('hex');
+    await pool.query(
+      'INSERT INTO user_assessments (user_id, token, level) VALUES ($1, $2, $3)',
+      [target_user_id, token, level]
+    );
+
+    await logUserActivity(req.user.id, 'admin_send_assessment', `Kullanıcıya (${target_user_id}) ${level} seviye test gönderildi. Token: ${token}`);
+
+    res.json({ success: true, token, level });
+  } catch (err) {
+    console.error('Send assessment error:', err);
+    res.status(500).json({ error: 'Test gönderilirken hata oluştu.' });
+  }
+});
+
+// Get assessment questions (Public / Token-based)
+app.get('/api/assessment/:token', async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const assessmentResult = await pool.query(
+      'SELECT id, user_id, level, completed_at, score FROM user_assessments WHERE token = $1',
+      [token]
+    );
+
+    if (assessmentResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Geçersiz test linki veya test bulunamadı.' });
+    }
+
+    const assessment = assessmentResult.rows[0];
+    if (assessment.completed_at) {
+      const roadmapResult = await pool.query(
+        'SELECT token FROM user_roadmaps WHERE user_id = $1 AND level = $2 ORDER BY created_at DESC LIMIT 1',
+        [assessment.user_id, assessment.level]
+      );
+      return res.json({ 
+        completed: true, 
+        score: assessment.score,
+        level: assessment.level,
+        roadmapToken: roadmapResult.rows.length > 0 ? roadmapResult.rows[0].token : null
+      });
+    }
+
+    const userResult = await pool.query('SELECT name FROM users WHERE id = $1', [assessment.user_id]);
+    const userName = userResult.rows.length > 0 ? userResult.rows[0].name : 'Öğrenci';
+
+    const questionsResult = await pool.query(
+      'SELECT question_index, question, options FROM assessments WHERE level = $1 ORDER BY question_index ASC',
+      [assessment.level]
+    );
+
+    res.json({
+      completed: false,
+      userName,
+      level: assessment.level,
+      questions: questionsResult.rows
+    });
+  } catch (err) {
+    console.error('Fetch assessment error:', err);
+    res.status(500).json({ error: 'Test soruları yüklenirken hata oluştu.' });
+  }
+});
+
+// Submit assessment answers
+app.post('/api/assessment/:token/submit', async (req, res) => {
+  const { token } = req.params;
+  const { answers } = req.body;
+
+  if (!Array.isArray(answers)) {
+    return res.status(400).json({ error: 'Cevaplar geçersiz.' });
+  }
+
+  try {
+    const assessmentResult = await pool.query(
+      'SELECT id, user_id, level, completed_at FROM user_assessments WHERE token = $1',
+      [token]
+    );
+
+    if (assessmentResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Test bulunamadı.' });
+    }
+
+    const assessment = assessmentResult.rows[0];
+    if (assessment.completed_at) {
+      return res.status(400).json({ error: 'Bu test zaten çözülmüş.' });
+    }
+
+    const userResult = await pool.query('SELECT id, name FROM users WHERE id = $1', [assessment.user_id]);
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Kullanıcı bulunamadı.' });
+    }
+    const user = userResult.rows[0];
+
+    const questionsResult = await pool.query(
+      'SELECT question_index, correct_option FROM assessments WHERE level = $1 ORDER BY question_index ASC',
+      [assessment.level]
+    );
+
+    let score = 0;
+    const correctOptions = questionsResult.rows;
+    correctOptions.forEach((q, idx) => {
+      if (answers[idx] === q.correct_option) {
+        score++;
+      }
+    });
+
+    await pool.query(
+      'UPDATE user_assessments SET completed_at = NOW(), answers = $1, score = $2 WHERE id = $3',
+      [JSON.stringify(answers), score, assessment.id]
+    );
+
+    const roadmapToken = crypto.randomBytes(16).toString('hex');
+    const roadmapJson = generateRoadmapData(user.name, assessment.level, score);
+
+    await pool.query(
+      'INSERT INTO user_roadmaps (user_id, token, level, roadmap_json) VALUES ($1, $2, $3, $4)',
+      [user.id, roadmapToken, assessment.level, JSON.stringify(roadmapJson)]
+    );
+
+    await logUserActivity(user.id, 'assessment_submit', `${assessment.level} seviye testi çözüldü. Skor: ${score}/8. Roadmap oluşturuldu: ${roadmapToken}`);
+
+    res.json({
+      success: true,
+      score,
+      total: correctOptions.length,
+      roadmapToken
+    });
+  } catch (err) {
+    console.error('Submit assessment error:', err);
+    res.status(500).json({ error: 'Cevaplar kaydedilirken hata oluştu.' });
+  }
+});
+
+// Get public roadmap (No auth required)
+app.get('/api/roadmap/:token', async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const roadmapResult = await pool.query(
+      'SELECT r.token, r.level, r.roadmap_json, r.created_at, u.name as user_name ' +
+      'FROM user_roadmaps r ' +
+      'JOIN users u ON r.user_id = u.id ' +
+      'WHERE r.token = $1',
+      [token]
+    );
+
+    if (roadmapResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Yol haritası bulunamadı veya link geçersiz.' });
+    }
+
+    res.json(roadmapResult.rows[0]);
+  } catch (err) {
+    console.error('Fetch roadmap error:', err);
+    res.status(500).json({ error: 'Yol haritası yüklenirken hata oluştu.' });
+  }
+});
+
+// Regenerate user roadmap
+app.post('/api/admin/roadmap/regenerate', authenticateToken, async (req, res) => {
+  const { roadmap_token } = req.body;
+
+  try {
+    const adminCheck = await pool.query('SELECT is_admin FROM users WHERE id = $1', [req.user.id]);
+    if (adminCheck.rows.length === 0 || !adminCheck.rows[0].is_admin) {
+      return res.status(403).json({ error: 'Bu işlem için yetkiniz bulunmamaktadır.' });
+    }
+
+    const roadmapResult = await pool.query(
+      'SELECT r.id, r.user_id, r.level, u.name FROM user_roadmaps r JOIN users u ON r.user_id = u.id WHERE r.token = $1',
+      [roadmap_token]
+    );
+
+    if (roadmapResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Yol haritası bulunamadı.' });
+    }
+
+    const roadmap = roadmapResult.rows[0];
+    
+    const scoreResult = await pool.query(
+      'SELECT score FROM user_assessments WHERE user_id = $1 AND level = $2 ORDER BY completed_at DESC LIMIT 1',
+      [roadmap.user_id, roadmap.level]
+    );
+    const score = scoreResult.rows.length > 0 ? scoreResult.rows[0].score : 5;
+
+    const roadmapJson = generateRoadmapData(roadmap.name, roadmap.level, score);
+    await pool.query(
+      'UPDATE user_roadmaps SET roadmap_json = $1 WHERE id = $2',
+      [JSON.stringify(roadmapJson), roadmap.id]
+    );
+
+    res.json({ success: true, message: 'Yol haritası başarıyla yenilendi.' });
+  } catch (err) {
+    console.error('Regenerate roadmap error:', err);
+    res.status(500).json({ error: 'Yol haritası yenilenirken hata oluştu.' });
   }
 });
 

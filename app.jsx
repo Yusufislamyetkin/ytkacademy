@@ -30,6 +30,14 @@ function useReveal() {
 /* ============ HEADER ============ */
 const Header = ({ navigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('sk_token'));
+    setIsAdmin(localStorage.getItem('sk_user_is_admin') === 'true');
+  }, []);
+
   const menuItems = [['Anasayfa', 'home'], ['Hakkımızda', 'about'], ['Blog', 'blogs'], ['İletişim', 'contact'], ['Fiyatlandırma', 'pricing']];
   return (
     <header className="sticky top-0 z-50 bg-[rgba(2,8,6,.88)] backdrop-blur-md border-b border-[#0c2719]">
@@ -52,8 +60,16 @@ const Header = ({ navigate }) => {
           ))}
         </nav>
         <div className="flex items-center gap-3.5">
-          <a href={getPagePath('login')} onClick={(e) => { e.preventDefault(); navigate('login'); }} className="hidden sm:inline-flex font-mono text-sm text-[#cdeede] px-[18px] py-[11px] border border-[#103a26] bg-transparent hover:border-[#00ff88] hover:text-[#00ff88] transition-colors">Giriş Yap</a>
-          <a href={getPagePath('register')} onClick={(e) => { e.preventDefault(); navigate('register'); }} className="hidden sm:inline-flex font-mono text-sm font-bold text-[#021008] bg-[#00ff88] px-[22px] py-3 clip-btn hover:shadow-[0_0_28px_-4px_var(--glow)] hover:-translate-y-px transition-all">Hemen Başla</a>
+          {isLoggedIn ? (
+            <a href={isAdmin ? getPagePath('admin') : getPagePath('dashboard')} onClick={(e) => { e.preventDefault(); navigate(isAdmin ? 'admin' : 'dashboard'); }} className="hidden sm:inline-flex font-mono text-sm font-bold text-[#021008] bg-[#00ff88] px-[22px] py-3 clip-btn hover:shadow-[0_0_28px_-4px_var(--glow)] hover:-translate-y-px transition-all">
+              {isAdmin ? 'Yönetici Paneli ➔' : 'Kontrol Paneli ➔'}
+            </a>
+          ) : (
+            <>
+              <a href={getPagePath('login')} onClick={(e) => { e.preventDefault(); navigate('login'); }} className="hidden sm:inline-flex font-mono text-sm text-[#cdeede] px-[18px] py-[11px] border border-[#103a26] bg-transparent hover:border-[#00ff88] hover:text-[#00ff88] transition-colors">Giriş Yap</a>
+              <a href={getPagePath('register')} onClick={(e) => { e.preventDefault(); navigate('register'); }} className="hidden sm:inline-flex font-mono text-sm font-bold text-[#021008] bg-[#00ff88] px-[22px] py-3 clip-btn hover:shadow-[0_0_28px_-4px_var(--glow)] hover:-translate-y-px transition-all">Hemen Başla</a>
+            </>
+          )}
           
           <button onClick={() => setMobileMenuOpen(o => !o)} aria-label="Mobil Menüyü Aç/Kapat" className="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 border border-[#103a26] rounded bg-[#04100a] transition-all">
             <span className={`w-5 h-0.5 bg-[#00ff88] transition-transform ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
@@ -72,8 +88,16 @@ const Header = ({ navigate }) => {
           ))}
           <div className="h-px bg-[#0c2719] my-1"></div>
           <div className="flex gap-4">
-            <a href={getPagePath('login')} onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigate('login'); }} className="flex-1 text-center py-2.5 text-sm text-[#cdeede] border border-[#103a26] rounded">Giriş Yap</a>
-            <a href={getPagePath('register')} onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigate('register'); }} className="flex-1 text-center py-2.5 text-sm font-bold text-[#021008] bg-[#00ff88] rounded">Kayıt Ol</a>
+            {isLoggedIn ? (
+              <a href={isAdmin ? getPagePath('admin') : getPagePath('dashboard')} onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigate(isAdmin ? 'admin' : 'dashboard'); }} className="flex-1 text-center py-2.5 text-sm font-bold text-[#021008] bg-[#00ff88] rounded">
+                {isAdmin ? 'Yönetici Paneli ➔' : 'Kontrol Paneli ➔'}
+              </a>
+            ) : (
+              <>
+                <a href={getPagePath('login')} onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigate('login'); }} className="flex-1 text-center py-2.5 text-sm text-[#cdeede] border border-[#103a26] rounded">Giriş Yap</a>
+                <a href={getPagePath('register')} onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigate('register'); }} className="flex-1 text-center py-2.5 text-sm font-bold text-[#021008] bg-[#00ff88] rounded">Kayıt Ol</a>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -1152,11 +1176,16 @@ const LoginPage = ({ navigate }) => {
       localStorage.setItem('sk_user_badges', data.user.badges !== undefined ? data.user.badges : 0);
       localStorage.setItem('sk_user_streak', data.user.streak !== undefined ? data.user.streak : 1);
       localStorage.setItem('sk_name_changed', data.user.name_changed ? '1' : '0');
-      localStorage.setItem('sk_user_is_admin', data.user.is_admin ? 'true' : 'false');
+      const isAdmin = data.user.is_admin;
+      localStorage.setItem('sk_user_is_admin', isAdmin ? 'true' : 'false');
       localStorage.setItem('sk_user_is_banned', data.user.is_banned ? 'true' : 'false');
       
       window.dispatchEvent(new Event('sk_user_update'));
-      navigate('dashboard');
+      if (isAdmin) {
+        navigate('admin');
+      } else {
+        navigate('dashboard');
+      }
     } catch (e) {
       setErr(e.message);
     } finally {
@@ -1577,6 +1606,14 @@ const getPagePath = (p, d) => {
   if (p === 'tools') {
     return d && d.slug ? `/tools/${d.slug}` : `/tools`;
   }
+  if (p === 'assessment' && d) {
+    const token = typeof d === 'string' ? d : d.token || '';
+    return `/assessment/${token}`;
+  }
+  if (p === 'roadmap' && d) {
+    const token = typeof d === 'string' ? d : d.token || '';
+    return `/roadmap/${token}`;
+  }
   if (p === 'product' && d) {
     const id = typeof d === 'string' ? d : d.id || '';
     return `/product/${id}`;
@@ -1628,6 +1665,14 @@ const parseLocation = () => {
   if (path === '/set-password') {
     const params = new URLSearchParams(window.location.search);
     return { page: 'set-password', data: { token: params.get('token') || '' } };
+  }
+  if (path.startsWith('/assessment/')) {
+    const token = path.substring(12);
+    return { page: 'assessment', data: { token } };
+  }
+  if (path.startsWith('/roadmap/')) {
+    const token = path.substring(9);
+    return { page: 'roadmap', data: { token } };
   }
   if (path.startsWith('/product/')) {
     const id = path.substring(9);
@@ -1682,7 +1727,8 @@ const App = () => {
       initialPage = 'login';
       initialData = null;
     } else if ((initialPage === 'rooms' || initialPage === 'login' || initialPage === 'register') && token) {
-      initialPage = 'dashboard';
+      const isAdmin = localStorage.getItem('sk_user_is_admin') === 'true';
+      initialPage = isAdmin ? 'admin' : 'dashboard';
       initialData = null;
     }
     return { page: initialPage, data: initialData };
@@ -1735,7 +1781,8 @@ const App = () => {
       p = 'login';
       d = null;
     } else if ((p === 'rooms' || p === 'login' || p === 'register') && token) {
-      p = 'dashboard';
+      const isAdmin = localStorage.getItem('sk_user_is_admin') === 'true';
+      p = isAdmin ? 'admin' : 'dashboard';
       d = null;
     }
 

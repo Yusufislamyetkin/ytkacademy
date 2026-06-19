@@ -269,6 +269,9 @@ const AppHeader = ({ navigate, active }) => {
               </button>
               {open && (
                 <div className="absolute right-0 top-[calc(100%+8px)] w-44 bg-[#04100a] border border-[#103a26] rounded-lg p-1.5 shadow-[0_20px_50px_-20px_#000] z-50">
+                  {user.is_admin && (
+                    <button onClick={() => { setOpen(false); navigate('admin'); }} className="w-full text-left px-3 py-2 rounded-md text-sm text-[#00ff88] hover:bg-[rgba(0,255,136,.06)] transition-colors mb-1 font-mono">Yönetici Paneli ➔</button>
+                  )}
                   {/* Profil ve rozetler pasif hale getirilmistir */}
                   <button onClick={() => { 
                     setOpen(false); 
@@ -6340,6 +6343,10 @@ const AdminPage = ({ navigate }) => {
   const [userSearch, setUserSearch] = useState('');
   const [usersLoading, setUsersLoading] = useState(false);
   const [usersError, setUsersError] = useState('');
+  const [sendingAssessment, setSendingAssessment] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState('beginner');
+  const [copiedLink, setCopiedLink] = useState('');
+  const [activities, setActivities] = useState([]);
 
   // Tab 2: Blog Yönetimi
   const [blogs, setBlogs] = useState([]);
@@ -6383,7 +6390,8 @@ const AdminPage = ({ navigate }) => {
       });
       const data = await res.json();
       if (res.ok) {
-        setUsers(data);
+        setUsers(data.users || []);
+        setActivities(data.activities || []);
       } else {
         setUsersError(data.error || 'Kullanıcılar yüklenemedi.');
       }
@@ -6391,6 +6399,55 @@ const AdminPage = ({ navigate }) => {
       setUsersError('Ağ hatası oluştu.');
     } finally {
       setUsersLoading(false);
+    }
+  };
+
+  const handleSendAssessment = async (targetUserId) => {
+    const token = localStorage.getItem('sk_token');
+    try {
+      const res = await fetch('/api/admin/send-assessment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ target_user_id: targetUserId, level: selectedLevel })
+      });
+      const d = await res.json();
+      if (d.error) {
+        alert(d.error);
+      } else {
+        const testLink = `${window.location.origin}/assessment/${d.token}`;
+        setCopiedLink(testLink);
+        navigator.clipboard.writeText(testLink);
+        alert(`Test başarıyla oluşturuldu ve link panoya kopyalandı:\n\n${testLink}`);
+        setSendingAssessment(null);
+        fetchUsers();
+      }
+    } catch {
+      alert('İşlem başarısız oldu.');
+    }
+  };
+
+  const handleRegenerateRoadmap = async (roadmapToken) => {
+    const token = localStorage.getItem('sk_token');
+    try {
+      const res = await fetch('/api/admin/roadmap/regenerate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ roadmap_token: roadmapToken })
+      });
+      const d = await res.json();
+      if (d.error) alert(d.error);
+      else {
+        alert('Yol haritası başarıyla yenilendi.');
+        fetchUsers();
+      }
+    } catch {
+      alert('İşlem başarısız oldu.');
     }
   };
 
@@ -6427,7 +6484,7 @@ const AdminPage = ({ navigate }) => {
   // Effect to load data based on active tab
   useEffect(() => {
     if (!user || !user.is_admin) return;
-    if (activeTab === 'users') {
+    if (activeTab === 'users' || activeTab === 'activities') {
       fetchUsers();
     } else if (activeTab === 'blogs') {
       fetchBlogs();
@@ -6635,7 +6692,8 @@ const AdminPage = ({ navigate }) => {
           {[
             { id: 'users', name: 'Kullanıcı Yönetimi', icon: '👥' },
             { id: 'blogs', name: 'Blog Yönetimi', icon: '📝' },
-            { id: 'chat', name: 'Sohbet Moderasyonu', icon: '💬' }
+            { id: 'chat', name: 'Sohbet Moderasyonu', icon: '💬' },
+            { id: 'activities', name: 'Son Aktiviteler', icon: '⚡' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -6686,8 +6744,9 @@ const AdminPage = ({ navigate }) => {
                     <tr>
                       <th className="p-4">Kullanıcı</th>
                       <th className="p-4">E-posta</th>
-                      <th className="p-4 text-center">Seviye / Puan</th>
+                      <th className="p-4 text-center">Seviye / Puan / Çözülen</th>
                       <th className="p-4 text-center">Seri / Rozet</th>
+                      <th className="p-4 text-center">Yol Haritası</th>
                       <th className="p-4 text-center">Abonelik</th>
                       <th className="p-4 text-center">Durum</th>
                       <th className="p-4 text-right">İşlemler</th>
@@ -6703,18 +6762,36 @@ const AdminPage = ({ navigate }) => {
                             </span>
                             <div>
                               <div className="text-[#eafff5] font-medium">{u.name}</div>
-                              <div className="text-xs text-[#5c8a74]">ID: {u.id} {u.is_admin && <span className="text-[#ffd166]">[Yönetici]</span>}</div>
+                              <div className="text-[10px] text-[#5c8a74]">ID: {u.id} {u.is_admin && <span className="text-[#ffd166]">[Yönetici]</span>}</div>
+                              <div className="text-[9px] text-[#74998a] mt-0.5">Kayıt: {new Date(u.created_at).toLocaleDateString('tr-TR')}</div>
                             </div>
                           </div>
                         </td>
                         <td className="p-4 text-[#74998a]">{u.email}</td>
-                        <td className="p-4 text-center">
-                          <div className="text-[#eafff5]">Lvl {u.level}</div>
-                          <div className="text-xs text-[#00ff88]">◆ {u.points} Puan</div>
+                        <td className="p-4 text-center font-mono">
+                          <div className="text-[#eafff5]">Lvl {u.level} | <strong className="text-[#00ff88]">◆ {u.points}</strong></div>
+                          <div className="text-[11px] text-[#74998a] mt-0.5">Çözülen: {u.solved_count}</div>
+                          {u.avg_assessment_score !== undefined && u.avg_assessment_score !== null && (
+                            <div className="text-[10px] text-[#ffd166] mt-0.5">Test Ort: {u.avg_assessment_score}/8</div>
+                          )}
                         </td>
                         <td className="p-4 text-center">
                           <div className="text-[#eafff5]">{u.streak} Gün 🔥</div>
                           <div className="text-xs text-[#74998a]">{u.badges} Rozet</div>
+                        </td>
+                        <td className="p-4 text-center font-mono">
+                          {u.roadmap_token ? (
+                            <div className="flex flex-col items-center gap-1">
+                              <a href={`/roadmap/${u.roadmap_token}`} target="_blank" rel="noopener noreferrer" className="text-[#00ff88] hover:underline font-bold text-xs">
+                                Gör ➔
+                              </a>
+                              <button onClick={() => handleRegenerateRoadmap(u.roadmap_token)} className="text-[10px] text-[#ffd166] hover:underline bg-transparent border-none p-0 cursor-pointer">
+                                Yenile ↻
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-[#5c8a74] italic text-xs">Oluşturulmadı</span>
+                          )}
                         </td>
                         <td className="p-4 text-center">
                           {u.is_premium ? (
@@ -6730,53 +6807,80 @@ const AdminPage = ({ navigate }) => {
                             <span className="px-2.5 py-1 text-xs font-bold rounded bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20">Aktif</span>
                           )}
                         </td>
-                        <td className="p-4 text-right space-x-2 flex justify-end">
-                          <button
-                            onClick={() => {
-                              const token = localStorage.getItem('sk_token');
-                              if (confirm(`${u.name} adlı kullanıcının premium durumunu değiştirmek istediğinize emin misiniz?`)) {
-                                fetch(`/api/admin/users/${u.id}/premium`, {
-                                  method: 'PUT',
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${token}`
-                                  },
-                                  body: JSON.stringify({ is_premium: !u.is_premium })
-                                }).then(res => {
-                                  if (res.ok) {
-                                    fetchUsers();
-                                  } else {
-                                    alert('Premium durumu değiştirilemedi.');
-                                  }
-                                }).catch(() => alert('Ağ hatası.'));
-                              }
-                            }}
-                            className={`font-mono text-xs px-3.5 py-1.5 rounded-lg border transition-all ${
-                              u.is_premium
-                                ? 'text-[#ffd166] border-[#ffd166]/30 hover:bg-[#ffd166]/10'
-                                : 'text-[#74998a] border-[#74998a]/30 hover:bg-[#74998a]/10'
-                            }`}
-                          >
-                            {u.is_premium ? '👑 Premium' : 'Premium Ver'}
-                          </button>
-                          <button
-                            onClick={() => handleToggleBan(u.id, u.name, u.is_banned)}
-                            disabled={u.id === user.id}
-                            className={`font-mono text-xs px-3.5 py-1.5 rounded-lg border transition-all ${
-                              u.is_banned
-                                ? 'text-[#00ff88] border-[#00ff88]/30 hover:bg-[#00ff88]/10'
-                                : 'text-[#ff2e88] border-[#ff2e88]/30 hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent'
-                            }`}
-                          >
-                            {u.is_banned ? 'Engeli Kaldır' : 'Yasakla'}
-                          </button>
-                          <button
-                            onClick={() => handleDeleteUser(u.id, u.name)}
-                            disabled={u.id === user.id}
-                            className="font-mono text-xs px-3.5 py-1.5 rounded-lg border border-[#ff2e88]/30 text-[#ff2e88] hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                          >
-                            Sil 🗑️
-                          </button>
+                        <td className="p-4 text-right space-y-2 flex flex-col justify-center items-end">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                const token = localStorage.getItem('sk_token');
+                                if (confirm(`${u.name} adlı kullanıcının premium durumunu değiştirmek istediğinize emin misiniz?`)) {
+                                  fetch(`/api/admin/users/${u.id}/premium`, {
+                                    method: 'PUT',
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                      'Authorization': `Bearer ${token}`
+                                    },
+                                    body: JSON.stringify({ is_premium: !u.is_premium })
+                                  }).then(res => {
+                                    if (res.ok) {
+                                      fetchUsers();
+                                    } else {
+                                      alert('Premium durumu değiştirilemedi.');
+                                    }
+                                  }).catch(() => alert('Ağ hatası.'));
+                                }
+                              }}
+                              className={`font-mono text-[10px] px-2 py-1 rounded border transition-all ${
+                                u.is_premium
+                                  ? 'text-[#ffd166] border-[#ffd166]/30 hover:bg-[#ffd166]/10'
+                                  : 'text-[#74998a] border-[#74998a]/30 hover:bg-[#74998a]/10'
+                              }`}
+                            >
+                              {u.is_premium ? '👑 Premium✓' : 'Premium Yap'}
+                            </button>
+                            <button
+                              onClick={() => handleToggleBan(u.id, u.name, u.is_banned)}
+                              disabled={u.id === user.id}
+                              className={`font-mono text-[10px] px-2 py-1 rounded border transition-all ${
+                                u.is_banned
+                                  ? 'text-[#00ff88] border-[#00ff88]/30 hover:bg-[#00ff88]/10'
+                                  : 'text-[#ff2e88] border-[#ff2e88]/30 hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent'
+                              }`}
+                            >
+                              {u.is_banned ? 'Engeli Kaldır' : 'Yasakla'}
+                            </button>
+                            <button
+                              onClick={() => handleDeleteUser(u.id, u.name)}
+                              disabled={u.id === user.id}
+                              className="font-mono text-[10px] px-2 py-1 rounded border border-[#ff2e88]/30 text-[#ff2e88] hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                            >
+                              Sil 🗑️
+                            </button>
+                          </div>
+                          
+                          <div className="mt-1">
+                            {sendingAssessment === u.id ? (
+                              <div className="bg-[#07150e] border border-[#103a26] p-2 rounded-lg text-left flex items-center gap-1.5">
+                                <select 
+                                  value={selectedLevel} 
+                                  onChange={e => setSelectedLevel(e.target.value)}
+                                  className="bg-[#020806] border border-[#103a26] rounded px-1 py-0.5 text-[11px] text-[#cdeede] focus:border-[#00ff88] outline-none font-mono"
+                                >
+                                  <option value="beginner">Temel</option>
+                                  <option value="intermediate">Orta</option>
+                                  <option value="advanced">İleri</option>
+                                </select>
+                                <button onClick={() => handleSendAssessment(u.id)} className="bg-[#00ff88] text-[#021008] px-2 py-0.5 rounded text-[10px] font-bold">Gönder</button>
+                                <button onClick={() => setSendingAssessment(null)} className="text-[#74998a] text-[10px]">İptal</button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setSendingAssessment(u.id)}
+                                className="font-mono text-[10px] px-2 py-1 rounded border border-[#00ff88]/30 text-[#00ff88] hover:bg-[#00ff88]/10 transition-all"
+                              >
+                                ⚡ Test Gönder
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -7064,6 +7168,55 @@ const AdminPage = ({ navigate }) => {
                 })}
               </div>
             )}
+          </div>
+        )}
+
+        {/* TAB 4: SON AKTİVİTELER */}
+        {activeTab === 'activities' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between gap-4">
+              <h3 className="text-lg text-[#eafff5] font-bold flex items-center gap-2">
+                <span>⚡</span> Son Sistem Aktiviteleri
+              </h3>
+              <button
+                onClick={fetchUsers}
+                className="font-mono text-xs border border-[#103a26] text-[#74998a] hover:text-[#00ff88] hover:border-[#00ff88] px-4 py-2.5 rounded-lg transition-all"
+              >
+                🔄 Yenile
+              </button>
+            </div>
+
+            <div className="overflow-x-auto border border-[#0c2719] rounded-xl bg-black/25">
+              <table className="w-full text-left text-xs font-mono whitespace-nowrap">
+                <thead className="bg-[#05150e] text-[#74998a] border-b border-[#0c2719]">
+                  <tr>
+                    <th className="p-4">Zaman</th>
+                    <th className="p-4">Kullanıcı</th>
+                    <th className="p-4">Tip</th>
+                    <th className="p-4">Detaylar</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#0c2719]">
+                  {activities.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" className="p-4 text-center text-[#5c8a74] italic">Henüz aktivite kaydedilmedi.</td>
+                    </tr>
+                  ) : (
+                    activities.map(a => (
+                      <tr key={a.id} className="hover:bg-[#00ff88]/[0.02] transition-colors">
+                        <td className="p-4 text-[#74998a]">{new Date(a.created_at).toLocaleString('tr-TR')}</td>
+                        <td className="p-4">
+                          <div className="text-[#eafff5] font-bold">{a.user_name}</div>
+                          <div className="text-[10px] text-[#5c8a74]">{a.user_email}</div>
+                        </td>
+                        <td className="p-4 text-[#ffd166] uppercase tracking-wider">{a.activity_type ? a.activity_type.replace(/_/g, ' ') : ''}</td>
+                        <td className="p-4 text-[#9fc4b5] max-w-[400px] truncate" title={a.details}>{a.details}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </main>
@@ -7579,7 +7732,7 @@ Object.assign(PAGES, {
   chat: DisabledPageRedirect,
   category: DisabledPageRedirect,
   pathway: DisabledPageRedirect,
-  admin: DisabledPageRedirect,
+  admin: AdminPage,
   doc: DisabledPageRedirect,
 });
 
