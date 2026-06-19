@@ -84,18 +84,56 @@ async function logUserActivity(userId, activityType, details) {
   }
 }
 
-// Helper to generate personalized roadfunction generateRoadmapData(userName, level, score) {
-  let adjustedLevel = level;
-  if (level === 'beginner' && score >= 7) {
-    adjustedLevel = 'intermediate';
-  } else if (level === 'intermediate' && score >= 7) {
-    adjustedLevel = 'advanced';
+// Smart level evaluation based on test level and score
+function evaluateAssessmentResult(level, score) {
+  let finalLevel = level;
+  let userDbLevel = 1;
+
+  if (level === 'beginner') {
+    if (score >= 7) {
+      finalLevel = 'intermediate';
+      userDbLevel = score === 8 ? 6 : 5;
+    } else if (score >= 4) {
+      finalLevel = 'beginner';
+      userDbLevel = score === 6 ? 4 : 3;
+    } else {
+      finalLevel = 'beginner';
+      userDbLevel = 1;
+    }
+  } else if (level === 'intermediate') {
+    if (score >= 7) {
+      finalLevel = 'advanced';
+      userDbLevel = score === 8 ? 10 : 8;
+    } else if (score >= 4) {
+      finalLevel = 'intermediate';
+      userDbLevel = score === 6 ? 7 : 5;
+    } else {
+      finalLevel = 'beginner';
+      userDbLevel = 3;
+    }
+  } else if (level === 'advanced') {
+    if (score >= 7) {
+      finalLevel = 'advanced';
+      userDbLevel = score === 8 ? 10 : 9;
+    } else if (score >= 4) {
+      finalLevel = 'advanced';
+      userDbLevel = 8;
+    } else {
+      finalLevel = 'intermediate';
+      userDbLevel = 5;
+    }
   }
+  return { finalLevel, userDbLevel };
+}
+
+// Helper to generate personalized roadmap
+function generateRoadmapData(userName, level, score) {
+  const { finalLevel } = evaluateAssessmentResult(level, score);
 
   let title = `YTK Academy | ${userName} İçin Özel Yol Haritası`;
   let weeks = [];
   
-  if (adjustedLevel === 'beginner') {
+  if (finalLevel === 'beginner') {
     weeks = [
       { week: '1-2', title: 'C# Giriş & Geliştirme Ortamı', topics: ['Visual Studio Kurulumu & Arayüzü', '.NET Core SDK Nedir?', 'İlk Konsol Uygulaması (Hello World)', 'Kod Satırı Kuralları ve Açıklama Satırları'], resource: 'C# 101 Rehberi' },
       { week: '3-4', title: 'Veri Tipleri ve Değişkenler', topics: ['Değişken Nedir ve Bellek Mantığı', 'Tamsayı (int, long) ve Ondalıklı (double, float) Tipler', 'Metinsel (string, char) ve Mantıksal (bool) Tipler', 'Tip Dönüşümleri (Type Casting)'], resource: 'Değişkenler ve Tip Güvenliği Dökümanı' },
@@ -110,7 +148,7 @@ async function logUserActivity(userId, activityType, details) {
       { week: '21-22', title: 'Entity Framework Core Giriş', topics: ['ORM Nedir ve EF Core Rolü', 'DbContext ve DbSet Tanımları', 'Connection String ve Db Eşleşmesi', 'İlk Migration ve Veritabanı Oluşturma'], resource: 'EF Core Başlangıç Rehberi' },
       { week: '23-24', title: 'EF Core ile CRUD İşlemleri', topics: ['EF Core ile Veri Ekleme, Listeleme', 'Veri Güncelleme ve Silme', 'DbSet Metotları', 'SaveChanges() Rolü ve Hata Yönetimi'], resource: 'EF Core CRUD Proje Uygulaması' }
     ];
-  } else if (adjustedLevel === 'intermediate') {
+  } else if (finalLevel === 'intermediate') {
     weeks = [
       { week: '1-2', title: 'İleri Nesne Yönelimli Programlama (OOP)', topics: ['Soyutlama (Abstraction) - abstract classes', 'Arayüzler (Interfaces) ve Çoklu Kalıtım Simülasyonu', 'Polimorfizm (Çok Biçimlilik) Derinlemesine', 'Interface vs Abstract Class Farkları'], resource: 'İleri OOP Prensipleri Kitabı' },
       { week: '3-4', title: 'LINQ ile Veri Sorgulama', topics: ['LINQ Nedir ve Sözdizimi (Query & Method syntax)', 'Select, Where, OrderBy, GroupBy Metotları', 'Any, All, FirstOrDefault, SingleOrDefault', 'LINQ ile Bellek İçi Nesne ve Veritabanı Sorgulama'], resource: 'LINQ Hile Sayfası' },
@@ -134,7 +172,7 @@ async function logUserActivity(userId, activityType, details) {
 
   return {
     userName,
-    level: adjustedLevel,
+    level: finalLevel,
     score,
     title,
     weeks,
@@ -363,8 +401,13 @@ app.get('/api/admin/setup-database-tables-custom-secret', async (req, res) => {
           sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           completed_at TIMESTAMP,
           answers JSONB,
-          score INT
+          score INT,
+          roadmap_token VARCHAR(255)
       );
+    `);
+
+    await pool.query(`
+      ALTER TABLE user_assessments ADD COLUMN IF NOT EXISTS roadmap_token VARCHAR(255);
     `);
 
     await pool.query(`
@@ -1420,7 +1463,7 @@ app.get('/api/assessment/:token', async (req, res) => {
 
   try {
     const assessmentResult = await pool.query(
-      'SELECT id, user_id, level, completed_at, score FROM user_assessments WHERE token = $1',
+      'SELECT id, user_id, level, completed_at, score, roadmap_token FROM user_assessments WHERE token = $1',
       [token]
     );
 
@@ -1430,15 +1473,21 @@ app.get('/api/assessment/:token', async (req, res) => {
 
     const assessment = assessmentResult.rows[0];
     if (assessment.completed_at) {
-      const roadmapResult = await pool.query(
-        'SELECT token FROM user_roadmaps WHERE user_id = $1 AND level = $2 ORDER BY created_at DESC LIMIT 1',
-        [assessment.user_id, assessment.level]
-      );
+      let roadmapToken = assessment.roadmap_token;
+      if (!roadmapToken) {
+        const roadmapResult = await pool.query(
+          'SELECT token FROM user_roadmaps WHERE user_id = $1 AND level = $2 ORDER BY created_at DESC LIMIT 1',
+          [assessment.user_id, assessment.level]
+        );
+        if (roadmapResult.rows.length > 0) {
+          roadmapToken = roadmapResult.rows[0].token;
+        }
+      }
       return res.json({ 
         completed: true, 
         score: assessment.score,
         level: assessment.level,
-        roadmapToken: roadmapResult.rows.length > 0 ? roadmapResult.rows[0].token : null
+        roadmapToken: roadmapToken
       });
     }
 
@@ -1505,25 +1554,20 @@ app.post('/api/assessment/:token/submit', async (req, res) => {
       }
     });
 
-    await pool.query(
-      'UPDATE user_assessments SET completed_at = NOW(), answers = $1, score = $2 WHERE id = $3',
-      [JSON.stringify(answers), score, assessment.id]
-    );
-
     const roadmapToken = crypto.randomBytes(16).toString('hex');
+    const { finalLevel, userDbLevel } = evaluateAssessmentResult(assessment.level, score);
     const roadmapJson = generateRoadmapData(user.name, assessment.level, score);
-    const finalLevel = roadmapJson.level;
+
+    await pool.query(
+      'UPDATE user_assessments SET completed_at = NOW(), answers = $1, score = $2, roadmap_token = $3 WHERE id = $4',
+      [JSON.stringify(answers), score, roadmapToken, assessment.id]
+    );
 
     await pool.query(
       'INSERT INTO user_roadmaps (user_id, token, level, roadmap_json) VALUES ($1, $2, $3, $4)',
       [user.id, roadmapToken, finalLevel, JSON.stringify(roadmapJson)]
     );
 
-    // Update user level in the database based on final roadmap level
-    let userDbLevel = 1;
-    if (finalLevel === 'intermediate') userDbLevel = 5;
-    else if (finalLevel === 'advanced') userDbLevel = 10;
-    
     await pool.query('UPDATE users SET level = $1 WHERE id = $2', [userDbLevel, user.id]);
 
     await logUserActivity(user.id, 'assessment_submit', `${assessment.level} seviye testi çözüldü. Skor: ${score}/8 (Ayarlanan Seviye: ${finalLevel}). Roadmap oluşturuldu: ${roadmapToken}`);
@@ -1585,18 +1629,36 @@ app.post('/api/admin/roadmap/regenerate', authenticateToken, async (req, res) =>
 
     const roadmap = roadmapResult.rows[0];
     
-    const scoreResult = await pool.query(
-      'SELECT score FROM user_assessments WHERE user_id = $1 AND level = $2 ORDER BY completed_at DESC LIMIT 1',
-      [roadmap.user_id, roadmap.level]
-    );
-    const score = scoreResult.rows.length > 0 ? scoreResult.rows[0].score : 5;
+    let score = 5;
+    let originalLevel = roadmap.level;
 
-    const roadmapJson = generateRoadmapData(roadmap.name, roadmap.level, score);
-    const finalLevel = roadmapJson.level;
+    const assocAssessment = await pool.query(
+      'SELECT score, level FROM user_assessments WHERE roadmap_token = $1 LIMIT 1',
+      [roadmap_token]
+    );
+    if (assocAssessment.rows.length > 0) {
+      score = assocAssessment.rows[0].score;
+      originalLevel = assocAssessment.rows[0].level;
+    } else {
+      const scoreResult = await pool.query(
+        'SELECT score FROM user_assessments WHERE user_id = $1 AND level = $2 ORDER BY completed_at DESC LIMIT 1',
+        [roadmap.user_id, roadmap.level]
+      );
+      if (scoreResult.rows.length > 0) {
+        score = scoreResult.rows[0].score;
+      }
+    }
+
+    const { finalLevel, userDbLevel } = evaluateAssessmentResult(originalLevel, score);
+    const roadmapJson = generateRoadmapData(roadmap.name, originalLevel, score);
+
     await pool.query(
       'UPDATE user_roadmaps SET level = $1, roadmap_json = $2 WHERE id = $3',
       [finalLevel, JSON.stringify(roadmapJson), roadmap.id]
     );
+
+    // Sync database user level as well
+    await pool.query('UPDATE users SET level = $1 WHERE id = $2', [userDbLevel, roadmap.user_id]);
 
     res.json({ success: true, message: 'Yol haritası başarıyla yenilendi.' });
   } catch (err) {

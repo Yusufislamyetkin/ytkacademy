@@ -3679,7 +3679,7 @@ const RoadmapPage = ({ navigate, data }) => {
         {/* CTA Footer Call */}
         <div className="rounded-2xl border border-[#103a26] p-8 text-center mb-10" style={{ background: 'linear-gradient(90deg,#07150e,#04100a)' }}>
           <h3 className="text-xl text-[#eafff5] font-disp font-bold mb-2">Bu Yol Haritasını Mentör Eşliğinde Bire Bir Öğrenin</h3>
-          <p className="text-xs text-[#74998a] leading-relaxed mb-6 max-w-lg mx-auto font-mono">Haftalık bire bir canlı dersler, kod incelemeleri ve gerçek fintech projeleri ile kariyer yolculuğunuzda en hızlı şekilde ilerleyin.</p>
+          <p className="text-xs text-[#74998a] leading-relaxed mb-6 max-w-lg mx-auto font-mono">Bire bir canlı dersler, kod incelemeleri ve gerçek fintech projeleri ile kariyer yolculuğunuzda en hızlı şekilde ilerleyin.</p>
           <button 
             onClick={() => window.open('https://wa.me/905389351189?text=Merhaba%20Yusuf%20Hocam%2C%20bana%20özel%20hazırlanan%20yol%20haritasını%20inceledim.%20Bire%20bir%20mentörlük%20programı%20hakkında%20görüşmek%20istiyorum.', '_blank')}
             className="font-mono text-xs font-bold text-[#021008] bg-[#00ff88] px-7 py-3.5 rounded-xl hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] transition-all inline-flex items-center gap-2"
