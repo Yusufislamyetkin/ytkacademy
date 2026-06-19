@@ -6625,8 +6625,6 @@ const AdminPage = ({ navigate }) => {
                     <tr>
                       <th className="p-4">Kullanıcı</th>
                       <th className="p-4">E-posta</th>
-                      <th className="p-4 text-center">Seviye / Puan / Çözülen</th>
-                      <th className="p-4 text-center">Seri / Rozet</th>
                       <th className="p-4 text-center">Yol Haritası</th>
                       <th className="p-4 text-center">Abonelik</th>
                       <th className="p-4 text-center">Durum</th>
@@ -6649,17 +6647,6 @@ const AdminPage = ({ navigate }) => {
                           </div>
                         </td>
                         <td className="p-4 text-[#74998a]">{u.email}</td>
-                        <td className="p-4 text-center font-mono">
-                          <div className="text-[#eafff5]">Lvl {u.level} | <strong className="text-[#00ff88]">◆ {u.points}</strong></div>
-                          <div className="text-[11px] text-[#74998a] mt-0.5">Çözülen: {u.solved_count}</div>
-                          {u.avg_assessment_score !== undefined && u.avg_assessment_score !== null && (
-                            <div className="text-[10px] text-[#ffd166] mt-0.5">Test Ort: {u.avg_assessment_score}/8</div>
-                          )}
-                        </td>
-                        <td className="p-4 text-center">
-                          <div className="text-[#eafff5]">{u.streak} Gün 🔥</div>
-                          <div className="text-xs text-[#74998a]">{u.badges} Rozet</div>
-                        </td>
                         <td className="p-4 text-center font-mono">
                           {u.roadmap_token ? (
                             <div className="flex flex-col items-center gap-1">

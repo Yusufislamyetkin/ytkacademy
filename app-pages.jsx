@@ -3626,7 +3626,7 @@ const RoadmapPage = ({ navigate, data }) => {
             <p className="text-sm text-[#74998a] mt-2">Bu plan, <strong>{user_name}</strong> için yapılan seviye tespiti sonucuna göre otomatik olarak optimize edilmiştir.</p>
             <div className="flex gap-2.5 mt-4">
               <span className="font-mono text-xs px-3 py-1 bg-black/40 border border-[#103a26] text-[#00ff88] rounded-md uppercase font-bold">{level === 'beginner' ? 'Temel' : level === 'intermediate' ? 'Orta' : 'İleri'} Seviye</span>
-              <span className="font-mono text-xs px-3 py-1 bg-black/40 border border-[#103a26] text-[#ffd166] rounded-md font-bold">{roadmap_json.weeks.length} Haftalık Plan</span>
+              <span className="font-mono text-xs px-3 py-1 bg-black/40 border border-[#103a26] text-[#ffd166] rounded-md font-bold">{roadmap_json.weeks.length * 2} Saatlik Hızlandırılmış Plan</span>
             </div>
           </div>
           <button 
@@ -3651,7 +3651,7 @@ const RoadmapPage = ({ navigate, data }) => {
               <div className="rounded-2xl border border-[#0c2719] hover:border-[#103a26] p-6 transition-all" style={{ background: 'linear-gradient(165deg,#07150e,#030c08)' }}>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#0c2719]/40 pb-3 mb-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm font-bold text-[#00ff88]">Hafta {weekData.week}</span>
+                    <span className="font-mono text-sm font-bold text-[#00ff88]">{weekData.week}. Saat</span>
                     <h3 className="text-base text-[#eafff5] font-disp font-bold">{weekData.title}</h3>
                   </div>
                   {weekData.resource && (

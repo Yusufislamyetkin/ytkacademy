@@ -84,51 +84,57 @@ async function logUserActivity(userId, activityType, details) {
   }
 }
 
-// Helper to generate personalized roadmap
-function generateRoadmapData(userName, level, score) {
+// Helper to generate personalized roadfunction generateRoadmapData(userName, level, score) {
+  let adjustedLevel = level;
+  if (level === 'beginner' && score >= 7) {
+    adjustedLevel = 'intermediate';
+  } else if (level === 'intermediate' && score >= 7) {
+    adjustedLevel = 'advanced';
+  }
+
   let title = `YTK Academy | ${userName} İçin Özel Yol Haritası`;
   let weeks = [];
   
-  if (level === 'beginner') {
+  if (adjustedLevel === 'beginner') {
     weeks = [
-      { week: 1, title: 'C# Giriş & Geliştirme Ortamı', topics: ['Visual Studio Kurulumu & Arayüzü', '.NET Core SDK Nedir?', 'İlk Konsol Uygulaması (Hello World)', 'Kod Satırı Kuralları ve Açıklama Satırları'], resource: 'C# 101 Rehberi' },
-      { week: 2, title: 'Veri Tipleri ve Değişkenler', topics: ['Değişken Nedir ve Bellek Mantığı', 'Tamsayı (int, long) ve Ondalıklı (double, float) Tipler', 'Metinsel (string, char) ve Mantıksal (bool) Tipler', 'Tip Dönüşümleri (Type Casting)'], resource: 'Değişkenler ve Tip Güvenliği Dökümanı' },
-      { week: 3, title: 'Karar Yapıları & Koşul Kontrolleri', topics: ['if-else Yapısı ve Mantıksal Operatörler', 'switch-case Kullanımı', 'Ternary Operatör (? :)', 'Karar Yapılarında Hata Yönetimi'], resource: 'Koşul Blokları Uygulamalı Örnekler' },
-      { week: 4, title: 'Döngüler (Loops)', topics: ['for Döngüsü ve Sayaç Mantığı', 'while ve do-while Döngüleri', 'break ve continue İfadeleri', 'Sonsuz Döngü Tehlikesi ve Çözümleri'], resource: 'Döngüler Lab Görevleri' },
-      { week: 5, title: 'Diziler & Koleksiyonlar', topics: ['Tek Boyutlu Diziler (Arrays)', 'List<T> Koleksiyonu Kullanımı', 'Dizi ve Liste Farkları', 'Koleksiyon Metotları (Add, Remove, Contains)'], resource: 'Koleksiyonlar ve Bellek Yönetimi' },
-      { week: 6, title: 'Metotlar (Functions)', topics: ['Metot Tanımlama ve Çağırma', 'Parametre Alan ve Değer Döndüren Metotlar', 'Geri Dönüş Tipi (void, int, string vb.)', 'Metot Aşırı Yükleme (Method Overloading)'], resource: 'Metot Tasarım Prensipleri' },
-      { week: 7, title: 'Sınıflar & Nesneler (OOP Giriş)', topics: ['Class ve Object Kavramları', 'Property ve Field Tanımlama', 'Erişim Belirleyiciler (public, private)', 'Yapıcı Metotlar (Constructor - ctor)'], resource: 'OOP Temel Kavramlar Sunumu' },
-      { week: 8, title: 'Nesne Yönelimli Programlama (Kalıtım ve Kapsülleme)', topics: ['Kalıtım (Inheritance) - Miras Alma', 'Kapsülleme (Encapsulation) - backing fields ve properties', 'Metot Ezme (Method Overriding) & virtual/override', 'base Anahtar Kelimesi'], resource: 'Kalıtım ve Kapsülleme Projesi' },
-      { week: 9, title: 'SQL & İlişkisel Veritabanları Giriş', topics: ['SQL Server Kurulumu & SSMS', 'Tablo Oluşturma (CREATE TABLE)', 'Veri Tipleri (varchar, int, datetime)', 'Birincil Anahtar (Primary Key)'], resource: 'İlişkisel Veritabanı Temelleri' },
-      { week: 10, title: 'SQL Veri Yönetimi (CRUD)', topics: ['SELECT Sorgusu ve WHERE Filtreleme', 'INSERT INTO ile Veri Ekleme', 'UPDATE ile Veri Güncelleme', 'DELETE ile Veri Silme'], resource: 'CRUD Sorguları Çalışma Kağıdı' },
-      { week: 11, title: 'Entity Framework Core Giriş', topics: ['ORM Nedir ve EF Core Rolü', 'DbContext ve DbSet Tanımları', 'Connection String ve Db Eşleşmesi', 'İlk Migration ve Veritabanı Oluşturma'], resource: 'EF Core Başlangıç Rehberi' },
-      { week: 12, title: 'EF Core ile CRUD İşlemleri', topics: ['EF Core ile Veri Ekleme, Listeleme', 'Veri Güncelleme ve Silme', 'DbSet Metotları', 'SaveChanges() Rolü ve Hata Yönetimi'], resource: 'EF Core CRUD Proje Uygulaması' }
+      { week: '1-2', title: 'C# Giriş & Geliştirme Ortamı', topics: ['Visual Studio Kurulumu & Arayüzü', '.NET Core SDK Nedir?', 'İlk Konsol Uygulaması (Hello World)', 'Kod Satırı Kuralları ve Açıklama Satırları'], resource: 'C# 101 Rehberi' },
+      { week: '3-4', title: 'Veri Tipleri ve Değişkenler', topics: ['Değişken Nedir ve Bellek Mantığı', 'Tamsayı (int, long) ve Ondalıklı (double, float) Tipler', 'Metinsel (string, char) ve Mantıksal (bool) Tipler', 'Tip Dönüşümleri (Type Casting)'], resource: 'Değişkenler ve Tip Güvenliği Dökümanı' },
+      { week: '5-6', title: 'Karar Yapıları & Koşul Kontrolleri', topics: ['if-else Yapısı ve Mantıksal Operatörler', 'switch-case Kullanımı', 'Ternary Operatör (? :)', 'Karar Yapılarında Hata Yönetimi'], resource: 'Koşul Blokları Uygulamalı Örnekler' },
+      { week: '7-8', title: 'Döngüler (Loops)', topics: ['for Döngüsü ve Sayaç Mantığı', 'while ve do-while Döngüleri', 'break ve continue İfadeleri', 'Sonsuz Döngü Tehlikesi ve Çözümleri'], resource: 'Döngüler Lab Görevleri' },
+      { week: '9-10', title: 'Diziler & Koleksiyonlar', topics: ['Tek Boyutlu Diziler (Arrays)', 'List<T> Koleksiyonu Kullanımı', 'Dizi ve Liste Farkları', 'Koleksiyon Metotları (Add, Remove, Contains)'], resource: 'Koleksiyonlar ve Bellek Yönetimi' },
+      { week: '11-12', title: 'Metotlar (Functions)', topics: ['Metot Tanımlama ve Çağırma', 'Parametre Alan ve Değer Döndüren Metotlar', 'Geri Dönüş Tipi (void, int, string vb.)', 'Metot Aşırı Yükleme (Method Overloading)'], resource: 'Metot Tasarım Prensipleri' },
+      { week: '13-14', title: 'Sınıflar & Nesneler (OOP Giriş)', topics: ['Class ve Object Kavramları', 'Property ve Field Tanımlama', 'Erişim Belirleyiciler (public, private)', 'Yapıcı Metotlar (Constructor - ctor)'], resource: 'OOP Temel Kavramlar Sunumu' },
+      { week: '15-16', title: 'Nesne Yönelimli Programlama (Kalıtım ve Kapsülleme)', topics: ['Kalıtım (Inheritance) - Miras Alma', 'Kapsülleme (Encapsulation) - backing fields ve properties', 'Metot Ezme (Method Overriding) & virtual/override', 'base Anahtar Kelimesi'], resource: 'Kalıtım ve Kapsülleme Projesi' },
+      { week: '17-18', title: 'SQL & İlişkisel Veritabanları Giriş', topics: ['SQL Server Kurulumu & SSMS', 'Tablo Oluşturma (CREATE TABLE)', 'Veri Tipleri (varchar, int, datetime)', 'Birincil Anahtar (Primary Key)'], resource: 'İlişkisel Veritabanı Temelleri' },
+      { week: '19-20', title: 'SQL Veri Yönetimi (CRUD)', topics: ['SELECT Sorgusu ve WHERE Filtreleme', 'INSERT INTO ile Veri Ekleme', 'UPDATE ile Veri Güncelleme', 'DELETE ile Veri Silme'], resource: 'CRUD Sorguları Çalışma Kağıdı' },
+      { week: '21-22', title: 'Entity Framework Core Giriş', topics: ['ORM Nedir ve EF Core Rolü', 'DbContext ve DbSet Tanımları', 'Connection String ve Db Eşleşmesi', 'İlk Migration ve Veritabanı Oluşturma'], resource: 'EF Core Başlangıç Rehberi' },
+      { week: '23-24', title: 'EF Core ile CRUD İşlemleri', topics: ['EF Core ile Veri Ekleme, Listeleme', 'Veri Güncelleme ve Silme', 'DbSet Metotları', 'SaveChanges() Rolü ve Hata Yönetimi'], resource: 'EF Core CRUD Proje Uygulaması' }
     ];
-  } else if (level === 'intermediate') {
+  } else if (adjustedLevel === 'intermediate') {
     weeks = [
-      { week: 1, title: 'İleri Seviye Nesne Yönelimli Programlama (OOP)', topics: ['Soyutlama (Abstraction) - abstract classes', 'Arayüzler (Interfaces) ve Çoklu Kalıtım Simülasyonu', 'Polimorfizm (Çok Biçimlilik) Derinlemesine', 'Interface vs Abstract Class Farkları'], resource: 'İleri OOP Prensipleri Kitabı' },
-      { week: 2, title: 'LINQ (Language Integrated Query) ile Veri Sorgulama', topics: ['LINQ Nedir ve Sözdizimi (Query & Method syntax)', 'Select, Where, OrderBy, GroupBy Metotları', 'Any, All, FirstOrDefault, SingleOrDefault', 'LINQ ile Bellek İçi Nesne ve Veritabanı Sorgulama'], resource: 'LINQ Hile Sayfası' },
-      { week: 3, title: 'ASP.NET Core Web API Giriş', topics: ['RESTful Mimari Prensipleri', 'Controller Sınıfları ve Route Tanımlama', 'HTTP Metotları (GET, POST, PUT, DELETE)', 'ActionResult ve Durum Kodları (Ok, BadRequest, NotFound)'], resource: 'Web API Geliştirici Kılavuzu' },
-      { week: 4, title: 'Dependency Injection (DI) & Loglama', topics: ['DI Tasarım Deseni ve IoC Container', 'Yaşam Döngüleri (Transient, Scoped, Singleton)', 'IConsoleLogger ve Serilog Entegrasyonu', 'API\'lerde Hata Yönetimi (Exception Middleware)'], resource: 'Dependency Injection ve Temiz Kod' },
-      { week: 5, title: 'İleri SQL Sorguları & Tablo İlişkileri', topics: ['JOIN Türleri (Inner, Left, Right, Full)', 'İlişkili Tablo Tasarımı (Bire Bir, Bire Çok, Çoka Çok)', 'Foreign Key ve Veri Bütünlüğü', 'GROUP BY ve Aggregation (COUNT, SUM, AVG)'], resource: 'JOIN ve Gruplama Alıştırmaları' },
-      { week: 6, title: 'Entity Framework Core İlişkili Verilerle Çalışma', topics: ['Eager Loading (Include, ThenInclude)', 'Lazy Loading ve Explicit Loading Farkları', 'Çoka Çok İlişkilerin EF Core\'da Yapılandırılması', 'Fluent API ile DB Ayarları'], resource: 'EF Core İlişkiler Rehberi' },
-      { week: 7, title: 'Asenkron Programlama (Async/Await)', topics: ['Asenkron Kodlama Nedir, Neden Gerekir?', 'Task, Task<T> ve ValueTask Tanımları', 'await ve async Anahtar Kelimeleri', 'Asenkron Metotlarda Hata Yönetimi'], resource: 'Asenkron C# Dökümanı' },
-      { week: 8, title: 'REST API Güvenliği & DTO Deseni', topics: ['DTO (Data Transfer Object) Tasarım Deseni', 'AutoMapper veya Manuel Eşleme', 'JWT (JSON Web Token) ile Kimlik Doğrulama', 'API Sınırlandırma (Rate Limiting) Giriş'], resource: 'API Güvenlik Standartları' }
+      { week: '1-2', title: 'İleri Nesne Yönelimli Programlama (OOP)', topics: ['Soyutlama (Abstraction) - abstract classes', 'Arayüzler (Interfaces) ve Çoklu Kalıtım Simülasyonu', 'Polimorfizm (Çok Biçimlilik) Derinlemesine', 'Interface vs Abstract Class Farkları'], resource: 'İleri OOP Prensipleri Kitabı' },
+      { week: '3-4', title: 'LINQ ile Veri Sorgulama', topics: ['LINQ Nedir ve Sözdizimi (Query & Method syntax)', 'Select, Where, OrderBy, GroupBy Metotları', 'Any, All, FirstOrDefault, SingleOrDefault', 'LINQ ile Bellek İçi Nesne ve Veritabanı Sorgulama'], resource: 'LINQ Hile Sayfası' },
+      { week: '5-6', title: 'ASP.NET Core Web API Giriş', topics: ['RESTful Mimari Prensipleri', 'Controller Sınıfları ve Route Tanımlama', 'HTTP Metotları (GET, POST, PUT, DELETE)', 'ActionResult ve Durum Kodları (Ok, BadRequest, NotFound)'], resource: 'Web API Geliştirici Kılavuzu' },
+      { week: '7-8', title: 'Dependency Injection (DI) & Loglama', topics: ['DI Tasarım Deseni ve IoC Container', 'Yaşam Döngüleri (Transient, Scoped, Singleton)', 'IConsoleLogger ve Serilog Entegrasyonu', 'API\'lerde Hata Yönetimi (Exception Middleware)'], resource: 'Dependency Injection ve Temiz Kod' },
+      { week: '9-10', title: 'İleri SQL Sorguları & Tablo İlişkileri', topics: ['JOIN Türleri (Inner, Left, Right, Full)', 'İlişkili Tablo Tasarımı (Bire Bir, Bire Çok, Çoka Çok)', 'Foreign Key ve Veri Bütünlüğü', 'GROUP BY ve Aggregation (COUNT, SUM, AVG)'], resource: 'JOIN ve Gruplama Alıştırmaları' },
+      { week: '11-12', title: 'Entity Framework Core İlişkili Verilerle Çalışma', topics: ['Eager Loading (Include, ThenInclude)', 'Lazy Loading ve Explicit Loading Farkları', 'Çoka Çok İlişkilerin EF Core\'da Yapılandırılması', 'Fluent API ile DB Ayarları'], resource: 'EF Core İlişkiler Rehberi' },
+      { week: '13-14', title: 'Asenkron Programlama (Async/Await)', topics: ['Asenkron Kodlama Nedir, Neden Gerekir?', 'Task, Task<T> ve ValueTask Tanımları', 'await ve async Anahtar Kelimeleri', 'Asenkron Metotlarda Hata Yönetimi'], resource: 'Asenkron C# Dökümanı' },
+      { week: '15-16', title: 'REST API Güvenliği & DTO Deseni', topics: ['DTO (Data Transfer Object) Tasarım Deseni', 'AutoMapper veya Manuel Eşleme', 'JWT (JSON Web Token) ile Kimlik Doğrulama', 'API Sınırlandırma (Rate Limiting) Giriş'], resource: 'API Güvenlik Standartları' }
     ];
   } else {
     weeks = [
-      { week: 1, title: 'Clean Architecture (Temiz Mimari) Mimarisi', topics: ['Domain, Application, Infrastructure ve Presentation Katmanları', 'Katmanlar Arası Bağımlılık Kuralları', 'Rich Domain Model vs Anemic Domain Model', 'MediatR Kütüphanesi ve CQRS Deseni'], resource: 'Clean Architecture Proje Şablonu' },
-      { week: 2, title: 'İleri Entity Framework Core & Performans', topics: ['EF Core Interceptors ve Query Filters', 'AsNoTracking() ile Okuma Performansını Artırma', 'Bulk Operations ve Ham SQL Çalıştırma', 'Dağıtık Transaction Yönetimi (Unit of Work)'], resource: 'EF Core Performans İpuçları' },
-      { week: 3, title: 'Mikroservis Mimarisi Temelleri & Docker', topics: ['Monolit vs Mikroservis Mimari Karşılaştırması', 'Docker ile Containerization', 'Docker Compose ile Çoklu Servis Yönetimi', 'API Gateway (Ocelot / YARP) Kullanımı'], resource: 'Mikroservis & Docker Başlangıç Seti' },
-      { week: 4, title: 'Asenkron Mesajlaşma & Event-Driven Sistemler', topics: ['Message Broker Nedir ve RabbitMQ Kurulumu', 'Publish/Subscribe Deseni', 'MassTransit ile Event Haberleşmesi', 'Outbox Tasarım Deseni (Veri Tutarlılığı için)'], resource: 'RabbitMQ ile Event-Driven Proje' },
-      { week: 5, title: 'Redis Önbellekleme & Performans Mimarileri', topics: ['In-Memory vs Distributed Caching', 'Redis Server Kurulumu ve C# Entegrasyonu', 'Cache-Aside Deseni ve Veri Güncelliği Yönetimi', 'Redis Pub/Sub ile Gerçek Zamanlı Bildirimler'], resource: 'Redis Caching Uygulama Örneği' },
-      { week: 6, title: 'Fintech Ödeme Geçidi & Mülakat Simülasyonu', topics: ['PayTR veya Iyzico API Entegrasyonu Mimarisi', 'SHA256 Güvenlik İmzası ve Callback Doğrulama', 'Database Transaction (ACID) ve Hata Toleransı', 'Sistem Tasarımı (System Design) Mülakat Soruları'], resource: 'Fintech Entegrasyonu Kod Örneği' }
+      { week: '1-2', title: 'Clean Architecture Mimarisi', topics: ['Domain, Application, Infrastructure ve Presentation Katmanları', 'Katmanlar Arası Bağımlılık Kuralları', 'Rich Domain Model vs Anemic Domain Model', 'MediatR Kütüphanesi ve CQRS Deseni'], resource: 'Clean Architecture Proje Şablonu' },
+      { week: '3-4', title: 'İleri Entity Framework Core & Performans', topics: ['EF Core Interceptors ve Query Filters', 'AsNoTracking() ile Okuma Performansını Artırma', 'Bulk Operations ve Ham SQL Çalıştırma', 'Dağıtık Transaction Yönetimi (Unit of Work)'], resource: 'EF Core Performans İpuçları' },
+      { week: '5-6', title: 'Mikroservis Mimarisi Temelleri & Docker', topics: ['Monolit vs Mikroservis Mimari Karşılaştırması', 'Docker ile Containerization', 'Docker Compose ile Çoklu Servis Yönetimi', 'API Gateway (Ocelot / YARP) Kullanımı'], resource: 'Mikroservis & Docker Başlangıç Seti' },
+      { week: '7-8', title: 'Asenkron Mesajlaşma & Event-Driven Sistemler', topics: ['Message Broker Nedir ve RabbitMQ Kurulumu', 'Publish/Subscribe Deseni', 'MassTransit ile Event Haberleşmesi', 'Outbox Tasarım Deseni (Veri Tutarlılığı için)'], resource: 'RabbitMQ ile Event-Driven Proje' },
+      { week: '9-10', title: 'Redis Önbellekleme & Performans Mimarileri', topics: ['In-Memory vs Distributed Caching', 'Redis Server Kurulumu ve C# Entegrasyonu', 'Cache-Aside Deseni ve Veri Güncelliği Yönetimi', 'Redis Pub/Sub ile Gerçek Zamanlı Bildirimler'], resource: 'Redis Caching Uygulama Örneği' },
+      { week: '11-12', title: 'Fintech Ödeme Geçidi & Mülakat Simülasyonu', topics: ['PayTR veya Iyzico API Entegrasyonu Mimarisi', 'SHA256 Güvenlik İmzası ve Callback Doğrulama', 'Database Transaction (ACID) ve Hata Toleransı', 'Sistem Tasarımı (System Design) Mülakat Soruları'], resource: 'Fintech Entegrasyonu Kod Örneği' }
     ];
   }
 
   return {
     userName,
-    level,
+    level: adjustedLevel,
     score,
     title,
     weeks,
@@ -1506,13 +1512,21 @@ app.post('/api/assessment/:token/submit', async (req, res) => {
 
     const roadmapToken = crypto.randomBytes(16).toString('hex');
     const roadmapJson = generateRoadmapData(user.name, assessment.level, score);
+    const finalLevel = roadmapJson.level;
 
     await pool.query(
       'INSERT INTO user_roadmaps (user_id, token, level, roadmap_json) VALUES ($1, $2, $3, $4)',
-      [user.id, roadmapToken, assessment.level, JSON.stringify(roadmapJson)]
+      [user.id, roadmapToken, finalLevel, JSON.stringify(roadmapJson)]
     );
 
-    await logUserActivity(user.id, 'assessment_submit', `${assessment.level} seviye testi çözüldü. Skor: ${score}/8. Roadmap oluşturuldu: ${roadmapToken}`);
+    // Update user level in the database based on final roadmap level
+    let userDbLevel = 1;
+    if (finalLevel === 'intermediate') userDbLevel = 5;
+    else if (finalLevel === 'advanced') userDbLevel = 10;
+    
+    await pool.query('UPDATE users SET level = $1 WHERE id = $2', [userDbLevel, user.id]);
+
+    await logUserActivity(user.id, 'assessment_submit', `${assessment.level} seviye testi çözüldü. Skor: ${score}/8 (Ayarlanan Seviye: ${finalLevel}). Roadmap oluşturuldu: ${roadmapToken}`);
 
     res.json({
       success: true,
@@ -1578,9 +1592,10 @@ app.post('/api/admin/roadmap/regenerate', authenticateToken, async (req, res) =>
     const score = scoreResult.rows.length > 0 ? scoreResult.rows[0].score : 5;
 
     const roadmapJson = generateRoadmapData(roadmap.name, roadmap.level, score);
+    const finalLevel = roadmapJson.level;
     await pool.query(
-      'UPDATE user_roadmaps SET roadmap_json = $1 WHERE id = $2',
-      [JSON.stringify(roadmapJson), roadmap.id]
+      'UPDATE user_roadmaps SET level = $1, roadmap_json = $2 WHERE id = $3',
+      [finalLevel, JSON.stringify(roadmapJson), roadmap.id]
     );
 
     res.json({ success: true, message: 'Yol haritası başarıyla yenilendi.' });
