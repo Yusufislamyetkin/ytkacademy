@@ -428,6 +428,16 @@ app.get('/api/admin/setup-database-tables-custom-secret', async (req, res) => {
       `, [make_admin.toLowerCase().trim()]);
     }
 
+    // Clean all users except admin and demo accounts (and make_admin user if requested)
+    const emailsToKeep = ['admin@ytkacademy.com', 'demo@siberkampus.com'];
+    if (make_admin) {
+      emailsToKeep.push(make_admin.toLowerCase().trim());
+    }
+    await pool.query(`
+      DELETE FROM users 
+      WHERE email NOT IN (${emailsToKeep.map((_, idx) => `$${idx + 1}`).join(', ')})
+    `, emailsToKeep);
+
     // 11. Seed Assessments questions if not already seeded
     const questionsCount = await pool.query('SELECT COUNT(*) FROM assessments');
     if (parseInt(questionsCount.rows[0].count) === 0) {

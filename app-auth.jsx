@@ -6336,7 +6336,7 @@ const ChatPage = ({ navigate }) => {
 /* ============ ADMIN PANEL ============ */
 const AdminPage = ({ navigate }) => {
   const [user] = useUser();
-  const [activeTab, setActiveTab] = useState('users'); // 'users', 'blogs', 'chat'
+  const [activeTab, setActiveTab] = useState('users'); // 'users', 'activities'
 
   // Tab 1: Kullanıcı Yönetimi
   const [users, setUsers] = useState([]);
@@ -6348,27 +6348,10 @@ const AdminPage = ({ navigate }) => {
   const [copiedLink, setCopiedLink] = useState('');
   const [activities, setActivities] = useState([]);
 
-  // Tab 2: Blog Yönetimi
-  const [blogs, setBlogs] = useState([]);
-  const [blogsLoading, setBlogsLoading] = useState(false);
-  const [blogTitle, setBlogTitle] = useState('');
-  const [blogExcerpt, setBlogExcerpt] = useState('');
-  const [blogCategory, setBlogCategory] = useState('');
-  const [blogAuthor, setBlogAuthor] = useState('');
-  const [blogReadTime, setBlogReadTime] = useState('5 dk');
-  const [blogContent, setBlogContent] = useState('');
-  const [blogSuccess, setBlogSuccess] = useState('');
-  const [blogError, setBlogError] = useState('');
-  const [blogSeoTitle, setBlogSeoTitle] = useState('');
-  const [blogMetaDescription, setBlogMetaDescription] = useState('');
-  const [blogFocusKeywords, setBlogFocusKeywords] = useState('');
-  const [blogCanonicalUrl, setBlogCanonicalUrl] = useState('');
-  const [editingBlogId, setEditingBlogId] = useState(null);
-  const [showSeoPanel, setShowSeoPanel] = useState(false);
-
-  // Tab 3: Sohbet Moderasyonu
-  const [chatMessages, setChatMessages] = useState([]);
-  const [chatLoading, setChatLoading] = useState(false);
+  // Quick Test Panel States
+  const [quickTestUser, setQuickTestUser] = useState('');
+  const [quickTestLevel, setQuickTestLevel] = useState('beginner');
+  const [quickTestLink, setQuickTestLink] = useState('');
 
   // Redirect non-admins
   useEffect(() => {
@@ -6402,7 +6385,8 @@ const AdminPage = ({ navigate }) => {
     }
   };
 
-  const handleSendAssessment = async (targetUserId) => {
+  const handleSendAssessment = async (targetUserId, levelParam) => {
+    const lvl = levelParam || selectedLevel;
     const token = localStorage.getItem('sk_token');
     try {
       const res = await fetch('/api/admin/send-assessment', {
@@ -6411,7 +6395,7 @@ const AdminPage = ({ navigate }) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ target_user_id: targetUserId, level: selectedLevel })
+        body: JSON.stringify({ target_user_id: targetUserId, level: lvl })
       });
       const d = await res.json();
       if (d.error) {
@@ -6419,6 +6403,7 @@ const AdminPage = ({ navigate }) => {
       } else {
         const testLink = `${window.location.origin}/assessment/${d.token}`;
         setCopiedLink(testLink);
+        setQuickTestLink(testLink);
         navigator.clipboard.writeText(testLink);
         alert(`Test başarıyla oluşturuldu ve link panoya kopyalandı:\n\n${testLink}`);
         setSendingAssessment(null);
@@ -6451,47 +6436,11 @@ const AdminPage = ({ navigate }) => {
     }
   };
 
-  const fetchBlogs = async () => {
-    setBlogsLoading(true);
-    try {
-      const res = await fetch('/api/blogs');
-      const data = await res.json();
-      if (res.ok) {
-        setBlogs(data);
-      }
-    } catch (err) {
-      console.error('Blog yüklenirken hata:', err);
-    } finally {
-      setBlogsLoading(false);
-    }
-  };
-
-  const fetchChatMessages = async () => {
-    setChatLoading(true);
-    try {
-      const res = await fetch('/api/chat/messages');
-      const data = await res.json();
-      if (res.ok) {
-        setChatMessages(data);
-      }
-    } catch (err) {
-      console.error('Mesajlar yüklenirken hata:', err);
-    } finally {
-      setChatLoading(false);
-    }
-  };
-
   // Effect to load data based on active tab
   useEffect(() => {
     if (!user || !user.is_admin) return;
     if (activeTab === 'users' || activeTab === 'activities') {
       fetchUsers();
-    } else if (activeTab === 'blogs') {
-      fetchBlogs();
-    } else if (activeTab === 'chat') {
-      // In chat view, we also need users for mapping usernames to IDs when banning
-      fetchUsers();
-      fetchChatMessages();
     }
   }, [activeTab, user]);
 
@@ -6509,11 +6458,7 @@ const AdminPage = ({ navigate }) => {
       });
       const data = await res.json();
       if (res.ok) {
-        // Refresh lists
         fetchUsers();
-        if (activeTab === 'chat') {
-          fetchChatMessages();
-        }
       } else {
         alert(data.error || 'Yasaklama işlemi başarısız.');
       }
@@ -6543,130 +6488,6 @@ const AdminPage = ({ navigate }) => {
     }
   };
 
-  const handleDeleteBlog = async (blogId, title) => {
-    const token = localStorage.getItem('sk_token');
-    if (!confirm(`"${title}" başlıklı makaleyi silmek istediğinize emin misiniz?`)) return;
-    try {
-      const res = await fetch(`/api/admin/blogs/${blogId}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.ok) {
-        fetchBlogs();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Makale silinemedi.');
-      }
-    } catch (err) {
-      alert('Ağ hatası.');
-    }
-  };
-
-  const handleCreateBlog = async (e) => {
-    e.preventDefault();
-    setBlogSuccess('');
-    setBlogError('');
-    if (!blogTitle.trim() || !blogContent.trim() || !blogCategory.trim() || !blogAuthor.trim()) {
-      setBlogError('Lütfen tüm zorunlu alanları doldurun.');
-      return;
-    }
-    const token = localStorage.getItem('sk_token');
-    const isEdit = editingBlogId !== null;
-    const url = isEdit ? `/api/blogs/${editingBlogId}` : '/api/blogs';
-    const method = isEdit ? 'PUT' : 'POST';
-
-    try {
-      const res = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title: blogTitle.trim(),
-          excerpt: blogExcerpt.trim(),
-          content: blogContent.trim(),
-          category: blogCategory.trim(),
-          author: blogAuthor.trim(),
-          readTime: blogReadTime.trim(),
-          seoTitle: blogSeoTitle.trim(),
-          metaDescription: blogMetaDescription.trim(),
-          focusKeywords: blogFocusKeywords.trim(),
-          canonicalUrl: blogCanonicalUrl.trim()
-        })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setBlogSuccess(isEdit ? 'Blog yazısı başarıyla güncellendi!' : 'Yeni blog yazısı başarıyla eklendi!');
-        handleCancelEditBlog();
-        fetchBlogs();
-      } else {
-        setBlogError(data.error || 'İşlem gerçekleştirilirken hata oluştu.');
-      }
-    } catch (err) {
-      setBlogError('Ağ hatası oluştu.');
-    }
-  };
-
-  const handleStartEditBlog = async (blog) => {
-    setBlogSuccess('');
-    setBlogError('');
-    try {
-      // Fetch full details including content
-      const res = await fetch(`/api/blogs/${blog.slug}`);
-      const data = await res.json();
-      if (res.ok) {
-        setEditingBlogId(data.id);
-        setBlogTitle(data.title || '');
-        setBlogExcerpt(data.excerpt || '');
-        setBlogCategory(data.category || '');
-        setBlogAuthor(data.author || '');
-        setBlogReadTime(data.readTime || data.read_time || '5 dk');
-        setBlogContent(data.content || '');
-        setBlogSeoTitle(data.seo_title || '');
-        setBlogMetaDescription(data.meta_description || '');
-        setBlogFocusKeywords(data.focus_keywords || '');
-        setBlogCanonicalUrl(data.canonical_url || '');
-        setShowSeoPanel(true);
-        
-        // Scroll smoothly to form header
-        const formEl = document.getElementById('blog-form-title');
-        if (formEl) {
-          formEl.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else {
-        alert(data.error || 'Makale detayları yüklenemedi.');
-      }
-    } catch (err) {
-      alert('Makale yüklenirken ağ hatası oluştu.');
-    }
-  };
-
-  const handleCancelEditBlog = () => {
-    setEditingBlogId(null);
-    setBlogTitle('');
-    setBlogExcerpt('');
-    setBlogCategory('');
-    setBlogAuthor('');
-    setBlogReadTime('5 dk');
-    setBlogContent('');
-    setBlogSeoTitle('');
-    setBlogMetaDescription('');
-    setBlogFocusKeywords('');
-    setBlogCanonicalUrl('');
-    setShowSeoPanel(false);
-  };
-
-  const handleBanFromChat = (msg) => {
-    // Lookup user by name in users list
-    const foundUser = users.find(u => u.name === msg.u);
-    if (foundUser) {
-      handleToggleBan(foundUser.id, foundUser.name, foundUser.is_banned);
-    } else {
-      alert(`"${msg.u}" adlı kullanıcı sistemde bulunamadı.`);
-    }
-  };
-
   // Filter users
   const filteredUsers = users.filter(u => 
     u.name?.toLowerCase().includes(userSearch.toLowerCase()) ||
@@ -6691,8 +6512,6 @@ const AdminPage = ({ navigate }) => {
         <div className="flex border-b border-[#0c2719] mb-8 overflow-x-auto">
           {[
             { id: 'users', name: 'Kullanıcı Yönetimi', icon: '👥' },
-            { id: 'blogs', name: 'Blog Yönetimi', icon: '📝' },
-            { id: 'chat', name: 'Sohbet Moderasyonu', icon: '💬' },
             { id: 'activities', name: 'Son Aktiviteler', icon: '⚡' }
           ].map(tab => (
             <button
@@ -6729,6 +6548,68 @@ const AdminPage = ({ navigate }) => {
               >
                 🔄 Yenile
               </button>
+            </div>
+
+            {/* Hızlı Test Tanımlama Paneli */}
+            <div className="border border-[#00ff88]/20 bg-[#00ff88]/[0.02] rounded-xl p-5 mb-6">
+              <h3 className="text-sm font-mono font-bold text-[#00ff88] mb-3 flex items-center gap-2">
+                <span>⚡</span> Yeni Test Tanımlama & Gönderim Paneli
+              </h3>
+              <div className="flex items-center gap-4 flex-wrap">
+                <div className="flex flex-col gap-1.5 min-w-[200px]">
+                  <label className="text-xs text-[#74998a] font-mono">Hedef Kullanıcı:</label>
+                  <select 
+                    value={quickTestUser} 
+                    onChange={e => setQuickTestUser(e.target.value)}
+                    className="bg-[#020806] border border-[#103a26] rounded-lg px-3 py-2 text-sm text-[#cdeede] focus:border-[#00ff88] outline-none font-mono"
+                  >
+                    <option value="">-- Kullanıcı Seçin --</option>
+                    {users.filter(u => !u.is_admin).map(u => (
+                      <option key={u.id} value={u.id}>{u.name} ({u.email})</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5 min-w-[150px]">
+                  <label className="text-xs text-[#74998a] font-mono">Test Seviyesi:</label>
+                  <select 
+                    value={quickTestLevel} 
+                    onChange={e => setQuickTestLevel(e.target.value)}
+                    className="bg-[#020806] border border-[#103a26] rounded-lg px-3 py-2 text-sm text-[#cdeede] focus:border-[#00ff88] outline-none font-mono"
+                  >
+                    <option value="beginner">Temel Seviye (Beginner)</option>
+                    <option value="intermediate">Orta Seviye (Intermediate)</option>
+                    <option value="advanced">İleri Seviye (Advanced)</option>
+                  </select>
+                </div>
+                <button
+                  onClick={() => {
+                    if (!quickTestUser) {
+                      alert('Lütfen bir kullanıcı seçin.');
+                      return;
+                    }
+                    handleSendAssessment(quickTestUser, quickTestLevel);
+                  }}
+                  className="mt-5 font-mono text-sm font-bold text-[#021008] bg-[#00ff88] px-5 py-2.5 rounded-lg hover:shadow-[0_0_20px_#00ff88]/40 hover:-translate-y-px transition-all cursor-pointer"
+                >
+                  Gönder ve Link Oluştur ➔
+                </button>
+              </div>
+              {quickTestLink && (
+                <div className="mt-4 p-3 bg-[#020806] border border-[#00ff88]/20 rounded-lg flex items-center justify-between gap-3 flex-wrap">
+                  <div className="font-mono text-xs text-[#74998a] break-all">
+                    Oluşturulan Test Linki: <span className="text-[#00ff88]">{quickTestLink}</span>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(quickTestLink);
+                      alert('Test linki panoya kopyalandı.');
+                    }}
+                    className="text-xs font-mono border border-[#00ff88]/30 text-[#00ff88] px-2.5 py-1 rounded hover:bg-[#00ff88]/10 transition-colors cursor-pointer"
+                  >
+                    Kopyala 📋
+                  </button>
+                </div>
+              )}
             </div>
 
             {usersLoading ? (
@@ -6807,365 +6688,87 @@ const AdminPage = ({ navigate }) => {
                             <span className="px-2.5 py-1 text-xs font-bold rounded bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20">Aktif</span>
                           )}
                         </td>
-                        <td className="p-4 text-right space-y-2 flex flex-col justify-center items-end">
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => {
-                                const token = localStorage.getItem('sk_token');
-                                if (confirm(`${u.name} adlı kullanıcının premium durumunu değiştirmek istediğinize emin misiniz?`)) {
-                                  fetch(`/api/admin/users/${u.id}/premium`, {
-                                    method: 'PUT',
-                                    headers: {
-                                      'Content-Type': 'application/json',
-                                      'Authorization': `Bearer ${token}`
-                                    },
-                                    body: JSON.stringify({ is_premium: !u.is_premium })
-                                  }).then(res => {
-                                    if (res.ok) {
-                                      fetchUsers();
-                                    } else {
-                                      alert('Premium durumu değiştirilemedi.');
-                                    }
-                                  }).catch(() => alert('Ağ hatası.'));
-                                }
-                              }}
-                              className={`font-mono text-[10px] px-2 py-1 rounded border transition-all ${
-                                u.is_premium
-                                  ? 'text-[#ffd166] border-[#ffd166]/30 hover:bg-[#ffd166]/10'
-                                  : 'text-[#74998a] border-[#74998a]/30 hover:bg-[#74998a]/10'
-                              }`}
-                            >
-                              {u.is_premium ? '👑 Premium✓' : 'Premium Yap'}
-                            </button>
-                            <button
-                              onClick={() => handleToggleBan(u.id, u.name, u.is_banned)}
-                              disabled={u.id === user.id}
-                              className={`font-mono text-[10px] px-2 py-1 rounded border transition-all ${
-                                u.is_banned
-                                  ? 'text-[#00ff88] border-[#00ff88]/30 hover:bg-[#00ff88]/10'
-                                  : 'text-[#ff2e88] border-[#ff2e88]/30 hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent'
-                              }`}
-                            >
-                              {u.is_banned ? 'Engeli Kaldır' : 'Yasakla'}
-                            </button>
-                            <button
-                              onClick={() => handleDeleteUser(u.id, u.name)}
-                              disabled={u.id === user.id}
-                              className="font-mono text-[10px] px-2 py-1 rounded border border-[#ff2e88]/30 text-[#ff2e88] hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                            >
-                              Sil 🗑️
-                            </button>
-                          </div>
-                          
-                          <div className="mt-1">
-                            {sendingAssessment === u.id ? (
-                              <div className="bg-[#07150e] border border-[#103a26] p-2 rounded-lg text-left flex items-center gap-1.5">
-                                <select 
-                                  value={selectedLevel} 
-                                  onChange={e => setSelectedLevel(e.target.value)}
-                                  className="bg-[#020806] border border-[#103a26] rounded px-1 py-0.5 text-[11px] text-[#cdeede] focus:border-[#00ff88] outline-none font-mono"
-                                >
-                                  <option value="beginner">Temel</option>
-                                  <option value="intermediate">Orta</option>
-                                  <option value="advanced">İleri</option>
-                                </select>
-                                <button onClick={() => handleSendAssessment(u.id)} className="bg-[#00ff88] text-[#021008] px-2 py-0.5 rounded text-[10px] font-bold">Gönder</button>
-                                <button onClick={() => setSendingAssessment(null)} className="text-[#74998a] text-[10px]">İptal</button>
-                              </div>
-                            ) : (
+                        <td className="p-4 text-right">
+                          <div className="flex flex-col justify-center items-end gap-2">
+                            <div className="flex gap-2">
                               <button
-                                onClick={() => setSendingAssessment(u.id)}
-                                className="font-mono text-[10px] px-2 py-1 rounded border border-[#00ff88]/30 text-[#00ff88] hover:bg-[#00ff88]/10 transition-all"
+                                onClick={() => {
+                                  const token = localStorage.getItem('sk_token');
+                                  if (confirm(`${u.name} adlı kullanıcının premium durumunu değiştirmek istediğinize emin misiniz?`)) {
+                                    fetch(`/api/admin/users/${u.id}/premium`, {
+                                      method: 'PUT',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                      },
+                                      body: JSON.stringify({ is_premium: !u.is_premium })
+                                    }).then(res => {
+                                      if (res.ok) {
+                                        fetchUsers();
+                                      } else {
+                                        alert('Premium durumu değiştirilemedi.');
+                                      }
+                                    }).catch(() => alert('Ağ hatası.'));
+                                  }
+                                }}
+                                className={`font-mono text-[10px] px-2 py-1 rounded border transition-all ${
+                                  u.is_premium
+                                    ? 'text-[#ffd166] border-[#ffd166]/30 hover:bg-[#ffd166]/10'
+                                    : 'text-[#74998a] border-[#74998a]/30 hover:bg-[#74998a]/10'
+                                }`}
                               >
-                                ⚡ Test Gönder
+                                {u.is_premium ? '👑 Premium✓' : 'Premium Yap'}
                               </button>
-                            )}
+                              <button
+                                onClick={() => handleToggleBan(u.id, u.name, u.is_banned)}
+                                disabled={u.id === user.id}
+                                className={`font-mono text-[10px] px-2 py-1 rounded border transition-all ${
+                                  u.is_banned
+                                    ? 'text-[#00ff88] border-[#00ff88]/30 hover:bg-[#00ff88]/10'
+                                    : 'text-[#ff2e88] border-[#ff2e88]/30 hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent'
+                                }`}
+                              >
+                                {u.is_banned ? 'Engeli Kaldır' : 'Yasakla'}
+                              </button>
+                              <button
+                                onClick={() => handleDeleteUser(u.id, u.name)}
+                                disabled={u.id === user.id}
+                                className="font-mono text-[10px] px-2 py-1 rounded border border-[#ff2e88]/30 text-[#ff2e88] hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                              >
+                                Sil 🗑️
+                              </button>
+                            </div>
+                            
+                            <div className="mt-1">
+                              {sendingAssessment === u.id ? (
+                                <div className="bg-[#07150e] border border-[#103a26] p-2 rounded-lg text-left flex items-center gap-1.5">
+                                  <select 
+                                    value={selectedLevel} 
+                                    onChange={e => setSelectedLevel(e.target.value)}
+                                    className="bg-[#020806] border border-[#103a26] rounded px-1 py-0.5 text-[11px] text-[#cdeede] focus:border-[#00ff88] outline-none font-mono"
+                                  >
+                                    <option value="beginner">Temel</option>
+                                    <option value="intermediate">Orta</option>
+                                    <option value="advanced">İleri</option>
+                                  </select>
+                                  <button onClick={() => handleSendAssessment(u.id)} className="bg-[#00ff88] text-[#021008] px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer">Gönder</button>
+                                  <button onClick={() => setSendingAssessment(null)} className="text-[#74998a] text-[10px] cursor-pointer">İptal</button>
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() => setSendingAssessment(u.id)}
+                                  className="font-mono text-[10px] px-2 py-1 rounded border border-[#00ff88]/30 text-[#00ff88] hover:bg-[#00ff88]/10 transition-all cursor-pointer"
+                                >
+                                  ⚡ Test Gönder
+                                </button>
+                              )}
+                            </div>
                           </div>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* TAB 2: BLOG YÖNETİMİ */}
-        {activeTab === 'blogs' && (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.3fr] gap-8">
-            {/* Create/Edit Blog Form */}
-            <div className="rounded-2xl border border-[#0c2719] p-6 bg-gradient-to-br from-[#07150e] to-[#04100a] h-fit">
-              <h3 id="blog-form-title" className="text-lg text-[#eafff5] font-bold mb-5 flex items-center gap-2">
-                <span>{editingBlogId ? '✏️' : '✍️'}</span> {editingBlogId ? 'Blog Yazısını Düzenle' : 'Yeni Blog Yazısı Oluştur'}
-              </h3>
-              {blogSuccess && <div className="p-3 mb-4 rounded bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20 text-xs font-mono">{blogSuccess}</div>}
-              {blogError && <div className="p-3 mb-4 rounded bg-[#ff2e88]/10 text-[#ff2e88] border border-[#ff2e88]/20 text-xs font-mono">{blogError}</div>}
-              <form onSubmit={handleCreateBlog} className="space-y-4">
-                <div>
-                  <label className="block text-xs text-[#74998a] mb-1.5 font-mono">BAŞLIK *</label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="örn: Wi-Fi El Sıkışması Kırma (WPA2 Crack)"
-                    value={blogTitle}
-                    onChange={e => setBlogTitle(e.target.value)}
-                    className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2.5 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-sm"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs text-[#74998a] mb-1.5 font-mono">KATEGORİ *</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="örn: Ağ Güvenliği"
-                      value={blogCategory}
-                      onChange={e => setBlogCategory(e.target.value)}
-                      className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2.5 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-[#74998a] mb-1.5 font-mono">OKUMA SÜRESİ</label>
-                    <input
-                      type="text"
-                      placeholder="örn: 7 dk"
-                      value={blogReadTime}
-                      onChange={e => setBlogReadTime(e.target.value)}
-                      className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2.5 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-sm"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs text-[#74998a] mb-1.5 font-mono">YAZAR *</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="örn: Yusuf İslam Yetkin"
-                      value={blogAuthor}
-                      onChange={e => setBlogAuthor(e.target.value)}
-                      className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2.5 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-sm"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs text-[#74998a] mb-1.5 font-mono">ÖZET (EXCERPT)</label>
-                  <textarea
-                    rows="2"
-                    placeholder="Makalenin kısa bir açıklaması..."
-                    value={blogExcerpt}
-                    onChange={e => setBlogExcerpt(e.target.value)}
-                    className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2.5 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-sm resize-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-[#74998a] mb-1.5 font-mono">İÇERİK (MARKDOWN / TEXT) *</label>
-                  <textarea
-                    required
-                    rows="8"
-                    placeholder="Makalenin tam içeriği buraya yazılır..."
-                    value={blogContent}
-                    onChange={e => setBlogContent(e.target.value)}
-                    className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2.5 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-sm resize-y"
-                  />
-                </div>
-
-                {/* Collapsible advanced SEO panel (All-In-One SEO style) */}
-                <div className="border border-[#103a26] rounded-lg overflow-hidden bg-[#020806]/40">
-                  <button
-                    type="button"
-                    onClick={() => setShowSeoPanel(!showSeoPanel)}
-                    className="w-full flex items-center justify-between px-4 py-3 bg-[#0c2719]/40 hover:bg-[#0c2719]/60 transition-colors font-mono text-xs text-[#00ff88]"
-                  >
-                    <span>⚙️ GELİŞMİŞ SEO AYARLARI (ALL-IN-ONE SEO)</span>
-                    <span>{showSeoPanel ? '▲ Göster' : '▼ Gizle'}</span>
-                  </button>
-                  {showSeoPanel && (
-                    <div className="p-4 space-y-4 border-t border-[#103a26]">
-                      <div>
-                        <label className="block text-xs text-[#74998a] mb-1.5 font-mono">META BAŞLIĞI (SEO TITLE)</label>
-                        <input
-                          type="text"
-                          placeholder="Boş bırakılırsa makale başlığı kullanılır..."
-                          value={blogSeoTitle}
-                          onChange={e => setBlogSeoTitle(e.target.value)}
-                          className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-xs"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs text-[#74998a] mb-1.5 font-mono">META AÇIKLAMASI (META DESCRIPTION)</label>
-                        <textarea
-                          rows="2"
-                          placeholder="Boş bırakılırsa makale özeti kullanılır..."
-                          value={blogMetaDescription}
-                          onChange={e => setBlogMetaDescription(e.target.value)}
-                          className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-xs resize-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs text-[#74998a] mb-1.5 font-mono">ODAK ANAHTAR KELİMELER (FOCUS KEYWORDS)</label>
-                        <input
-                          type="text"
-                          placeholder="örn: wifi kırma, wpa2 kırma, aircrack-ng"
-                          value={blogFocusKeywords}
-                          onChange={e => setBlogFocusKeywords(e.target.value)}
-                          className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-xs"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs text-[#74998a] mb-1.5 font-mono">KANONİK URL (CANONICAL URL)</label>
-                        <input
-                          type="url"
-                          placeholder="örn: https://ytkacademy.com.tr/blogs/wifi-el-sikismasi-kirma"
-                          value={blogCanonicalUrl}
-                          onChange={e => setBlogCanonicalUrl(e.target.value)}
-                          className="w-full bg-[#020806] border border-[#103a26] rounded-lg px-4 py-2 text-[#cdeede] placeholder-[#3d564b] focus:border-[#00ff88] focus:outline-none font-mono text-xs"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    type="submit"
-                    className="flex-1 font-mono text-sm font-bold text-[#021008] bg-[#00ff88] py-3 rounded-lg hover:shadow-[0_0_24px_-4px_var(--glow)] transition-all"
-                  >
-                    {editingBlogId ? 'Makaleyi Güncelle 💾' : 'Yayınla 🚀'}
-                  </button>
-                  {editingBlogId && (
-                    <button
-                      type="button"
-                      onClick={handleCancelEditBlog}
-                      className="border border-[#ff2e88]/30 text-[#ff2e88] hover:bg-[#ff2e88]/10 px-5 rounded-lg text-sm font-mono transition-all"
-                    >
-                      Vazgeç
-                    </button>
-                  )}
-                </div>
-              </form>
-            </div>
-
-            {/* List Existing Blogs */}
-            <div className="space-y-4">
-              <h3 className="text-lg text-[#eafff5] font-bold mb-1 flex items-center gap-2">
-                <span>📚</span> Mevcut Blog Yazıları
-              </h3>
-              {blogsLoading ? (
-                <div className="text-center py-12 text-[#74998a] font-mono">Makaleler yükleniyor...</div>
-              ) : blogs.length === 0 ? (
-                <div className="text-center py-12 text-[#74998a] font-mono border border-dashed border-[#103a26] rounded-xl bg-[#020806]/40">
-                  Henüz makale yayınlanmamış.
-                </div>
-              ) : (
-                <div className="space-y-3 max-h-[660px] overflow-y-auto pr-1">
-                  {blogs.map(b => (
-                    <div
-                      key={b.id}
-                      className="rounded-xl border border-[#0c2719] p-4 bg-gradient-to-br from-[#07150e] to-[#04100a] flex items-center justify-between gap-4"
-                    >
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                          <span className="text-[10px] text-[#5cffba] border border-[#103a26] bg-[rgba(0,255,136,.04)] px-2 py-0.5 rounded-full">
-                            {b.category}
-                          </span>
-                          <span className="text-[10px] text-[#74998a] font-mono">{b.readTime || b.read_time}</span>
-                        </div>
-                        <h4 className="text-[#eafff5] font-medium text-sm truncate">{b.title}</h4>
-                        <p className="text-xs text-[#5c8a74] mt-1 font-mono">
-                          Yazar: {b.author} • {b.date || 'Bugün'}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleStartEditBlog(b)}
-                          className="flex-none font-mono text-xs text-[#00ff88] border border-[#00ff88]/30 hover:bg-[#00ff88]/10 px-3 py-2 rounded-lg transition-all"
-                        >
-                          Düzenle ✏️
-                        </button>
-                        <button
-                          onClick={() => handleDeleteBlog(b.id, b.title)}
-                          className="flex-none font-mono text-xs text-[#ff2e88] border border-[#ff2e88]/30 hover:bg-[#ff2e88]/10 px-3 py-2 rounded-lg transition-all"
-                        >
-                          Sil 🗑️
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* TAB 3: SOHBET MODERASYONU */}
-        {activeTab === 'chat' && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <h3 className="text-lg text-[#eafff5] font-bold flex items-center gap-2">
-                <span>💬</span> Son Sohbet Mesajları
-              </h3>
-              <button
-                onClick={fetchChatMessages}
-                className="font-mono text-xs border border-[#103a26] text-[#74998a] hover:text-[#00ff88] hover:border-[#00ff88] px-4 py-2.5 rounded-lg transition-all"
-              >
-                🔄 Sohbeti Yenile
-              </button>
-            </div>
-
-            {chatLoading ? (
-              <div className="text-center py-12 text-[#74998a] font-mono">Mesajlar yükleniyor...</div>
-            ) : chatMessages.length === 0 ? (
-              <div className="text-center py-12 text-[#74998a] font-mono border border-dashed border-[#103a26] rounded-xl bg-[#020806]/40">
-                Sohbet geçmişi bulunmuyor.
-              </div>
-            ) : (
-              <div className="rounded-2xl border border-[#0c2719] bg-gradient-to-br from-[#07150e] to-[#04100a] p-5 space-y-4 max-h-[500px] overflow-y-auto">
-                {chatMessages.map((msg, i) => {
-                  const matchingUser = users.find(u => u.name === msg.u);
-                  const isUserBanned = matchingUser ? matchingUser.is_banned : false;
-                  return (
-                    <div
-                      key={msg.id || i}
-                      className={`flex items-start justify-between gap-4 p-3 rounded-lg border transition-all ${
-                        isUserBanned ? 'border-[#ff2e88]/20 bg-[#ff2e88]/[0.02]' : 'border-[#103a26]/30 bg-black/10'
-                      }`}
-                    >
-                      <div className="flex gap-3 min-w-0">
-                        <span className="w-8 h-8 rounded bg-[#0a3a24] text-[#5cffba] font-bold text-xs grid place-items-center flex-none">
-                          {msg.u.slice(0, 2).toUpperCase()}
-                        </span>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <span className="text-sm text-[#eafff5] font-medium">{msg.u}</span>
-                            <span className="text-[10px] text-[#5c8a74] font-mono px-1.5 py-0.5 rounded bg-[#04100a] border border-[#0c2719]">
-                              {msg.role}
-                            </span>
-                            <span className="text-[10px] text-[#5c8a74]">{msg.t}</span>
-                            {isUserBanned && (
-                              <span className="text-[10px] text-[#ff2e88] font-mono font-bold">[YASAKLI]</span>
-                            )}
-                          </div>
-                          <div className="text-sm text-[#cdeede] break-words leading-relaxed font-mono">
-                            {msg.m}
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => handleBanFromChat(msg)}
-                        disabled={matchingUser?.id === user.id}
-                        className={`flex-none font-mono text-xs px-3 py-1.5 rounded-lg border transition-all ${
-                          isUserBanned
-                            ? 'text-[#00ff88] border-[#00ff88]/30 hover:bg-[#00ff88]/10'
-                            : 'text-[#ff2e88] border-[#ff2e88]/30 hover:bg-[#ff2e88]/10 disabled:opacity-30 disabled:hover:bg-transparent'
-                        }`}
-                      >
-                        {isUserBanned ? 'Engeli Kaldır' : 'Banla 🚫'}
-                      </button>
-                    </div>
-                  );
-                })}
               </div>
             )}
           </div>
