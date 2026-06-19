@@ -250,7 +250,7 @@ const AppHeader = ({ navigate, active }) => {
           <div className="flex items-center gap-8">
             <button onClick={() => navigate('dashboard')} className="flex items-center gap-2.5 font-disp font-bold text-lg text-[#eafff5]">
               <span className="w-[30px] h-[30px] border-[1.5px] border-[#00ff88] rounded-lg grid place-items-center text-[#00ff88] font-mono text-[13px] font-bold shadow-[0_0_14px_-4px_var(--glow)]">&gt;_</span>
-              ytk<b className="text-[#00ff88]">academy</b>
+              YTK <b className="text-[#00ff88]">Academy</b>
             </button>
             <nav className="hidden md:flex items-center gap-1">
               {nav.map(([t, p, ic]) => (
@@ -707,6 +707,59 @@ GROUP BY Sehir;
 \`\`\``
         }
       ]
+    },
+    netcore: {
+      title: ".NET Core Backend Geliştirme",
+      desc: ".NET CLI, ASP.NET Core Web API, Dependency Injection, Middleware yapısı ve App Configuration yönetimi.",
+      icon: "⚙️",
+      lessons: [
+        {
+          id: "net-1",
+          title: "Ders 1: .NET Core Nedir ve CLI Kullanımı",
+          content: `.NET Core (modern adıyla .NET), Microsoft tarafından geliştirilen, açık kaynak kodlu ve çapraz platform (cross-platform) destekli yüksek performanslı bir yazılım geliştirme platformudur.
+
+### CLI Komutları:
+* \`dotnet new <proje-tipi>\` : Yeni proje şablonu oluşturur.
+* \`dotnet build\` : Projeyi derler.
+* \`dotnet run\` : Projeyi çalıştırır.
+* \`dotnet watch\` : Hot reload ile değişiklikleri otomatik algılar.`
+        },
+        {
+          id: "net-2",
+          title: "Ders 2: ASP.NET Core MVC ve Web API Temelleri",
+          content: `Web API projelerinde istemciden gelen istekleri karşılayan sınıflara Controller denir. \`[ApiController]\` attribute'u ile işaretlenir.
+
+### Örnek API Controller:
+\`\`\`csharp
+[ApiController]
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase {
+    [HttpGet]
+    public IActionResult Get() => Ok(new string[] { "Laptop", "Mouse" });
+}
+\`\`\``
+        },
+        {
+          id: "net-3",
+          title: "Ders 3: Bağımlılık Enjeksiyonu (Dependency Injection)",
+          content: `ASP.NET Core yerleşik IoC Container ile Dependency Injection destekler.
+
+### Servis Ömürleri:
+* **Transient:** Her istekte yeni örnek oluşturulur.
+* **Scoped:** HTTP request başına tek örnek oluşturulur.
+* **Singleton:** Uygulama ömrü boyunca tek örnek oluşturulur.`
+        },
+        {
+          id: "net-4",
+          title: "Ders 4: Middleware ve Pipeline Mimarisi",
+          content: `Middleware, HTTP request-response hattındaki (pipeline) ara katman kod bileşenleridir. Her middleware istek ve yanıtı işleyip sıradakine (\`next()\`) iletebilir veya hattı sonlandırabilir.`
+        },
+        {
+          id: "net-5",
+          title: "Ders 5: Yapılandırma ve Ortam Yönetimi",
+          content: `Proje ayarları \`appsettings.json\` dosyasında tutulur ve \`IConfiguration\` servisi ile okunur. Çalışma ortamları (Environment) \`ASPNETCORE_ENVIRONMENT\` değişkeni ile yönetilir (\`Development\`, \`Staging\`, \`Production\`).`
+        }
+      ]
     }
   };
 
@@ -806,11 +859,11 @@ GROUP BY Sehir;
               YTK <span className="text-[#00ff88]">Academy</span> Öğrenme Paneli
             </h1>
             <p className="text-sm md:text-base text-[#74998a] leading-relaxed">
-              C# veya SQL konularından birini seçerek kişiselleştirilmiş yazılım eğitim yolculuğuna hemen başla.
+              C#, SQL veya .NET Core konularından birini seçerek kişiselleştirilmiş yazılım eğitim yolculuğuna hemen başla.
             </p>
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {Object.entries(COURSES).map(([key, course]) => {
               const total = course.lessons.length;
               const completedCount = course.lessons.filter(l => completedLessons.includes(l.id)).length;
@@ -6334,6 +6387,17 @@ const ChatPage = ({ navigate }) => {
 };
 
 /* ============ ADMIN PANEL ============ */
+const formatPhoneForWA = (rawPhone) => {
+  if (!rawPhone) return '';
+  let cleaned = rawPhone.replace(/\D/g, '');
+  if (cleaned.startsWith('0') && cleaned.length === 11) {
+    cleaned = '90' + cleaned.substring(1);
+  } else if (cleaned.length === 10 && (cleaned.startsWith('5') || cleaned.startsWith('4') || cleaned.startsWith('8'))) {
+    cleaned = '90' + cleaned;
+  }
+  return cleaned;
+};
+
 const AdminPage = ({ navigate }) => {
   const [user] = useUser();
   const [activeTab, setActiveTab] = useState('users'); // 'users', 'activities'
@@ -6594,22 +6658,42 @@ const AdminPage = ({ navigate }) => {
                   Gönder ve Link Oluştur ➔
                 </button>
               </div>
-              {quickTestLink && (
-                <div className="mt-4 p-3 bg-[#020806] border border-[#00ff88]/20 rounded-lg flex items-center justify-between gap-3 flex-wrap">
-                  <div className="font-mono text-xs text-[#74998a] break-all">
-                    Oluşturulan Test Linki: <span className="text-[#00ff88]">{quickTestLink}</span>
+              {quickTestLink && (() => {
+                const targetU = users.find(u => String(u.id) === String(quickTestUser));
+                const phone = targetU?.phone;
+                const formattedPhone = formatPhoneForWA(phone);
+                const waMessage = `Merhaba, YTK Academy yazılım testiniz hazır! Bu link üzerinden başlayabilirsiniz: ${quickTestLink}`;
+                const waUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(formattedPhone)}&text=${encodeURIComponent(waMessage)}`;
+                
+                return (
+                  <div className="mt-4 p-3 bg-[#020806] border border-[#00ff88]/20 rounded-lg flex items-center justify-between gap-3 flex-wrap">
+                    <div className="font-mono text-xs text-[#74998a] break-all">
+                      Oluşturulan Test Linki: <span className="text-[#00ff88]">{quickTestLink}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(quickTestLink);
+                          alert('Test linki panoya kopyalandı.');
+                        }}
+                        className="text-xs font-mono border border-[#00ff88]/30 text-[#00ff88] px-2.5 py-1 rounded hover:bg-[#00ff88]/10 transition-colors cursor-pointer"
+                      >
+                        Kopyala 📋
+                      </button>
+                      {phone && (
+                        <a 
+                          href={waUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-mono border border-green-500/30 text-green-400 px-2.5 py-1 rounded hover:bg-green-500/10 transition-colors flex items-center gap-1 cursor-pointer"
+                        >
+                          WhatsApp ile Gönder 💬
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  <button 
-                    onClick={() => {
-                      navigator.clipboard.writeText(quickTestLink);
-                      alert('Test linki panoya kopyalandı.');
-                    }}
-                    className="text-xs font-mono border border-[#00ff88]/30 text-[#00ff88] px-2.5 py-1 rounded hover:bg-[#00ff88]/10 transition-colors cursor-pointer"
-                  >
-                    Kopyala 📋
-                  </button>
-                </div>
-              )}
+                );
+              })()}
             </div>
 
             {usersLoading ? (
@@ -6642,6 +6726,11 @@ const AdminPage = ({ navigate }) => {
                             <div>
                               <div className="text-[#eafff5] font-medium">{u.name}</div>
                               <div className="text-[10px] text-[#5c8a74]">ID: {u.id} {u.is_admin && <span className="text-[#ffd166]">[Yönetici]</span>}</div>
+                              {u.phone && (
+                                <div className="text-[10px] text-[#00ff88] mt-0.5 flex items-center gap-1 font-mono">
+                                  📞 <span className="select-all">{u.phone}</span>
+                                </div>
+                              )}
                               <div className="text-[9px] text-[#74998a] mt-0.5">Kayıt: {new Date(u.created_at).toLocaleDateString('tr-TR')}</div>
                             </div>
                           </div>
@@ -6742,12 +6831,24 @@ const AdminPage = ({ navigate }) => {
                                   <button onClick={() => setSendingAssessment(null)} className="text-[#74998a] text-[10px] cursor-pointer">İptal</button>
                                 </div>
                               ) : (
-                                <button
-                                  onClick={() => setSendingAssessment(u.id)}
-                                  className="font-mono text-[10px] px-2 py-1 rounded border border-[#00ff88]/30 text-[#00ff88] hover:bg-[#00ff88]/10 transition-all cursor-pointer"
-                                >
-                                  ⚡ Test Gönder
-                                </button>
+                                <div className="flex flex-col gap-1.5 items-end">
+                                  <button
+                                    onClick={() => setSendingAssessment(u.id)}
+                                    className="font-mono text-[10px] px-2 py-1 rounded border border-[#00ff88]/30 text-[#00ff88] hover:bg-[#00ff88]/10 transition-all cursor-pointer"
+                                  >
+                                    ⚡ Yeni Test Gönder
+                                  </button>
+                                  {u.pending_test_token && u.phone && (
+                                    <a
+                                      href={`https://api.whatsapp.com/send?phone=${encodeURIComponent(formatPhoneForWA(u.phone))}&text=${encodeURIComponent(`Merhaba, YTK Academy yazılım testiniz hazır! Bu link üzerinden başlayabilirsiniz: ${window.location.origin}/assessment/${u.pending_test_token}`)}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1 font-mono text-[10px] px-2 py-1 rounded border border-green-500/30 text-green-400 hover:bg-green-500/10 transition-all cursor-pointer"
+                                    >
+                                      💬 WhatsApp Test Linki
+                                    </a>
+                                  )}
+                                </div>
                               )}
                             </div>
                           </div>

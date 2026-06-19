@@ -217,7 +217,7 @@ async function getUserPayload(userId) {
              (CASE WHEN COALESCE(s.sys_solved, 0) >= 10 THEN 1 ELSE 0 END) +
              (CASE WHEN u.streak >= 30 THEN 1 ELSE 0 END)
            ) as badges,
-           u.streak, u.name_changed, u.is_admin, u.is_banned, (u.is_vip OR u.is_premium) as is_premium, u.is_vip
+           u.streak, u.name_changed, u.is_admin, u.is_banned, (u.is_vip OR u.is_premium) as is_premium, u.is_vip, u.phone
     FROM users u
     LEFT JOIN user_solves s ON u.id = s.user_id
     LEFT JOIN ranked_users r ON u.id = r.id
@@ -250,6 +250,7 @@ app.get('/api/admin/setup-database-tables-custom-secret', async (req, res) => {
           email VARCHAR(100) UNIQUE NOT NULL,
           password_hash VARCHAR(255) NOT NULL,
           name VARCHAR(100) NOT NULL,
+          phone VARCHAR(50),
           points INT DEFAULT 0,
           solved_count INT DEFAULT 0,
           level INT DEFAULT 1,
@@ -270,7 +271,8 @@ app.get('/api/admin/setup-database-tables-custom-secret', async (req, res) => {
       { name: 'is_premium', type: 'BOOLEAN DEFAULT FALSE' },
       { name: 'password_set_token', type: 'VARCHAR(255)' },
       { name: 'password_set_expires', type: 'TIMESTAMP' },
-      { name: 'subscription', type: "VARCHAR(50) DEFAULT 'free'" }
+      { name: 'subscription', type: "VARCHAR(50) DEFAULT 'free'" },
+      { name: 'phone', type: 'VARCHAR(50)' }
     ];
 
     for (const col of columns) {
@@ -552,8 +554,8 @@ app.get('/api/admin/setup-database-tables-custom-secret', async (req, res) => {
 
 // Register
 app.post('/api/auth/register', async (req, res) => {
-  const { name, email, pw } = req.body;
-  if (!name || !email || !pw) {
+  const { name, email, pw, phone } = req.body;
+  if (!name || !email || !pw || !phone) {
     return res.status(400).json({ error: 'Lütfen tüm alanları doldurun.' });
   }
 
@@ -565,8 +567,8 @@ app.post('/api/auth/register', async (req, res) => {
 
     const passwordHash = await bcrypt.hash(pw, 10);
     const result = await pool.query(
-      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id',
-      [email.toLowerCase().trim(), passwordHash, name.trim()]
+      'INSERT INTO users (email, password_hash, name, phone) VALUES ($1, $2, $3, $4) RETURNING id',
+      [email.toLowerCase().trim(), passwordHash, name.trim(), phone.trim()]
     );
 
     const user = await getUserPayload(result.rows[0].id);
@@ -1396,8 +1398,9 @@ app.get('/api/admin/users', authenticateToken, async (req, res) => {
                (CASE WHEN COALESCE(s.sys_solved, 0) >= 10 THEN 1 ELSE 0 END) +
                (CASE WHEN u.streak >= 30 THEN 1 ELSE 0 END)
              ) as badges,
-             u.streak, u.is_admin, u.is_banned, (u.is_vip OR u.is_premium) as is_premium, u.is_vip, u.created_at,
-             (SELECT token FROM user_roadmaps WHERE user_id = u.id ORDER BY created_at DESC LIMIT 1) as roadmap_token
+             u.streak, u.is_admin, u.is_banned, (u.is_vip OR u.is_premium) as is_premium, u.is_vip, u.created_at, u.phone,
+             (SELECT token FROM user_roadmaps WHERE user_id = u.id ORDER BY created_at DESC LIMIT 1) as roadmap_token,
+             (SELECT token FROM user_assessments WHERE user_id = u.id AND completed_at IS NULL ORDER BY sent_at DESC LIMIT 1) as pending_test_token
       FROM users u
       LEFT JOIN user_solves s ON u.id = s.user_id
       LEFT JOIN ranked_users r ON u.id = r.id

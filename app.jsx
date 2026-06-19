@@ -1249,14 +1249,14 @@ const LoginPage = ({ navigate }) => {
 
 /* ============ REGISTER ============ */
 const RegisterPage = ({ navigate, data }) => {
-  const [f, setF] = useState({ name: '', email: '', pw: '', pw2: '', terms: false });
+  const [f, setF] = useState({ name: '', email: '', pw: '', pw2: '', phone: '', terms: false });
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const ch = (e) => {const { name, value, type, checked } = e.target;setF((p) => ({ ...p, [name]: type === 'checkbox' ? checked : value }));};
   
   const submit = async (e) => {
     e.preventDefault();
-    if (!f.name || !f.email || !f.pw || !f.pw2) return setErr('Tüm alanları doldurunuz.');
+    if (!f.name || !f.email || !f.pw || !f.pw2 || !f.phone) return setErr('Tüm alanları doldurunuz.');
     if (f.pw !== f.pw2) return setErr('Şifreler eşleşmiyor.');
     if (f.pw.length < 8) return setErr('Şifre en az 8 karakter olmalıdır.');
     if (!f.terms) return setErr('Şartları ve koşulları kabul etmelisiniz.');
@@ -1267,7 +1267,7 @@ const RegisterPage = ({ navigate, data }) => {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: f.name, email: f.email, pw: f.pw })
+        body: JSON.stringify({ name: f.name, email: f.email, pw: f.pw, phone: f.phone })
       });
       const data = await res.json();
       if (!res.ok) {
@@ -1317,6 +1317,7 @@ const RegisterPage = ({ navigate, data }) => {
         <form onSubmit={submit} className="space-y-4">
           {err && <div className="bg-[rgba(255,46,136,.08)] border border-[#ff2e88]/50 rounded-lg p-3.5"><p className="text-sm text-[#ff2e88]">{err}</p></div>}
           <Field label="Ad Soyad" type="text" name="name" value={f.name} onChange={ch} placeholder="Adını Gir" disabled={loading} />
+          <Field label="Telefon Numarası" type="tel" name="phone" value={f.phone} onChange={ch} placeholder="0555 555 55 55" disabled={loading} />
           <Field label="E-posta Adresi" type="email" name="email" value={f.email} onChange={ch} placeholder="seni@example.com" disabled={loading} />
           <Field label="Şifre" type="password" name="pw" value={f.pw} onChange={ch} placeholder="••••••••" hint="En az 8 karakter" disabled={loading} />
           <Field label="Şifreyi Onayla" type="password" name="pw2" value={f.pw2} onChange={ch} placeholder="••••••••" disabled={loading} />

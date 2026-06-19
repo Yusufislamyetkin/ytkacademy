@@ -1029,4 +1029,200 @@ BEGIN CATCH
     ROLLBACK TRANSACTION;
     PRINT 'Hata: ' + ERROR_MESSAGE();
 END CATCH;
-\`\`\``}]}};})();
+\`\`\``}]},netcore:{title:".NET Core Backend Geli\u015Ftirme",desc:".NET CLI, ASP.NET Core Web API, Dependency Injection, Middleware yap\u0131s\u0131 ve App Configuration y\xF6netimi.",icon:"\u2699\uFE0F",color:"#00ff88",lessons:[{id:"net-1",title:"Ders 1: .NET Core Nedir ve CLI Kullan\u0131m\u0131",intro:`### .NET Core Nedir?
+.NET Core (modern ad\u0131yla .NET), Microsoft taraf\u0131ndan geli\u015Ftirilen, a\xE7\u0131k kaynak kodlu ve \xE7apraz platform (cross-platform) destekli y\xFCksek performansl\u0131 bir yaz\u0131l\u0131m geli\u015Ftirme platformudur.
+
+### Bu Derste Ne \xD6\u011Frenece\u011Fiz?
+* .NET SDK ve Runtime aras\u0131ndaki farklar\u0131
+* .NET CLI (Command Line Interface) komutlar\u0131n\u0131 kullanmay\u0131
+* Komut sat\u0131r\u0131ndan proje olu\u015Fturma, derleme ve \xE7al\u0131\u015Ft\u0131rmay\u0131`,content:`### .NET SDK vs Runtime:
+* **.NET SDK (Software Development Kit):** Uygulama geli\u015Ftirmek i\xE7in gereken t\xFCm ara\xE7lar\u0131, derleyiciyi (Roslyn) ve CLI ara\xE7lar\u0131n\u0131 i\xE7erir. Runtime'\u0131 da kapsar.
+* **.NET Runtime:** Derlenmi\u015F olan .NET uygulamalar\u0131n\u0131 \xE7al\u0131\u015Ft\u0131rmak i\xE7in gereken minimum ortamd\u0131r (CLR ve temel s\u0131n\u0131flar).
+
+### S\u0131k Kullan\u0131lan CLI Komutlar\u0131:
+* \`dotnet --version\` : Y\xFCkl\xFC .NET SDK s\xFCr\xFCm\xFCn\xFC g\xF6sterir.
+* \`dotnet new <proje-tipi>\` : Yeni bir proje \u015Fablonu olu\u015Fturur. (\xD6rn: \`dotnet new webapi\`, \`dotnet new console\`)
+* \`dotnet build\` : Projeyi ve ba\u011F\u0131ml\u0131l\u0131klar\u0131n\u0131 derler.
+* \`dotnet run\` : Projeyi derler ve hemen \xE7al\u0131\u015Ft\u0131r\u0131r.
+* \`dotnet watch\` : Kodda yap\u0131lan de\u011Fi\u015Fiklikleri izler ve projeyi otomatik olarak yeniden derleyip ba\u015Flat\u0131r (Hot Reload).
+
+### \u0130lk Console Projesini Olu\u015Fturma ve \xC7al\u0131\u015Ft\u0131rma:
+\`\`\`bash
+# 1. Klas\xF6r olu\u015Ftur ve i\xE7ine gir
+mkdir YtkConsoleApp
+cd YtkConsoleApp
+
+# 2. Yeni console uygulamas\u0131 olu\u015Ftur
+dotnet new console
+
+# 3. Uygulamay\u0131 \xE7al\u0131\u015Ft\u0131r
+dotnet run
+\`\`\``,quiz:[{q:"Yeni bir .NET projesi olu\u015Fturmak i\xE7in hangi CLI komutu kullan\u0131l\u0131r?",options:["dotnet new","dotnet build","dotnet run","dotnet watch"],answer:0,exp:"dotnet new komutu, belirtilen \u015Fablona g\xF6re yeni bir .NET projesi olu\u015Fturur."},{q:"Kod de\u011Fi\u015Fikliklerini izleyip uygulamay\u0131 otomatik olarak yeniden ba\u015Flatan (Hot Reload) komut hangisidir?",options:["dotnet run","dotnet watch","dotnet test","dotnet clean"],answer:1,exp:"dotnet watch komutu, dosya de\u011Fi\u015Fikliklerini izler ve projeyi yeniden derleyip g\xFCnceller."},{q:".NET SDK ve Runtime aras\u0131ndaki temel fark nedir?",options:["SDK sadece derleme ve geli\u015Ftirme ara\xE7lar\u0131n\u0131 i\xE7erir, Runtime ise uygulamay\u0131 \xE7al\u0131\u015Ft\u0131rmak i\xE7indir","SDK sadece Windows'ta \xE7al\u0131\u015F\u0131r","Runtime sadece mobil cihazlar i\xE7indir","Aralar\u0131nda hi\xE7bir fark yoktur"],answer:0,exp:"Geli\u015Ftiriciler kod yazmak ve derlemek i\xE7in SDK'ya ihtiya\xE7 duyarlar, son kullan\u0131c\u0131lar uygulamay\u0131 \xE7al\u0131\u015Ft\u0131rmak i\xE7in sadece Runtime'a ihtiya\xE7 duyarlar."}]},{id:"net-2",title:"Ders 2: ASP.NET Core MVC ve Web API Temelleri",intro:`### Web API Nedir?
+Modern web mimarisinde backend, frontend'e veya mobil uygulamalara JSON format\u0131nda veri sa\u011Flayan servislerden (API) olu\u015Fur. ASP.NET Core Web API, bu servisleri geli\u015Ftirmek i\xE7in en pop\xFCler framework'lerden biridir.
+
+### Bu Derste Ne \xD6\u011Frenece\u011Fiz?
+* Controller yap\u0131s\u0131n\u0131 ve \xF6zniteliklerini (attributes)
+* Routing (Y\xF6nlendirme) mekanizmas\u0131n\u0131
+* HTTP Get, Post, Put, Delete metotlar\u0131n\u0131 y\xF6netmeyi`,content:`### Controller ve ApiController:
+Web API projelerinde istemciden gelen istekleri kar\u015F\u0131layan s\u0131n\u0131flara **Controller** denir. Bir s\u0131n\u0131f\u0131n API Controller oldu\u011Funu belirtmek i\xE7in \`[ApiController]\` attribute'u eklenir.
+
+### Basit Bir API Controller \xD6rne\u011Fi:
+\`\`\`csharp
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/[controller]")] // api/products
+public class ProductsController : ControllerBase
+{
+    private static readonly List<string> Products = new() { "Laptop", "Mouse", "Keyboard" };
+
+    // GET api/products
+    [HttpGet]
+    public ActionResult<IEnumerable<string>> Get()
+    {
+        return Ok(Products);
+    }
+
+    // POST api/products
+    [HttpPost]
+    public IActionResult Post([FromBody] string newProduct)
+    {
+        if (string.IsNullOrEmpty(newProduct))
+            return BadRequest("\xDCr\xFCn ad\u0131 bo\u015F olamaz.");
+
+        Products.Add(newProduct);
+        return StatusCode(210, $"{newProduct} ba\u015Far\u0131yla eklendi.");
+    }
+}
+\`\`\``,quiz:[{q:"API Controller s\u0131n\u0131flar\u0131nda HTTP GET isteklerini kar\u015F\u0131lamak i\xE7in hangi attribute kullan\u0131l\u0131r?",options:["[HttpPost]","[HttpGet]","[HttpPut]","[HttpDelete]"],answer:1,exp:"[HttpGet] attribute'u, ilgili metodun HTTP GET isteklerine yan\u0131t verece\u011Fini belirtir."},{q:"ASP.NET Core'da MVC desenindeki 'V' harfi neyi temsil eder?",options:["Model","View","Controller","Velocity"],answer:1,exp:"View, kullan\u0131c\u0131ya g\xF6sterilen aray\xFCz (HTML/CSS) katman\u0131n\u0131 temsil eder."},{q:"Bir s\u0131n\u0131f\u0131n API denetleyicisi oldu\u011Funu ve otomatik model do\u011Frulama gibi \xF6zellikleri etkinle\u015Ftirdi\u011Fini belirtmek i\xE7in hangi attribute kullan\u0131l\u0131r?",options:["[Controller]","[ApiController]","[Route]","[WebAPI]"],answer:1,exp:"[ApiController] attribute'u API denetleyicileri i\xE7in model do\u011Frulama, HTTP kaynak e\u015Fleme gibi \xF6zellikleri otomatikle\u015Ftirir."}]},{id:"net-3",title:"Ders 3: Ba\u011F\u0131ml\u0131l\u0131k Enjeksiyonu (Dependency Injection)",intro:`### Ba\u011F\u0131ml\u0131l\u0131k Enjeksiyonu Nedir?
+Dependency Injection (DI), s\u0131n\u0131flar\u0131n birbirine olan ba\u011F\u0131ml\u0131l\u0131klar\u0131n\u0131 gev\u015Fetmek (loose coupling) i\xE7in kullan\u0131lan bir tasar\u0131m desenidir. ASP.NET Core, yerle\u015Fik bir DI konteynerine sahiptir.
+
+### Bu Derste Ne \xD6\u011Frenece\u011Fiz?
+* DI prensibini ve faydalar\u0131n\u0131
+* Transient, Scoped ve Singleton servis \xF6m\xFCrlerini
+* Servisleri IoC Container'a kaydetmeyi ve enjekte etmeyi`,content:`### Servis \xD6m\xFCrleri (Service Lifetimes):
+ASP.NET Core'da servislerin \xF6mr\xFC 3 farkl\u0131 \u015Fekilde tan\u0131mlanabilir:
+
+1. **Transient (Ge\xE7ici):** Servis her istendi\u011Finde (her enjeksiyonda) yeni bir \xF6rnek (instance) olu\u015Fturulur. K\u0131sa \xF6m\xFCrl\xFC, stateless servisler i\xE7in idealdir.
+2. **Scoped (\u0130stek Bazl\u0131):** Her HTTP iste\u011Fi (request) i\xE7in tek bir \xF6rnek olu\u015Fturulur. \u0130stek boyunca ayn\u0131 nesne kullan\u0131l\u0131r, istek bitti\u011Finde nesne yok edilir. Veritaban\u0131 ba\u011Flant\u0131lar\u0131 (DbContext) varsay\u0131lan olarak Scoped't\u0131r.
+3. **Singleton (Tekil):** Uygulama \xF6mr\xFC boyunca sadece bir kez \xF6rnek olu\u015Fturulur ve t\xFCm istekler ayn\u0131 \xF6rne\u011Fi payla\u015F\u0131r. Caching servisleri gibi durum koruyan (stateful) yap\u0131lar i\xE7in uygundur.
+
+### Program.cs \u0130\xE7inde Servis Kayd\u0131:
+\`\`\`csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// Servislerin IoC konteynerine kaydedilmesi:
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<ICacheService, CacheService>();
+\`\`\`
+
+### Constructor Injection ile Enjeksiyon:
+\`\`\`csharp
+public class ProductService
+{
+    private readonly IProductRepository _repository;
+
+    // Ba\u011F\u0131ml\u0131l\u0131\u011F\u0131n constructor \xFCzerinden enjekte edilmesi
+    public ProductService(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+}
+\`\`\``,quiz:[{q:"Her HTTP iste\u011Finde (request) yeni bir \xF6rne\u011Fi olu\u015Fturulan ve istek sonland\u0131\u011F\u0131nda yok edilen servis \xF6mr\xFC hangisidir?",options:["Transient","Scoped","Singleton","Static"],answer:1,exp:"Scoped servisler HTTP istek d\xF6ng\xFCs\xFC boyunca bir kez olu\u015Fturulur ve o istek alt\u0131ndaki t\xFCm bile\u015Fenlerce payla\u015F\u0131l\u0131r."},{q:"Uygulama \xE7al\u0131\u015Fmaya ba\u015Flad\u0131ktan sonra sadece tek bir \xF6rne\u011Fi olu\u015Fturulan ve t\xFCm uygulama boyunca payla\u015F\u0131lan servis \xF6mr\xFC hangisidir?",options:["Transient","Scoped","Singleton","Temporary"],answer:2,exp:"Singleton servislerin tek bir \xF6rne\u011Fi (instance) t\xFCm uygulama boyunca payla\u015F\u0131l\u0131r."},{q:"Her talep edildi\u011Finde (her enjekte edildi\u011Finde) her zaman yeni bir \xF6rnek olu\u015Fturan servis \xF6mr\xFC hangisidir?",options:["Transient","Scoped","Singleton","Constant"],answer:0,exp:"Transient servisler her enjeksiyonda yeni bir instance olu\u015Fturur; durum (state) saklamazlar."}]},{id:"net-4",title:"Ders 4: Middleware ve Pipeline Mimarisi",intro:`### Middleware Nedir?
+Middleware (Ara Yaz\u0131l\u0131m), HTTP istek ve yan\u0131t hatt\u0131na (pipeline) entegre edilen, gelen istekleri i\u015Fleyen veya giden yan\u0131tlar\u0131 de\u011Fi\u015Ftiren kod bile\u015Fenleridir.
+
+### Bu Derste Ne \xD6\u011Frenece\u011Fiz?
+* HTTP istek ve yan\u0131t ak\u0131\u015F\u0131n\u0131 (Request/Response Pipeline)
+* Middleware yap\u0131s\u0131n\u0131 ve s\u0131ralamas\u0131n\u0131
+* \xD6zel (custom) middleware yazmay\u0131`,content:`### Pipeline ve Middleware \xC7al\u0131\u015Fma Mant\u0131\u011F\u0131:
+Gelen her HTTP iste\u011Fi, s\u0131rayla middleware bile\u015Fenlerinden ge\xE7er. Her middleware iste\u011Fi i\u015Fleyebilir, de\u011Fi\u015Ftirebilir ve bir sonraki middleware'e aktarabilir (\`next()\`). Ya da iste\u011Fi sonland\u0131r\u0131p geri d\xF6nd\xFCrebilir (short-circuit).
+
+### Program.cs \u0130\xE7indeki Standart Pipeline S\u0131ralamas\u0131:
+\`\`\`csharp
+var app = builder.Build();
+
+// Middleware bile\u015Fenleri s\u0131rayla eklenir:
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+// En son controller e\u015Fle\u015Ftirmesi yap\u0131l\u0131r
+app.MapControllers();
+
+app.Run();
+\`\`\`
+
+### \xD6zel Middleware Tan\u0131mlama (Inline):
+\`\`\`csharp
+app.Use(async (context, next) =>
+{
+    // \u0130stek gelirken yap\u0131lacak i\u015Flemler (Request)
+    Console.WriteLine($"Gelen \u0130stek Yolu: {context.Request.Path}");
+
+    await next.Invoke(); // Bir sonraki middleware'e ge\xE7
+
+    // Yan\u0131t d\xF6nerken yap\u0131lacak i\u015Flemler (Response)
+    Console.WriteLine($"Giden Yan\u0131t Durumu: {context.Response.StatusCode}");
+});
+\`\`\``,quiz:[{q:"HTTP istek hatt\u0131nda (pipeline) i\u015Flemleri s\u0131rayla y\xFCr\xFCten ve araya giren kod bile\u015Fenlerine ne ad verilir?",options:["Controller","Middleware","Service","Helper"],answer:1,exp:"Middleware, istek/yan\u0131t hatt\u0131ndaki her bir ara katman kod bile\u015Fenidir."},{q:"HTTP pipeline'\u0131n\u0131 sonland\u0131ran (kendisinden sonraki middleware'i \xE7a\u011F\u0131rmayan) metot hangisidir?",options:["Use","Run","Map","Next"],answer:1,exp:"Run metodu pipeline'\u0131 sonland\u0131r\u0131r ve genellikle terminal middleware olarak adland\u0131r\u0131l\u0131r."},{q:"Belirli bir URL yoluna g\xF6re pipeline'\u0131 dalland\u0131rmak (route etmek) i\xE7in hangi metot kullan\u0131l\u0131r?",options:["Use","Run","Map","Next"],answer:2,exp:"Map metodu, belirtilen path e\u015Fle\u015Fti\u011Finde pipeline'\u0131 ayr\u0131 bir dala y\xF6nlendirir."}]},{id:"net-5",title:"Ders 5: Yap\u0131land\u0131rma ve Ortam Y\xF6netimi",intro:`### Yap\u0131land\u0131rma Nedir?
+Uygulamalar\u0131m\u0131z\u0131n \xE7al\u0131\u015Fmas\u0131 i\xE7in gereken veritaban\u0131 ba\u011Flant\u0131 adresleri, API anahtarlar\u0131 veya \xE7al\u0131\u015Fma ortam\u0131 (Development/Production) bilgileri kod i\xE7ine g\xF6m\xFClmek yerine yap\u0131land\u0131rma dosyalar\u0131nda tutulur.
+
+### Bu Derste Ne \xD6\u011Frenece\u011Fiz?
+* appsettings.json dosyas\u0131 ve hiyerar\u015Fik yap\u0131land\u0131rma verilerini okumay\u0131
+* \xC7al\u0131\u015Fma ortamlar\u0131n\u0131 (Environments) y\xF6netmeyi
+* G\xFCvenli veri saklama (User Secrets) y\xF6ntemlerini`,content:`### appsettings.json ve IConfiguration:
+ASP.NET Core projelerinde varsay\u0131lan ayarlar \`appsettings.json\` dosyas\u0131nda saklan\u0131r. Bu de\u011Ferleri okumak i\xE7in \`IConfiguration\` servisi kullan\u0131l\u0131r.
+
+### \xD6rnek appsettings.json:
+\`\`\`json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=YtkDb;User Id=sa;Password=secret;"
+  }
+}
+\`\`\`
+
+### C# \u0130\xE7inden De\u011Fer Okuma:
+\`\`\`csharp
+public class HomeController : ControllerBase
+{
+    private readonly IConfiguration _config;
+
+    public HomeController(IConfiguration config)
+    {
+        _config = config;
+    }
+
+    [HttpGet("conn")]
+    public IActionResult GetConn()
+    {
+        string connStr = _config.GetConnectionString("DefaultConnection");
+        return Ok(connStr);
+    }
+}
+\`\`\`
+
+### Ortam Y\xF6netimi (Environment Control):
+ASP.NET Core, \`ASPNETCORE_ENVIRONMENT\` ortam de\u011Fi\u015Fkenini okuyarak uygulaman\u0131n hangi ortamda \xE7al\u0131\u015Ft\u0131\u011F\u0131n\u0131 belirler:
+* \`Development\` (Geli\u015Ftirme)
+* \`Staging\` (Test/Ge\xE7i\u015F)
+* \`Production\` (Canl\u0131 Ortam)
+
+\`\`\`csharp
+if (builder.Environment.IsDevelopment())
+{
+    // Sadece geli\u015Ftirme ortam\u0131nda \xE7al\u0131\u015Fan kodlar (\xD6rn: Hata detay sayfas\u0131)
+    Console.WriteLine("Geli\u015Ftirici modunday\u0131z.");
+}
+\`\`\``,quiz:[{q:"ASP.NET Core projelerinde varsay\u0131lan yap\u0131land\u0131rma (configuration) verileri hangi dosyada saklan\u0131r?",options:["web.config","appsettings.json","package.json","settings.xml"],answer:1,exp:"appsettings.json dosyas\u0131, ASP.NET Core uygulamalar\u0131ndaki varsay\u0131lan yap\u0131land\u0131rma sa\u011Flay\u0131c\u0131s\u0131d\u0131r."},{q:"Geli\u015Ftirme ortam\u0131nda (Development) olup olmad\u0131\u011F\u0131m\u0131z\u0131 kontrol etmek i\xE7in kullan\u0131lan metot hangisidir?",options:["IsDevelopment()","IsProduction()","IsStaging()","IsLocal()"],answer:0,exp:"builder.Environment.IsDevelopment() metodu uygulaman\u0131n geli\u015Ftirme ortam\u0131nda olup olmad\u0131\u011F\u0131n\u0131 kontrol eder."},{q:"Yerel geli\u015Ftirme ortam\u0131nda \u015Fifre ve ba\u011Flant\u0131 c\xFCmleleri gibi hassas verileri kod d\u0131\u015F\u0131nda g\xFCvenli saklamak i\xE7in kullan\u0131lan ara\xE7 hangisidir?",options:["AppSettings","Secret Manager (User Secrets)","WebConfig","GitCrypt"],answer:1,exp:"User Secrets (Secret Manager), geli\u015Ftirme s\u0131ras\u0131nda hassas verilerin proje dizini d\u0131\u015F\u0131nda saklanmas\u0131n\u0131 sa\u011Flar."}]}]}};})();

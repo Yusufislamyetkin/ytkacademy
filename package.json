@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "compile": "tailwindcss -i ./input.css -o ./style.css --minify && esbuild sk-data.jsx --outfile=sk-data.js --minify --jsx=transform --format=iife && esbuild sk-articles.jsx --outfile=sk-articles.js --minify --jsx=transform --format=iife && esbuild sk-docs.jsx --outfile=sk-docs.js --minify --jsx=transform --format=iife && esbuild app.jsx --outfile=app.js --minify --jsx=transform --format=iife && esbuild app-auth.jsx --outfile=app-auth.js --minify --jsx=transform --format=iife && esbuild app-pages.jsx --outfile=app-pages.js --minify --jsx=transform --format=iife"
+    "compile": "tailwindcss -i ./input.css -o ./style.css --minify && esbuild sk-data.jsx --outfile=sk-data.js --minify --jsx=transform --format=iife && esbuild sk-articles.jsx --outfile=sk-articles.js --minify --jsx=transform --format=iife && esbuild sk-docs.jsx --outfile=sk-docs.js --minify --jsx=transform --format=iife && esbuild app.jsx --outfile=app.js --minify --jsx=transform --format=iife && esbuild app-auth.jsx --outfile=app-auth.js --minify --jsx=transform --format=iife && esbuild app-pages.jsx --outfile=app-pages.js --minify --jsx=transform --format=iife && esbuild ytk-courses.jsx --outfile=ytk-courses.js --minify --jsx=transform --format=iife"
   },
   "keywords": [
     "siberkampus",

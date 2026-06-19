@@ -966,5 +966,264 @@ if (silinecek is not null)
       { id: "sql-9", title: "Ders 9: View ve Stored Procedure", content: `### VIEW:\n\`\`\`sql\nCREATE VIEW vw_UrunDetay AS\nSELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat,\n       CASE WHEN u.StokAdedi = 0 THEN 'Tükendi'\n            WHEN u.StokAdedi < 5 THEN 'Kritik'\n            ELSE 'Yeterli' END AS StokDurumu\nFROM Urunler u\nINNER JOIN Kategoriler k ON u.KategoriId = k.Id\nWHERE u.AktifMi = 1;\n\nSELECT * FROM vw_UrunDetay WHERE Kategori = 'Elektronik';\n\`\`\`\n\n### STORED PROCEDURE:\n\`\`\`sql\nCREATE PROCEDURE sp_UrunAra\n    @Kelime     NVARCHAR(200) = NULL,\n    @MaxFiyat   DECIMAL(10,2) = NULL,\n    @SayfaNo    INT = 1,\n    @SayfaBoyut INT = 20\nAS\nBEGIN\n    SET NOCOUNT ON;\n    SELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat\n    FROM Urunler u\n    INNER JOIN Kategoriler k ON u.KategoriId = k.Id\n    WHERE u.AktifMi = 1\n      AND (@Kelime IS NULL OR u.Ad LIKE '%' + @Kelime + '%')\n      AND (@MaxFiyat IS NULL OR u.Fiyat <= @MaxFiyat)\n    ORDER BY u.Id\n    OFFSET (@SayfaNo - 1) * @SayfaBoyut ROWS\n    FETCH NEXT @SayfaBoyut ROWS ONLY;\nEND;\n\nEXEC sp_UrunAra @Kelime = 'laptop', @MaxFiyat = 50000;\n\`\`\`` },
       { id: "sql-10", title: "Ders 10: Transaction ve ACID", content: `### ACID Prensipleri:\n* **Atomicity:** Ya hepsi gerçekleşir ya da hiçbiri.\n* **Consistency:** Veri tutarlılığı korunur.\n* **Isolation:** Eş zamanlı işlemler birbirini bozmaz.\n* **Durability:** COMMIT edilen veri kalıcıdır.\n\n### Banka Transferi Örneği:\n\`\`\`sql\nBEGIN TRANSACTION;\n\nBEGIN TRY\n    UPDATE Hesaplar SET Bakiye = Bakiye - 5000\n    WHERE Id = 101;\n\n    IF (SELECT Bakiye FROM Hesaplar WHERE Id = 101) < 0\n        THROW 50001, 'Yetersiz bakiye!', 1;\n\n    UPDATE Hesaplar SET Bakiye = Bakiye + 5000\n    WHERE Id = 202;\n\n    INSERT INTO Transferler (GondericiId, AliciId, Tutar)\n    VALUES (101, 202, 5000);\n\n    COMMIT TRANSACTION;\nEND TRY\nBEGIN CATCH\n    ROLLBACK TRANSACTION;\n    PRINT 'Hata: ' + ERROR_MESSAGE();\nEND CATCH;\n\`\`\`` }
     ]
+  },
+  netcore: {
+    title: ".NET Core Backend Geliştirme",
+    desc: ".NET CLI, ASP.NET Core Web API, Dependency Injection, Middleware yapısı ve App Configuration yönetimi.",
+    icon: "⚙️",
+    color: "#00ff88",
+    lessons: [
+      {
+        id: "net-1",
+        title: "Ders 1: .NET Core Nedir ve CLI Kullanımı",
+        intro: `### .NET Core Nedir?
+.NET Core (modern adıyla .NET), Microsoft tarafından geliştirilen, açık kaynak kodlu ve çapraz platform (cross-platform) destekli yüksek performanslı bir yazılım geliştirme platformudur.
+
+### Bu Derste Ne Öğreneceğiz?
+* .NET SDK ve Runtime arasındaki farkları
+* .NET CLI (Command Line Interface) komutlarını kullanmayı
+* Komut satırından proje oluşturma, derleme ve çalıştırmayı`,
+        content: `### .NET SDK vs Runtime:
+* **.NET SDK (Software Development Kit):** Uygulama geliştirmek için gereken tüm araçları, derleyiciyi (Roslyn) ve CLI araçlarını içerir. Runtime'ı da kapsar.
+* **.NET Runtime:** Derlenmiş olan .NET uygulamalarını çalıştırmak için gereken minimum ortamdır (CLR ve temel sınıflar).
+
+### Sık Kullanılan CLI Komutları:
+* \`dotnet --version\` : Yüklü .NET SDK sürümünü gösterir.
+* \`dotnet new <proje-tipi>\` : Yeni bir proje şablonu oluşturur. (Örn: \`dotnet new webapi\`, \`dotnet new console\`)
+* \`dotnet build\` : Projeyi ve bağımlılıklarını derler.
+* \`dotnet run\` : Projeyi derler ve hemen çalıştırır.
+* \`dotnet watch\` : Kodda yapılan değişiklikleri izler ve projeyi otomatik olarak yeniden derleyip başlatır (Hot Reload).
+
+### İlk Console Projesini Oluşturma ve Çalıştırma:
+\`\`\`bash
+# 1. Klasör oluştur ve içine gir
+mkdir YtkConsoleApp
+cd YtkConsoleApp
+
+# 2. Yeni console uygulaması oluştur
+dotnet new console
+
+# 3. Uygulamayı çalıştır
+dotnet run
+\`\`\``,
+        quiz: [
+          { q: "Yeni bir .NET projesi oluşturmak için hangi CLI komutu kullanılır?", options: ["dotnet new", "dotnet build", "dotnet run", "dotnet watch"], answer: 0, exp: "dotnet new komutu, belirtilen şablona göre yeni bir .NET projesi oluşturur." },
+          { q: "Kod değişikliklerini izleyip uygulamayı otomatik olarak yeniden başlatan (Hot Reload) komut hangisidir?", options: ["dotnet run", "dotnet watch", "dotnet test", "dotnet clean"], answer: 1, exp: "dotnet watch komutu, dosya değişikliklerini izler ve projeyi yeniden derleyip günceller." },
+          { q: ".NET SDK ve Runtime arasındaki temel fark nedir?", options: ["SDK sadece derleme ve geliştirme araçlarını içerir, Runtime ise uygulamayı çalıştırmak içindir", "SDK sadece Windows'ta çalışır", "Runtime sadece mobil cihazlar içindir", "Aralarında hiçbir fark yoktur"], answer: 0, exp: "Geliştiriciler kod yazmak ve derlemek için SDK'ya ihtiyaç duyarlar, son kullanıcılar uygulamayı çalıştırmak için sadece Runtime'a ihtiyaç duyarlar." }
+        ]
+      },
+      {
+        id: "net-2",
+        title: "Ders 2: ASP.NET Core MVC ve Web API Temelleri",
+        intro: `### Web API Nedir?
+Modern web mimarisinde backend, frontend'e veya mobil uygulamalara JSON formatında veri sağlayan servislerden (API) oluşur. ASP.NET Core Web API, bu servisleri geliştirmek için en popüler framework'lerden biridir.
+
+### Bu Derste Ne Öğreneceğiz?
+* Controller yapısını ve özniteliklerini (attributes)
+* Routing (Yönlendirme) mekanizmasını
+* HTTP Get, Post, Put, Delete metotlarını yönetmeyi`,
+        content: `### Controller ve ApiController:
+Web API projelerinde istemciden gelen istekleri karşılayan sınıflara **Controller** denir. Bir sınıfın API Controller olduğunu belirtmek için \`[ApiController]\` attribute'u eklenir.
+
+### Basit Bir API Controller Örneği:
+\`\`\`csharp
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/[controller]")] // api/products
+public class ProductsController : ControllerBase
+{
+    private static readonly List<string> Products = new() { "Laptop", "Mouse", "Keyboard" };
+
+    // GET api/products
+    [HttpGet]
+    public ActionResult<IEnumerable<string>> Get()
+    {
+        return Ok(Products);
+    }
+
+    // POST api/products
+    [HttpPost]
+    public IActionResult Post([FromBody] string newProduct)
+    {
+        if (string.IsNullOrEmpty(newProduct))
+            return BadRequest("Ürün adı boş olamaz.");
+
+        Products.Add(newProduct);
+        return StatusCode(210, $"{newProduct} başarıyla eklendi.");
+    }
+}
+\`\`\``,
+        quiz: [
+          { q: "API Controller sınıflarında HTTP GET isteklerini karşılamak için hangi attribute kullanılır?", options: ["[HttpPost]", "[HttpGet]", "[HttpPut]", "[HttpDelete]"], answer: 1, exp: "[HttpGet] attribute'u, ilgili metodun HTTP GET isteklerine yanıt vereceğini belirtir." },
+          { q: "ASP.NET Core'da MVC desenindeki 'V' harfi neyi temsil eder?", options: ["Model", "View", "Controller", "Velocity"], answer: 1, exp: "View, kullanıcıya gösterilen arayüz (HTML/CSS) katmanını temsil eder." },
+          { q: "Bir sınıfın API denetleyicisi olduğunu ve otomatik model doğrulama gibi özellikleri etkinleştirdiğini belirtmek için hangi attribute kullanılır?", options: ["[Controller]", "[ApiController]", "[Route]", "[WebAPI]"], answer: 1, exp: "[ApiController] attribute'u API denetleyicileri için model doğrulama, HTTP kaynak eşleme gibi özellikleri otomatikleştirir." }
+        ]
+      },
+      {
+        id: "net-3",
+        title: "Ders 3: Bağımlılık Enjeksiyonu (Dependency Injection)",
+        intro: `### Bağımlılık Enjeksiyonu Nedir?
+Dependency Injection (DI), sınıfların birbirine olan bağımlılıklarını gevşetmek (loose coupling) için kullanılan bir tasarım desenidir. ASP.NET Core, yerleşik bir DI konteynerine sahiptir.
+
+### Bu Derste Ne Öğreneceğiz?
+* DI prensibini ve faydalarını
+* Transient, Scoped ve Singleton servis ömürlerini
+* Servisleri IoC Container'a kaydetmeyi ve enjekte etmeyi`,
+        content: `### Servis Ömürleri (Service Lifetimes):
+ASP.NET Core'da servislerin ömrü 3 farklı şekilde tanımlanabilir:
+
+1. **Transient (Geçici):** Servis her istendiğinde (her enjeksiyonda) yeni bir örnek (instance) oluşturulur. Kısa ömürlü, stateless servisler için idealdir.
+2. **Scoped (İstek Bazlı):** Her HTTP isteği (request) için tek bir örnek oluşturulur. İstek boyunca aynı nesne kullanılır, istek bittiğinde nesne yok edilir. Veritabanı bağlantıları (DbContext) varsayılan olarak Scoped'tır.
+3. **Singleton (Tekil):** Uygulama ömrü boyunca sadece bir kez örnek oluşturulur ve tüm istekler aynı örneği paylaşır. Caching servisleri gibi durum koruyan (stateful) yapılar için uygundur.
+
+### Program.cs İçinde Servis Kaydı:
+\`\`\`csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// Servislerin IoC konteynerine kaydedilmesi:
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<ICacheService, CacheService>();
+\`\`\`
+
+### Constructor Injection ile Enjeksiyon:
+\`\`\`csharp
+public class ProductService
+{
+    private readonly IProductRepository _repository;
+
+    // Bağımlılığın constructor üzerinden enjekte edilmesi
+    public ProductService(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+}
+\`\`\``,
+        quiz: [
+          { q: "Her HTTP isteğinde (request) yeni bir örneği oluşturulan ve istek sonlandığında yok edilen servis ömrü hangisidir?", options: ["Transient", "Scoped", "Singleton", "Static"], answer: 1, exp: "Scoped servisler HTTP istek döngüsü boyunca bir kez oluşturulur ve o istek altındaki tüm bileşenlerce paylaşılır." },
+          { q: "Uygulama çalışmaya başladıktan sonra sadece tek bir örneği oluşturulan ve tüm uygulama boyunca paylaşılan servis ömrü hangisidir?", options: ["Transient", "Scoped", "Singleton", "Temporary"], answer: 2, exp: "Singleton servislerin tek bir örneği (instance) tüm uygulama boyunca paylaşılır." },
+          { q: "Her talep edildiğinde (her enjekte edildiğinde) her zaman yeni bir örnek oluşturan servis ömrü hangisidir?", options: ["Transient", "Scoped", "Singleton", "Constant"], answer: 0, exp: "Transient servisler her enjeksiyonda yeni bir instance oluşturur; durum (state) saklamazlar." }
+        ]
+      },
+      {
+        id: "net-4",
+        title: "Ders 4: Middleware ve Pipeline Mimarisi",
+        intro: `### Middleware Nedir?
+Middleware (Ara Yazılım), HTTP istek ve yanıt hattına (pipeline) entegre edilen, gelen istekleri işleyen veya giden yanıtları değiştiren kod bileşenleridir.
+
+### Bu Derste Ne Öğreneceğiz?
+* HTTP istek ve yanıt akışını (Request/Response Pipeline)
+* Middleware yapısını ve sıralamasını
+* Özel (custom) middleware yazmayı`,
+        content: `### Pipeline ve Middleware Çalışma Mantığı:
+Gelen her HTTP isteği, sırayla middleware bileşenlerinden geçer. Her middleware isteği işleyebilir, değiştirebilir ve bir sonraki middleware'e aktarabilir (\`next()\`). Ya da isteği sonlandırıp geri döndürebilir (short-circuit).
+
+### Program.cs İçindeki Standart Pipeline Sıralaması:
+\`\`\`csharp
+var app = builder.Build();
+
+// Middleware bileşenleri sırayla eklenir:
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+// En son controller eşleştirmesi yapılır
+app.MapControllers();
+
+app.Run();
+\`\`\`
+
+### Özel Middleware Tanımlama (Inline):
+\`\`\`csharp
+app.Use(async (context, next) =>
+{
+    // İstek gelirken yapılacak işlemler (Request)
+    Console.WriteLine($"Gelen İstek Yolu: {context.Request.Path}");
+
+    await next.Invoke(); // Bir sonraki middleware'e geç
+
+    // Yanıt dönerken yapılacak işlemler (Response)
+    Console.WriteLine($"Giden Yanıt Durumu: {context.Response.StatusCode}");
+});
+\`\`\``,
+        quiz: [
+          { q: "HTTP istek hattında (pipeline) işlemleri sırayla yürüten ve araya giren kod bileşenlerine ne ad verilir?", options: ["Controller", "Middleware", "Service", "Helper"], answer: 1, exp: "Middleware, istek/yanıt hattındaki her bir ara katman kod bileşenidir." },
+          { q: "HTTP pipeline'ını sonlandıran (kendisinden sonraki middleware'i çağırmayan) metot hangisidir?", options: ["Use", "Run", "Map", "Next"], answer: 1, exp: "Run metodu pipeline'ı sonlandırır ve genellikle terminal middleware olarak adlandırılır." },
+          { q: "Belirli bir URL yoluna göre pipeline'ı dallandırmak (route etmek) için hangi metot kullanılır?", options: ["Use", "Run", "Map", "Next"], answer: 2, exp: "Map metodu, belirtilen path eşleştiğinde pipeline'ı ayrı bir dala yönlendirir." }
+        ]
+      },
+      {
+        id: "net-5",
+        title: "Ders 5: Yapılandırma ve Ortam Yönetimi",
+        intro: `### Yapılandırma Nedir?
+Uygulamalarımızın çalışması için gereken veritabanı bağlantı adresleri, API anahtarları veya çalışma ortamı (Development/Production) bilgileri kod içine gömülmek yerine yapılandırma dosyalarında tutulur.
+
+### Bu Derste Ne Öğreneceğiz?
+* appsettings.json dosyası ve hiyerarşik yapılandırma verilerini okumayı
+* Çalışma ortamlarını (Environments) yönetmeyi
+* Güvenli veri saklama (User Secrets) yöntemlerini`,
+        content: `### appsettings.json ve IConfiguration:
+ASP.NET Core projelerinde varsayılan ayarlar \`appsettings.json\` dosyasında saklanır. Bu değerleri okumak için \`IConfiguration\` servisi kullanılır.
+
+### Örnek appsettings.json:
+\`\`\`json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=YtkDb;User Id=sa;Password=secret;"
+  }
+}
+\`\`\`
+
+### C# İçinden Değer Okuma:
+\`\`\`csharp
+public class HomeController : ControllerBase
+{
+    private readonly IConfiguration _config;
+
+    public HomeController(IConfiguration config)
+    {
+        _config = config;
+    }
+
+    [HttpGet("conn")]
+    public IActionResult GetConn()
+    {
+        string connStr = _config.GetConnectionString("DefaultConnection");
+        return Ok(connStr);
+    }
+}
+\`\`\`
+
+### Ortam Yönetimi (Environment Control):
+ASP.NET Core, \`ASPNETCORE_ENVIRONMENT\` ortam değişkenini okuyarak uygulamanın hangi ortamda çalıştığını belirler:
+* \`Development\` (Geliştirme)
+* \`Staging\` (Test/Geçiş)
+* \`Production\` (Canlı Ortam)
+
+\`\`\`csharp
+if (builder.Environment.IsDevelopment())
+{
+    // Sadece geliştirme ortamında çalışan kodlar (Örn: Hata detay sayfası)
+    Console.WriteLine("Geliştirici modundayız.");
+}
+\`\`\``,
+        quiz: [
+          { q: "ASP.NET Core projelerinde varsayılan yapılandırma (configuration) verileri hangi dosyada saklanır?", options: ["web.config", "appsettings.json", "package.json", "settings.xml"], answer: 1, exp: "appsettings.json dosyası, ASP.NET Core uygulamalarındaki varsayılan yapılandırma sağlayıcısıdır." },
+          { q: "Geliştirme ortamında (Development) olup olmadığımızı kontrol etmek için kullanılan metot hangisidir?", options: ["IsDevelopment()", "IsProduction()", "IsStaging()", "IsLocal()"], answer: 0, exp: "builder.Environment.IsDevelopment() metodu uygulamanın geliştirme ortamında olup olmadığını kontrol eder." },
+          { q: "Yerel geliştirme ortamında şifre ve bağlantı cümleleri gibi hassas verileri kod dışında güvenli saklamak için kullanılan araç hangisidir?", options: ["AppSettings", "Secret Manager (User Secrets)", "WebConfig", "GitCrypt"], answer: 1, exp: "User Secrets (Secret Manager), geliştirme sırasında hassas verilerin proje dizini dışında saklanmasını sağlar." }
+        ]
+      }
+    ]
   }
 };
