@@ -461,11 +461,12 @@ const DashboardPage = ({ navigate, data }) => {
     }
   });
 
-  const COURSES = {
+  const COURSES = (typeof window !== 'undefined' && window.YTK_COURSES) ? window.YTK_COURSES : {
     csharp: {
       title: "C# Programlama Temelleri",
       desc: "C# dilinin temel sözdizimi, değişkenler, koşullar, döngüler ve OOP kavramları.",
       icon: "💻",
+      color: "#569cd6",
       lessons: [
         {
           id: "cs-1",
