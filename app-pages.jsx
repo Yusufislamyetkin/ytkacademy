@@ -2677,7 +2677,7 @@ const PricingPage = ({ navigate }) => {
       price: 0,
       oldPrice: null,
       period: null,
-      img: '/freeeducationiamge-fiyatlandırma.jpg',
+      img: '/plan-ucretsiz.jpg',
       desc: 'Mevcut seviyenizi analiz edip, hedefinize en uygun öğrenme planını ve yol haritasını hazırlıyoruz.',
       features: [
         'Yetenek & Seviye Analizi',
@@ -2696,7 +2696,7 @@ const PricingPage = ({ navigate }) => {
       price: 1500,
       oldPrice: 3000,
       period: '60 dk',
-      img: '/mentoregitimi-fiyatlandırma.jpg',
+      img: '/plan-1500tl.jpg',
       desc: 'Kod inceleme, canlı soru-cevap ve C# & .NET Core sorun giderme odaklı bire bir destek seansı.',
       features: [
         '60 Dakika Canlı Bire Bir Görüşme',
@@ -2705,7 +2705,7 @@ const PricingPage = ({ navigate }) => {
         'Kariyer & Sektör Tavsiyeleri',
         'Soru-Cevap & Sorun Giderme Seansı'
       ],
-      cta: 'Hemen Canlı Ders Satın Al ⚡',
+      cta: 'Ön Görüşme Başvurusu Yap ⚡',
       popular: true,
       accent: '#00ff88'
     },
@@ -2716,7 +2716,7 @@ const PricingPage = ({ navigate }) => {
       price: 20000,
       oldPrice: 40000,
       period: 'Aylık',
-      img: '/uzmanegitim-fiyatlandırma.jpg',
+      img: '/plan-3000tl.jpg',
       desc: 'Seni backend developer seviyesinden, kurumsal fintech mimarileri tasarlayan mühendis seviyesine çıkaran program.',
       features: [
         '20 Saat Bire Bir Canlı Mentörlük',
@@ -2735,15 +2735,17 @@ const PricingPage = ({ navigate }) => {
 
   const handlePlanClick = (plan) => {
     if (plan.id === 'career-analysis') {
-      window.open('https://wa.me/905389351189?text=Merhaba,%2015%20Dakika%20%C3%9Ccretsiz%20Kariyer%20Analizi%20randevusu%20almak%20istiyorum.', '_blank');
+      window.open('https://wa.me/905389351189?text=Merhaba%2C%2015%20Dakika%20%C3%9Ccretsiz%20Kariyer%20Analizi%20randevusu%20almak%20istiyorum.', '_blank');
+      return;
+    }
+    if (plan.id === 'one-on-one') {
+      window.open('https://wa.me/905389351189?text=Merhaba%2C%2060%20Dakikal%C4%B1k%20Bire%20Bir%20Ment%C3%B6rl%C3%BCk%20i%C3%A7in%20%C3%B6n%20g%C3%B6r%C3%BC%C5%9Fme%20ba%C5%9Fvurusu%20yapmak%20istiyorum.', '_blank');
       return;
     }
     if (plan.id === 'fintech-program') {
-      window.open('https://wa.me/905389351189?text=Merhaba,%20Fintech%20%26%20Backend%20Mentorluk%20Program%C4%B1%20i%C3%A7in%20%C3%B6n%20g%C3%B6r%C3%BC%C5%9Fme%20ba%C5%9Fvurusu%20yapmak%20istiyorum.', '_blank');
+      window.open('https://wa.me/905389351189?text=Merhaba%2C%2020%20Saatlik%20Bire%20Bir%20Mentorluk%20Program%C4%B1%20i%C3%A7in%20%C3%B6n%20g%C3%B6r%C3%BC%C5%9Fme%20ba%C5%9Fvurusu%20yapmak%20istiyorum.', '_blank');
       return;
     }
-    // 'one-on-one' planı — checkout modal aç (PayTR üzerinden ödeme için)
-    openCheckoutModal(plan);
   };
 
   const openCheckoutModal = (plan) => {
