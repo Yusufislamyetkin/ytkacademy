@@ -1,38 +1,40 @@
 /* ===========================================================================
-   YTK Academy — Genişletilmiş Müfredat (C# 12 Ders + SQL 10 Ders)
-   app-auth.jsx içinde COURSES sabiti yerine window.YTK_COURSES kullanılır
+   YTK Academy — Genişletilmiş Müfredat v2
+   C# 12 Ders (intro + quiz) + SQL 10 Ders
    =========================================================================== */
 
 window.YTK_COURSES = {
   csharp: {
     title: "C# Programlama Temelleri",
-    desc: ".NET ekosisteminde C# temelleri: veri tipleri, OOP, LINQ, async/await ve Entity Framework Core.",
+    desc: ".NET ekosisteminde C# temelleri: sözdizimi, OOP, LINQ, async/await ve Entity Framework Core.",
     icon: "💻",
     color: "#569cd6",
     lessons: [
       {
         id: "cs-1",
         title: "Ders 1: C# Nedir ve Nasıl Çalışır?",
-        content: `C# (C-Sharp), Microsoft tarafından geliştirilen modern, nesne yönelimli ve güvenli bir programlama dilidir.
+        intro: `### Neden C#?
+C# (C-Sharp), Microsoft tarafından 2000 yılında .NET platformu ile birlikte tanıtılan modern, nesne yönelimli bir programlama dilidir.
 
-### Temel Özellikleri:
-* **Nesne Yönelimli (OOP):** Sınıflar, nesneler, kalıtım ve çok biçimlilik gibi prensipleri temel alır.
-* **Tip Güvenli (Type-Safe):** Değişken türleri sıkı bir şekilde denetlenir ve bellek hataları önlenir.
-* **Cross-Platform:** .NET 8 ile birlikte C# kodları Windows, macOS ve Linux'ta çalışır.
-* **Yüksek Performans:** Modern .NET, Node.js ve Python'ı geçen benchmark sonuçları üretiyor.
+### Türkiye'de Nerede Kullanılır?
+Türkiye'deki büyük bankaların (Garanti, İş Bankası, Akbank), e-ticaret devlerinin (Trendyol, Hepsiburada) ve devlet kurumlarının backend sistemlerinin büyük çoğunluğu C# ve .NET üzerine kuruludur. İş ilanlarındaki "Senior Backend Developer" pozisyonlarının **%60-70'i** C# bilgisi aramaktadır.
 
-### Çalışma Mantığı:
-C# kodu → **MSIL** (Ara Dil) → **CLR/JIT** → Makine Kodu
+### Bu Derste Ne Öğreneceğiz?
+* C# nasıl derlenir ve çalışır (MSIL → JIT → Makine Kodu)
+* İlk C# programını yazacağız
+* .NET ekosistemini tanıyacağız`,
+        content: `### C# Çalışma Prensibi:
+Yazdığın C# kodu → **MSIL** (Ara Dil) → **CLR/JIT Compiler** → İşlemci Kodu
+
+Bu sayede aynı kod Windows, Linux ve macOS'ta çalışır.
 
 ### İlk C# Programı:
 \`\`\`csharp
-using System;
-
-// .NET 6+ ile top-level statements
+// .NET 6+ Modern Sözdizimi (top-level statements)
 Console.WriteLine("Merhaba, YTK Academy!");
 Console.WriteLine($"Bugünün tarihi: {DateTime.Now:dd.MM.yyyy}");
 
-// Klasik yapı
+// Klasik yapı (eski .NET Framework)
 namespace YtkAcademy
 {
     class Program
@@ -40,42 +42,48 @@ namespace YtkAcademy
         static void Main(string[] args)
         {
             Console.WriteLine("Merhaba, Dünya!");
-            Console.ReadLine();
+            Console.ReadLine(); // Konsolu açık tutar
         }
     }
 }
 \`\`\`
 
-### Neden C# Öğrenmeliyim?
-* Türkiye kurumsal yazılım pazarının büyük çoğunluğu .NET/C# kullanıyor.
-* Banka, fintech, e-ticaret ve kamu yazılımları büyük ölçüde C# tabanlı.
-* Yüksek maaşlı pozisyonlarda aranan ilk dillerden biri.
-* Microsoft, Azure ve modern bulut mimarileriyle tam entegrasyon.`
+### Temel Özellikler:
+* **Nesne Yönelimli (OOP):** Sınıf, nesne, kalıtım, çok biçimlilik
+* **Tip Güvenli:** Derleme zamanında tip hataları yakalanır
+* **Cross-Platform:** Windows, Linux, macOS desteği
+* **Yüksek Performans:** Modern .NET 8, Node.js ve Python'ı benchmark'larda geçiyor`,
+        quiz: [
+          { q: "C# hangi şirket tarafından geliştirilmiştir?", options: ["Apple", "Microsoft", "Google", "Oracle"], answer: 1, exp: "Microsoft, C# ve .NET platformunu 2000 yılında tanıttı." },
+          { q: "C# kodu derlendikten sonra hangi ara dile çevrilir?", options: ["Bytecode", "MSIL", "Assembly", "WebAssembly"], answer: 1, exp: "MSIL (Microsoft Intermediate Language), CLR tarafından çalışma zamanında makine koduna dönüştürülür." },
+          { q: "CLR içindeki bileşen hangisi MSIL'i makine koduna çevirir?", options: ["Compiler", "Linker", "JIT (Just-In-Time) Compiler", "Interpreter"], answer: 2, exp: "JIT Compiler, çalışma zamanında MSIL kodunu hedef işlemcinin makine koduna çevirir." }
+        ]
       },
       {
         id: "cs-2",
         title: "Ders 2: Değişkenler ve Veri Tipleri",
-        content: `Değişkenler, program içerisinde işlenecek verilerin geçici olarak bellekte (RAM) saklandığı isimlendirilmiş alanlardır.
+        intro: `### Değişkenler Nedir?
+Bir program çalışırken bellekte (RAM) geçici veriler saklar. Değişkenler bu verilere isimle erişmemizi sağlar. Kullanıcının adından bir ürünün fiyatına, stok adedinden sipariş tutarına kadar her şey değişkenlerde tutulur.
 
-### C# Temel Veri Tipleri:
-* **int:** 32-bit tam sayı — \`int yas = 25;\`
-* **long:** 64-bit büyük tam sayı — \`long nufus = 85_000_000;\`
-* **double:** Ondalıklı sayı — \`double pi = 3.14159;\`
-* **decimal:** Finansal hesaplama — \`decimal fiyat = 999.99m;\`
-* **string:** Metin — \`string isim = "Yusuf";\`
-* **bool:** true/false — \`bool aktifMi = true;\`
-* **char:** Tek karakter — \`char cinsiyet = 'E';\`
+### Gerçek Dünya Örneği:
+Bir e-ticaret uygulaması düşün: \`kullaniciAdi\`, \`sepetToplami\`, \`urunFiyati\`, \`stokMevcut\` — bunların hepsi değişkenlerdir. Doğru veri tipini seçmek hem bellek kullanımını hem de hesaplama hassasiyetini doğrudan etkiler.
 
-### var ve Type Inference:
+> **Önemli:** Finansal hesaplamalarda \`double\` yerine \`decimal\` kullanın! double'ın kayan nokta hatası, bankacılık sistemlerinde ciddi sorunlara yol açabilir.`,
+        content: `### C# Temel Veri Tipleri:
+* **\`int\`** → 32-bit tam sayı: \`int yas = 25;\`
+* **\`long\`** → 64-bit büyük tam sayı: \`long nufus = 85_000_000;\`
+* **\`double\`** → Ondalıklı: \`double pi = 3.14159;\`
+* **\`decimal\`** → Finansal hesaplama: \`decimal fiyat = 999.99m;\`
+* **\`string\`** → Metin: \`string isim = "Yusuf";\`
+* **\`bool\`** → true/false: \`bool aktifMi = true;\`
+* **\`char\`** → Tek karakter: \`char cinsiyet = 'E';\`
+
+### var ve const:
 \`\`\`csharp
-// Explicit tip belirtimi
-int sayi = 42;
-string ad = "Yusuf";
-
-// var ile otomatik tip çıkarımı
-var yas = 28;         // int olarak derlenir
-var isim = "Ahmet";   // string olarak derlenir
-var fiyat = 99.99;    // double olarak derlenir
+// var: Tip derleme zamanında otomatik belirlenir
+var yas = 28;           // int olarak derlenir
+var isim = "Ahmet";     // string olarak derlenir
+var fiyat = 99.99m;     // decimal olarak derlenir
 
 // const: Değiştirilemez sabit
 const double PI = 3.14159265358979;
@@ -87,50 +95,62 @@ const string SITE_URL = "https://ytkacademy.com.tr";
 string ad = "Yusuf";
 string soyad = "Yetkin";
 
-// String interpolation (önerilen)
-string mesaj = $"Merhaba, {ad} {soyad}! Yaşın: {28}";
+// String interpolation — önerilen yöntem
+string mesaj = $"Merhaba, {ad} {soyad}! Bugün: {DateTime.Now:dd/MM/yyyy}";
 
-// Verbatim string (@ ile ters bölü sorun olmaz)
-string dosyaYolu = @"C:\Users\Yusuf\Desktop\proje";
+// Verbatim string (\ karakteri sorun yaratmaz)
+string yol = @"C:\Users\Yusuf\Desktop\proje";
 
-// String metodları
-Console.WriteLine(ad.ToUpper());         // YUSUF
-Console.WriteLine(ad.Length);            // 5
-Console.WriteLine(ad.Contains("usu"));  // True
-Console.WriteLine("  YTK  ".Trim());    // YTK
-Console.WriteLine(ad.Replace("Y","J")); // Jusuf
+// Sık kullanılan metodlar
+Console.WriteLine(ad.ToUpper());          // YUSUF
+Console.WriteLine(ad.Length);             // 5
+Console.WriteLine("  YTK  ".Trim());     // YTK
+Console.WriteLine(ad.Contains("usu"));   // True
+Console.WriteLine(ad.Replace("Y","J"));  // Jusuf
 \`\`\`
 
-### Tip Dönüşümleri:
+### Güvenli Tip Dönüşümü:
 \`\`\`csharp
-// Güvenli dönüşüm (TryParse - hata fırlatmaz)
+// TryParse: Hata fırlatmaz, bool döndürür
 if (int.TryParse("123", out int sayi))
     Console.WriteLine($"Dönüştürüldü: {sayi}");
 else
-    Console.WriteLine("Geçersiz sayı!");
+    Console.WriteLine("Geçersiz sayı formatı!");
 
 // Convert sınıfı
-string txt = "42";
-int deger = Convert.ToInt32(txt);
+int deger = Convert.ToInt32("42");
 bool aktif = Convert.ToBoolean("true");
-\`\`\``
+\`\`\``,
+        quiz: [
+          { q: "Finansal hesaplamalarda (banka, e-ticaret) hangi veri tipi kullanılmalıdır?", options: ["double", "float", "decimal", "int"], answer: 2, exp: "decimal, kayan nokta hatası olmayan yüksek hassasiyetli ondalıklı tiptir. Finansal işlemler için zorunludur." },
+          { q: "int.TryParse('abc', out int x) ifadesi ne döndürür?", options: ["exception fırlatır", "0 döndürür", "false döndürür", "null döndürür"], answer: 2, exp: "TryParse, dönüşüm başarısız olduğunda false döndürür ve out parametresine 0 yazar. Hata fırlatmaz." },
+          { q: "var anahtar kelimesiyle tanımlanan değişkenin tipi ne zaman belirlenir?", options: ["Çalışma zamanında", "Derleme zamanında", "İlk değer atamasında", "Kullanıldığı anda"], answer: 1, exp: "var ile tanımlanan değişkenin tipi derleme zamanında sabitlenir. Runtime'da dinamik değildir." }
+        ]
       },
       {
         id: "cs-3",
         title: "Ders 3: Karar Yapıları (if-else & switch)",
-        content: `Karar yapıları, programın belirli koşullara göre farklı akışlarda ilerlemesini sağlar.
+        intro: `### Karar Yapıları Neden Gerekli?
+Bir yazılım, her zaman aynı şeyi yapmaz. "Kullanıcı giriş yaptı mı?", "Bakiye yeterli mi?", "Stok var mı?" gibi sorular kod içinde karar yapılarıyla yanıtlanır. Modern bir backend API'de yüzlerce karar noktası bulunur.
 
-### if-else if-else:
+### Gerçek Dünya Örneği:
+Bir ödeme sisteminde:
+* Bakiye >= tutar → Ödemeyi onayla
+* Kart limiti aşıldı → Reddet ve log yaz
+* Şüpheli işlem → 3D Secure'a yönlendir
+
+Her bu senaryonun kodu if-else veya switch yapılarıyla yazılır.`,
+        content: `### if-else if-else:
 \`\`\`csharp
 int not = 78;
 string harf;
 
-if (not >= 90) harf = "AA";
+if (not >= 90)      harf = "AA";
 else if (not >= 80) harf = "BA";
 else if (not >= 70) harf = "BB";
 else if (not >= 60) harf = "CB";
 else if (not >= 50) harf = "CC";
-else harf = "FF";
+else                harf = "FF";
 
 Console.WriteLine($"Harf notu: {harf}"); // BB
 \`\`\`
@@ -158,36 +178,51 @@ switch (gun)
 }
 \`\`\`
 
-### switch Expression (C# 8+ - Modern):
+### switch Expression — C# 8+ Modern Sözdizimi:
 \`\`\`csharp
+// Çok daha kısa ve okunabilir
 string durum = gun switch
 {
     "Pazartesi" or "Salı" or "Çarşamba"
     or "Perşembe" or "Cuma" => "İş günü",
     "Cumartesi" or "Pazar" => "Hafta sonu",
-    _ => "Bilinmiyor"
+    _ => "Bilinmiyor" // default
 };
 \`\`\`
 
 ### Ternary ve Null Operatörler:
 \`\`\`csharp
+// Ternary: koşul ? doğruysa : yanlışsa
 int yas = 20;
 string etiket = (yas >= 18) ? "Yetişkin" : "Çocuk";
 
-// Null coalescing ??
+// Null coalescing: ?? — null ise alternatifi kullan
 string? isim = null;
-string gosterilecek = isim ?? "Anonim";
+string gosterilecek = isim ?? "Anonim Kullanıcı";
 
-// Null conditional ?.
-string? uzunluk = isim?.ToUpper(); // null, hata fırlatmaz
-\`\`\``
+// Null conditional: ?. — null ise işlemi atla
+string? uzunluk = isim?.ToUpper(); // hata fırlatmaz, null döner
+\`\`\``,
+        quiz: [
+          { q: "switch-case'de bir case bloğundan çıkmak için hangi keyword kullanılır?", options: ["exit", "stop", "break", "return"], answer: 2, exp: "break, switch-case bloğundan çıkarak bir sonraki case'in çalışmasını engeller." },
+          { q: "string? isim = null; → isim ?? 'Anonim' ifadesinin sonucu nedir?", options: ["null", "isim", "'Anonim'", "Hata fırlatır"], answer: 2, exp: "?? operatörü sol taraf null ise sağ taraftaki değeri döndürür." },
+          { q: "C# 8+ switch expression'da default durumu hangi sembolle ifade edilir?", options: ["default:", "else", "_ =>", "*"], answer: 2, exp: "_ (discard pattern), switch expression'da tüm eşleşmeyen durumları yakalamak için kullanılır." }
+        ]
       },
       {
         id: "cs-4",
         title: "Ders 4: Döngüler (for, while, foreach)",
-        content: `Döngüler, bir kod bloğunun belirli bir koşul sağlandığı sürece tekrarlanmasını sağlar.
+        intro: `### Döngüler Neden Gerekli?
+100 ürünü ekrana yazdırmak için 100 satır kod yazmak yerine döngüyle 3 satır yeterli. Döngüler tekrarlı işlemleri otomatize eder.
 
-### for Döngüsü:
+### Gerçek Dünya Kullanımı:
+* **E-ticaret:** Sepetteki tüm ürünlerin toplamını hesapla
+* **Banka:** Tüm işlem kayıtlarını tara, şüphelileri işaretle
+* **API:** Gelen veri listesini işle, veritabanına kaydet
+* **Rapor:** 1000 müşteriye e-posta gönder
+
+> **Hangisini seçeyim?** Kaç kez döneceği belli → \`for\`. Koleksiyon üzerinde gez → \`foreach\`. Koşul gerçekleşene dek → \`while\`.`,
+        content: `### for Döngüsü — Sayaç tabanlı:
 \`\`\`csharp
 // 1'den 10'a çarpım tablosu
 for (int i = 1; i <= 10; i++)
@@ -195,36 +230,36 @@ for (int i = 1; i <= 10; i++)
     Console.WriteLine($"7 x {i} = {7 * i}");
 }
 
-// Geriye sayma
+// Geriye doğru sayma
 for (int i = 10; i >= 1; i--)
     Console.Write(i + " ");
 // Çıktı: 10 9 8 7 6 5 4 3 2 1
 \`\`\`
 
-### while Döngüsü:
+### while Döngüsü — Koşul tabanlı:
 \`\`\`csharp
-// Kullanıcı doğru şifreyi girene kadar sor
 int deneme = 0;
-const string dogru = "ytk2024";
+const string dogruSifre = "ytk2024";
 
 while (deneme < 3)
 {
     Console.Write("Şifreyi girin: ");
     string girilen = Console.ReadLine() ?? "";
 
-    if (girilen == dogru)
+    if (girilen == dogruSifre)
     {
-        Console.WriteLine("Giriş başarılı! ✓");
-        break;
+        Console.WriteLine("✓ Giriş başarılı!");
+        break; // Döngüden çık
     }
     deneme++;
-    Console.WriteLine($"Hatalı! Kalan hak: {3 - deneme}");
+    Console.WriteLine($"✗ Hatalı! Kalan hak: {3 - deneme}");
 }
-if (deneme == 3)
+
+if (deneme >= 3)
     Console.WriteLine("Hesap kilitlendi!");
 \`\`\`
 
-### foreach Döngüsü:
+### foreach Döngüsü — Koleksiyonlar için:
 \`\`\`csharp
 string[] ogrenciler = { "Ahmet", "Mehmet", "Ayşe", "Fatma" };
 
@@ -232,10 +267,20 @@ foreach (string ogrenci in ogrenciler)
 {
     Console.WriteLine($"  • {ogrenci}");
 }
+
+// Sepet toplamı örneği
+decimal[] fiyatlar = { 299.99m, 149.50m, 79.90m, 459.00m };
+decimal toplam = 0;
+foreach (decimal fiyat in fiyatlar)
+    toplam += fiyat;
+
+Console.WriteLine($"Sepet Toplamı: {toplam:C}");
 \`\`\`
 
 ### break ve continue:
 \`\`\`csharp
+// continue: Bu adımı atla, devam et
+// break: Döngüden tamamen çık
 for (int i = 1; i <= 10; i++)
 {
     if (i % 2 == 0) continue; // Çiftleri atla
@@ -243,42 +288,58 @@ for (int i = 1; i <= 10; i++)
     Console.Write(i + " ");
 }
 // Çıktı: 1 3 5 7
-\`\`\``
+\`\`\``,
+        quiz: [
+          { q: "Bir koleksiyon üzerindeki tüm elemanları gezmek için en uygun döngü hangisidir?", options: ["for", "while", "do-while", "foreach"], answer: 3, exp: "foreach, IEnumerable arayüzünü uygulayan herhangi bir koleksiyonu (List, Array, Dictionary) gezmek için tasarlanmıştır." },
+          { q: "continue keyword'ü döngüde ne yapar?", options: ["Döngüyü sonlandırır", "Mevcut adımı atlayıp bir sonrakine geçer", "Döngüyü başa sarar", "Programı sonlandırır"], answer: 1, exp: "continue, gerideki kodu atlayarak döngünün bir sonraki iterasyonuna geçer." },
+          { q: "for (int i=0; i<5; i++) döngüsü kaç kez çalışır?", options: ["4", "5", "6", "0"], answer: 1, exp: "i=0,1,2,3,4 → 5 iterasyon. i=5 olduğunda i<5 koşulu false olur." }
+        ]
       },
       {
         id: "cs-5",
         title: "Ders 5: Metotlar (Methods)",
-        content: `Metotlar, belirli bir işi yapan ve gerektiğinde çağrılan yeniden kullanılabilir kod bloklarıdır.
+        intro: `### Metotlar Neden Gerekli?
+"Aynı kodu defalarca yazmak" — yazılım dünyasının en büyük günahlarından biridir (DRY: Don't Repeat Yourself). Metotlar kodu tekrar kullanılabilir parçalara böler.
 
-### Temel Metot Yapısı:
+### Gerçek Dünya Kullanımı:
+\`KDVHesapla()\`, \`SifreDogrula()\`, \`EmailGonder()\`, \`RaporOlustur()\` — bunlar birer metot. Büyük bir projedeki binlerce metot; her biri tek bir sorumluluğu yerine getirir (Single Responsibility Principle).
+
+> İyi yazılmış bir metot, adını okuyunca ne yaptığını anlatır. \`x()\` değil, \`SepetToplaminıHesapla()\` yazın.`,
+        content: `### Temel Metot Sözdizimi:
 \`\`\`csharp
-// [erişim belirteci] [dönüş tipi] MetotAdı([parametreler])
+// [erişim] [dönüş tipi] MetotAdı([parametreler])
 public static int Topla(int a, int b)
 {
     return a + b;
 }
 
-// Expression body (tek satır) — C# 6+
+// Expression body — tek satır (C# 6+)
 public static int Carp(int a, int b) => a * b;
 \`\`\`
 
 ### Parametre Çeşitleri:
 \`\`\`csharp
-// Varsayılan parametre değeri
-static double KDVHesapla(double fiyat, double kdvOrani = 0.20)
-    => fiyat * (1 + kdvOrani);
+// Varsayılan (default) parametre
+static double KDVHesapla(double fiyat, double oran = 0.20)
+    => fiyat * (1 + oran);
 
-// İsimli parametre
-KDVHesapla(fiyat: 100, kdvOrani: 0.08); // 108
+KDVHesapla(100);          // 120 (varsayılan %20)
+KDVHesapla(100, 0.08);    // 108 (%8 KDV)
+KDVHesapla(fiyat: 100, oran: 0.10); // İsimli parametre
 
 // params — Değişken sayıda parametre
 static int Topla(params int[] sayilar)
-    => sayilar.Sum();
+{
+    int toplam = 0;
+    foreach (int s in sayilar) toplam += s;
+    return toplam;
+}
 
-Topla(1, 2, 3, 4, 5); // 15
+Topla(1, 2, 3);       // 6
+Topla(10, 20, 30, 40); // 100
 \`\`\`
 
-### out ve ref Parametreler:
+### out Parametresi — Birden Fazla Değer Döndür:
 \`\`\`csharp
 static void MinMax(int[] dizi, out int min, out int max)
 {
@@ -291,146 +352,200 @@ MinMax(arr, out int enKucuk, out int enBuyuk);
 Console.WriteLine($"Min: {enKucuk}, Max: {enBuyuk}"); // Min: 1, Max: 9
 \`\`\`
 
-### Metot Aşırı Yüklemesi (Overloading):
+### Method Overloading (Aşırı Yükleme):
 \`\`\`csharp
-static string Formatla(int sayi) => sayi.ToString("N0");
+// Aynı isim, farklı parametre imzası
+static string Formatla(int sayi)    => sayi.ToString("N0");
 static string Formatla(double sayi) => sayi.ToString("F2");
 static string Formatla(decimal para) => para.ToString("C");
 
 Console.WriteLine(Formatla(1000000));  // 1.000.000
-Console.WriteLine(Formatla(3.14159)); // 3,14
+Console.WriteLine(Formatla(3.14159));  // 3,14
 Console.WriteLine(Formatla(999.99m)); // ₺999,99
-\`\`\``
+\`\`\``,
+        quiz: [
+          { q: "void dönüş tipi ne anlama gelir?", options: ["Metot hata fırlatabilir", "Metot geriye bir değer döndürmez", "Metot asenkrondur", "Metot sadece static olabilir"], answer: 1, exp: "void, metodun geriye herhangi bir değer döndürmediğini belirtir. Yan etkiler için kullanılır (log, ekrana yaz, kaydet)." },
+          { q: "Aynı isimde, farklı parametreli birden fazla metot tanımlamak ne olarak adlandırılır?", options: ["Method Overriding", "Method Hiding", "Method Overloading", "Method Chaining"], answer: 2, exp: "Method Overloading (Aşırı Yükleme), derleyici parametre tipine göre doğru metodu seçer." },
+          { q: "static void Yaz(params string[] kelimeler) metoduna kaç argüman gönderilebilir?", options: ["Sadece 1", "Sadece 3", "0 veya daha fazla", "Maksimum 5"], answer: 2, exp: "params ile tanımlanan parametre sıfır veya daha fazla argüman alabilir." }
+        ]
       },
       {
         id: "cs-6",
         title: "Ders 6: Sınıflar ve OOP",
-        content: `Nesne Yönelimli Programlama (OOP), gerçek dünyadaki varlıkları kod olarak modelleme yaklaşımıdır.
+        intro: `### OOP Neden Gerekli?
+Gerçek dünyadaki "Müşteri", "Sipariş", "Ürün", "Banka Hesabı" gibi kavramları koda yansıtmak için nesne yönelimli programlama kullanılır. Sınıflar bu kavramların şablonudur.
 
-### Sınıf Tasarımı (Gerçek Senaryo):
+### Gerçek Dünya Örneği:
+Bir e-ticaret sisteminde \`Urun\` sınıfı; ürünün adını, fiyatını, stoğunu tutar ve satış yapma, stok güncelleme gibi işlemleri yönetir. Bu sınıftan binlerce "Urun nesnesi" oluşturulabilir.
+
+### 4 Temel OOP Prensibi:
+* **Encapsulation:** Veriyi dışarıdan koruma (private field + public property)
+* **Inheritance:** Miras alma (BankaHesabi → VadeliHesap)
+* **Polymorphism:** Aynı metot, farklı davranış (override)
+* **Abstraction:** Karmaşıklığı gizle, sade arayüz sun`,
+        content: `### Sınıf Tasarımı — Banka Hesabı Örneği:
 \`\`\`csharp
 public class BankaHesabi
 {
     // Private field — dışarıdan doğrudan erişilemez
     private decimal _bakiye;
-    private readonly List<string> _islemGecmisi;
+    private readonly List<string> _islemGecmisi = new();
 
-    // Properties
+    // Properties — kontrollü erişim
     public string HesapNo { get; private set; }
     public string SahibiAdi { get; set; }
-    public decimal Bakiye => _bakiye; // Salt okunur
+    public decimal Bakiye => _bakiye; // Sadece okunabilir
 
-    // Constructor
-    public BankaHesabi(string hesapNo, string sahibiAdi, decimal baslangicBakiyesi = 0)
+    // Constructor — nesne oluşturulduğunda çalışır
+    public BankaHesabi(string hesapNo, string sahibi, decimal baslangic = 0)
     {
         HesapNo = hesapNo;
-        SahibiAdi = sahibiAdi;
-        _bakiye = baslangicBakiyesi;
-        _islemGecmisi = new List<string>();
+        SahibiAdi = sahibi;
+        _bakiye = baslangic;
     }
 
-    // Para yatırma
+    // Para yatırma metodu
     public void ParaYatir(decimal tutar)
     {
         if (tutar <= 0) throw new ArgumentException("Tutar pozitif olmalı!");
         _bakiye += tutar;
-        _islemGecmisi.Add($"+{tutar:C} yatırıldı. Bakiye: {_bakiye:C}");
+        _islemGecmisi.Add($"+{tutar:C} yatırıldı → Bakiye: {_bakiye:C}");
     }
 
-    // Para çekme
+    // Para çekme — başarı durumunu bool olarak döndürür
     public bool ParaCek(decimal tutar)
     {
         if (tutar <= 0 || tutar > _bakiye) return false;
         _bakiye -= tutar;
-        _islemGecmisi.Add($"-{tutar:C} çekildi. Bakiye: {_bakiye:C}");
+        _islemGecmisi.Add($"-{tutar:C} çekildi → Bakiye: {_bakiye:C}");
         return true;
     }
 
-    public void IslemGecmisiniGoster()
+    public void IslemleriGoster()
     {
+        Console.WriteLine($"=== {HesapNo} İşlem Geçmişi ===");
         foreach (var islem in _islemGecmisi)
-            Console.WriteLine($"  • {islem}");
+            Console.WriteLine("  " + islem);
     }
 }
-
-// Kullanım
-var hesap = new BankaHesabi("TR33-0001", "Yusuf Yetkin", 5000m);
-hesap.ParaYatir(2500m);
-hesap.ParaCek(1000m);
-hesap.IslemGecmisiniGoster();
 \`\`\`
 
-### 4 Temel OOP Prensibi:
-* **Encapsulation:** Veriler private, erişim property/metot üzerinden.
-* **Inheritance:** Alt sınıf üst sınıfın özelliklerini miras alır.
-* **Polymorphism:** Aynı metot farklı davranışlar sergileyebilir (override).
-* **Abstraction:** Karmaşık detayları gizleyip sade arayüz sunmak.`
+### Nesne Oluşturma ve Kullanım:
+\`\`\`csharp
+// new ile nesne oluştur
+var hesap = new BankaHesabi("TR33-0001", "Yusuf Yetkin", 5000m);
+
+hesap.ParaYatir(2500m);
+hesap.ParaCek(1000m);
+bool sonuc = hesap.ParaCek(99999m); // false döner (yetersiz bakiye)
+
+Console.WriteLine($"Bakiye: {hesap.Bakiye:C}");
+hesap.IslemleriGoster();
+\`\`\``,
+        quiz: [
+          { q: "OOP'de Encapsulation (Kapsülleme) ne anlama gelir?", options: ["Sınıfı başka bir sınıftan türetmek", "Veriyi dış erişimden koruyup kontrollü erişim sağlamak", "Aynı metodun farklı davranış sergilemesi", "Soyut sınıf tanımlamak"], answer: 1, exp: "Encapsulation: private field + public property/metot ile veriyi dışarıdan koruma prensibidir." },
+          { q: "Constructor (yapıcı metot) ne zaman çağrılır?", options: ["Nesne silindiğinde", "Metot her çağrıldığında", "Nesne oluşturulduğunda (new)", "Program başladığında"], answer: 2, exp: "Constructor, 'new' keyword'ü ile nesne oluşturulduğu anda otomatik çağrılır." },
+          { q: "public decimal Bakiye => _bakiye; ifadesi ne anlama gelir?", options: ["_bakiye değişkenine public erişim", "Bakiye'ye hem okuma hem yazma izni var", "Bakiye sadece okunabilir (getter-only property)", "Bakiye statik bir değişkendir"], answer: 2, exp: "=> ile tanımlanan expression-body property sadece get içerir, set yoktur. Dışarıdan değiştirilemez." }
+        ]
       },
       {
         id: "cs-7",
         title: "Ders 7: Koleksiyonlar (List, Dictionary, Array)",
-        content: `C#'ta birden fazla veriyi bir arada tutmak için koleksiyonlar kullanılır.
+        intro: `### Koleksiyonlar Neden Gerekli?
+Tek bir veri için değişken yeterlidir. Ama "tüm siparişler", "bütün kullanıcılar", "aktif ürünler" gibi veri setleri için koleksiyon kullanılır.
 
-### Array (Dizi) — Sabit boyutlu:
+### Gerçek Dünya Kullanımı:
+* **API Response:** \`List<Urun>\` döndür
+* **Cache:** \`Dictionary<string, object>\` ile anahtar-değer önbellekleme
+* **Benzersiz veri:** \`HashSet<int>\` ile duplicate'siz ID listesi
+* **Sıralı veri:** \`Queue<SiparisTalebi>\` ile işlem kuyruğu
+
+> **Ne zaman hangisi?** Sıralı liste → \`List\`. Hızlı arama → \`Dictionary\`. Sabit boyut → \`Array\`. Benzersiz → \`HashSet\`.`,
+        content: `### Array — Sabit Boyutlu Dizi:
 \`\`\`csharp
+// Tanımlama
 int[] notlar = { 85, 92, 78, 95, 88 };
-double ort = notlar.Average();
-int max = notlar.Max();
 
-// 2D dizi
+// LINQ ile istatistik
+double ortalama = notlar.Average();  // 87.6
+int en_yuksek = notlar.Max();        // 95
+int en_dusuk = notlar.Min();         // 78
+
+// 2D dizi (matris)
 int[,] matris = { { 1, 2, 3 }, { 4, 5, 6 } };
 Console.WriteLine(matris[1, 2]); // 6
 \`\`\`
 
-### List<T> — Dinamik liste:
+### List<T> — Dinamik Liste:
 \`\`\`csharp
-var ogrenciler = new List<string> { "Ahmet", "Mehmet", "Ayşe" };
+var urunler = new List<string> { "Laptop", "Mouse", "Klavye" };
 
-ogrenciler.Add("Fatma");
-ogrenciler.Insert(0, "Zeynep"); // İndekse ekle
-ogrenciler.Remove("Mehmet");
-ogrenciler.Sort();
+// Ekleme
+urunler.Add("Monitör");
+urunler.Insert(0, "Kulaklık"); // İndekse ekle
 
-Console.WriteLine($"Sayı: {ogrenciler.Count}");
-Console.WriteLine(string.Join(", ", ogrenciler));
+// Silme
+urunler.Remove("Mouse");
+urunler.RemoveAt(0); // İndekse göre sil
 
 // Arama
-bool varMi = ogrenciler.Contains("Ahmet");
-int indeks = ogrenciler.IndexOf("Ahmet");
+bool varMi = urunler.Contains("Laptop");     // true
+int indeks = urunler.IndexOf("Klavye");      // 0 (şu an)
+
+// Sıralama
+urunler.Sort();
+Console.WriteLine(string.Join(", ", urunler));
+Console.WriteLine($"Toplam: {urunler.Count} ürün");
 \`\`\`
 
 ### Dictionary<TKey, TValue> — Anahtar-Değer:
 \`\`\`csharp
-var notSistemi = new Dictionary<string, int>
+// Kullanıcı puanları
+var puan = new Dictionary<string, int>
 {
-    ["Ahmet"] = 85,
-    ["Mehmet"] = 72,
-    ["Ayşe"] = 95
+    ["Ahmet"] = 850,
+    ["Mehmet"] = 720,
+    ["Ayşe"]  = 950
 };
 
-// Değer okuma
-int ahmetNot = notSistemi["Ahmet"];
+// Okuma
+int ahmetPuan = puan["Ahmet"]; // 850
 
-// Güvenli okuma
-if (notSistemi.TryGetValue("Ali", out int aliNot))
-    Console.WriteLine($"Ali: {aliNot}");
+// Güvenli okuma (KeyNotFoundException önle)
+if (puan.TryGetValue("Ali", out int aliPuan))
+    Console.WriteLine($"Ali: {aliPuan}");
+else
+    Console.WriteLine("Ali bulunamadı.");
 
-// Yeni kayıt ekleme/güncelleme
-notSistemi["Fatma"] = 91;
+// Ekleme / güncelleme
+puan["Fatma"] = 880;
 
 // Döngü
-foreach (var (isim, not) in notSistemi)
-    Console.WriteLine($"{isim}: {not}");
-\`\`\``
+foreach (var (isim, p) in puan)
+    Console.WriteLine($"{isim}: {p} puan");
+\`\`\``,
+        quiz: [
+          { q: "List<T> ile Array arasındaki temel fark nedir?", options: ["List daha yavaştır", "List dinamik boyutlu, Array sabit boyutludur", "Array tip güvenlidir, List değildir", "List sadece string saklar"], answer: 1, exp: "Array oluşturulurken boyutu sabittir. List dinamik olarak büyüyüp küçülebilir (Add/Remove)." },
+          { q: "Dictionary'de mevcut olmayan bir Key'e [] ile erişildiğinde ne olur?", options: ["null döner", "0 döner", "KeyNotFoundException fırlatır", "false döner"], answer: 2, exp: "Güvenli erişim için TryGetValue kullanılmalıdır." },
+          { q: "urunler.Contains('Laptop') ifadesi ne döndürür?", options: ["int (indeks)", "string (değer)", "bool", "List<string>"], answer: 2, exp: "Contains, elemanın listede olup olmadığını bool (true/false) olarak döndürür." }
+        ]
       },
       {
         id: "cs-8",
         title: "Ders 8: Kalıtım (Inheritance) ve Interface",
-        content: `Kalıtım, kod tekrarını önleyerek sınıflar arasında özellik paylaşımı sağlar.
+        intro: `### Kalıtım Neden Gerekli?
+"Yazılımcı da bir Çalışandır" — bu cümle kalıtımı özetler. Ortak özellikleri tekrar yazmak yerine üst sınıftan miras alınır. Bu hem kod tekrarını önler hem de sistemin genişlemesini kolaylaştırır.
 
-### Kalıtım Örneği:
+### Interface Neden Gerekli?
+"Kredi kartıyla ödeme de, PayPal ile ödeme de birer ödemedir." Her ödeme yöntemi farklı çalışsa da aynı \`OdemeYap()\` metoduna sahip olmalı. Interface bu sözleşmeyi tanımlar.
+
+### Gerçek Dünya:
+* **Repository Pattern:** \`IUrunRepository\` → \`SqlUrunRepository\`, \`MongoUrunRepository\`
+* **Strategy Pattern:** \`IFiyatHesaplama\` → \`IndirimliHesap\`, \`NormalHesap\`
+* **Dependency Injection:** ASP.NET Core'un temeli interface'lere dayanır`,
+        content: `### Kalıtım Örneği:
 \`\`\`csharp
-// Temel sınıf
+// Temel sınıf (Base Class)
 public abstract class Calisan
 {
     public int Id { get; set; }
@@ -442,12 +557,11 @@ public abstract class Calisan
         Id = id; Ad = ad; MaasBase = maas;
     }
 
-    // abstract: Alt sınıflar ZORUNDA override eder
-    public abstract decimal NetMaasHesapla();
+    // abstract: Alt sınıflar MUTLAKA override eder
+    public abstract decimal NetMaas();
 
-    // virtual: Alt sınıflar isteğe bağlı override edebilir
-    public virtual string Tanitim()
-        => $"Çalışan #{Id}: {Ad}";
+    // virtual: Alt sınıflar isteğe bağlı override eder
+    public virtual string Ozet() => $"#{Id} {Ad}";
 }
 
 // Türetilmiş sınıflar
@@ -456,81 +570,99 @@ public class Yazilimci : Calisan
     public string Dil { get; set; }
 
     public Yazilimci(int id, string ad, decimal maas, string dil)
-        : base(id, ad, maas)
+        : base(id, ad, maas) // Üst sınıf constructor'ı çağır
     {
         Dil = dil;
     }
 
-    public override decimal NetMaasHesapla()
+    public override decimal NetMaas()
         => MaasBase * 0.85m + 2000m; // Vergi sonrası + teknoloji bonusu
 
-    public override string Tanitim()
-        => base.Tanitim() + $" | {Dil} Developer";
+    public override string Ozet()
+        => base.Ozet() + $" | {Dil} Developer";
 }
 \`\`\`
 
-### Interface (Arayüz) — Sözleşme:
+### Interface — Sözleşme Tanımlama:
 \`\`\`csharp
+// Interface sadece kural koyar, kod yazmaz
 public interface IOdeme
 {
     string OdemeYontemi { get; }
     bool OdemeYap(decimal tutar, string aciklama);
 }
 
+// Her ödeme yöntemi aynı sözleşmeyi uygular
 public class KrediKarti : IOdeme
 {
     public string OdemeYontemi => "Kredi Kartı";
+
     public bool OdemeYap(decimal tutar, string aciklama)
     {
-        Console.WriteLine($"💳 {tutar:C} - {aciklama}");
-        return true;
+        Console.WriteLine($"💳 {tutar:C} → {aciklama}");
+        return true; // banka onayı simüle
     }
 }
 
 // Polymorphism: Hangi implementasyon olduğu önemli değil
 IOdeme odeme = new KrediKarti();
 odeme.OdemeYap(299.99m, "YTK Academy Mentörlük");
-\`\`\``
+\`\`\``,
+        quiz: [
+          { q: "abstract keyword ile işaretlenen bir metot ne anlama gelir?", options: ["Metot çalışma zamanında yüklenir", "Alt sınıflar bu metodu MUTLAKA override etmek zorundadır", "Metot sadece static olabilir", "Metot private tanımlanmıştır"], answer: 1, exp: "abstract metot, temel sınıfta gövde (body) içermez. Tüm türetilmiş sınıflar onu override etmek zorundadır." },
+          { q: "Interface ile Abstract Class arasındaki temel fark nedir?", options: ["Interface metod gövdesi içerebilir, Abstract Class içeremez", "Interface sadece sözleşme tanımlar (implementasyon yok), Abstract Class kısmen implemente edebilir", "Interface'den miras alınamaz", "Abstract Class'tan birden fazla miras alınabilir"], answer: 1, exp: "C# 8+'dan önce interface'de sadece imza vardı. Abstract class hem soyut hem de somut metotlar içerebilir. Bir sınıf birden fazla interface'i uygulayabilir." },
+          { q: "base() keyword'ü ne için kullanılır?", options: ["Üst sınıfın static metodunu çağırmak için", "Türetilmiş sınıfta üst sınıfın constructor'ını veya üyelerini çağırmak için", "Interface metodunu çağırmak için", "Mevcut sınıfın başka constructor'ını çağırmak için"], answer: 1, exp: "base(), türetilmiş sınıfın constructor'ında üst sınıfın constructor'ını çağırmak için kullanılır." }
+        ]
       },
       {
         id: "cs-9",
         title: "Ders 9: Hata Yönetimi (try-catch-finally)",
-        content: `Hata yönetimi, programların beklenmedik durumlarla karşılaştığında çökmesini önler.
+        intro: `### Hata Yönetimi Neden Kritik?
+Hiçbir program hatasız çalışmaz. Kullanıcı yanlış format girebilir, ağ bağlantısı kesilebilir, disk dolabilir, veritabanı cevap vermeyebilir. Bu durumlarda programın çökmesi değil, zarif bir hata yönetimi yapması beklenir.
 
-### try-catch-finally:
+### Gerçek Dünya:
+* Üretim ortamında yakalanmayan exception → servis çöküşü → gelir kaybı
+* İyi hata yönetimi: hatayı logla, kullanıcıya uygun mesaj göster, sistemi ayakta tut
+* .NET uygulamalarında **Serilog** veya **NLog** ile merkezi loglama yapılır
+
+> **Altın Kural:** Asla boş catch bloğu bırakma! Hatayı yutmak debugging'i imkansız kılar.`,
+        content: `### try-catch-finally Yapısı:
 \`\`\`csharp
 try
 {
-    Console.Write("Bölünen sayıyı girin: ");
+    Console.Write("Bölünen: ");
     int a = int.Parse(Console.ReadLine()!);
 
-    Console.Write("Bölen sayıyı girin: ");
+    Console.Write("Bölen: ");
     int b = int.Parse(Console.ReadLine()!);
 
     Console.WriteLine($"Sonuç: {a / b}");
 }
-catch (FormatException)
+catch (FormatException ex)
 {
-    Console.WriteLine("❌ Hata: Geçerli bir sayı girilmedi!");
+    // Sayı olmayan giriş
+    Console.WriteLine($"❌ Geçersiz sayı: {ex.Message}");
 }
 catch (DivideByZeroException)
 {
-    Console.WriteLine("❌ Hata: Sıfıra bölme yapılamaz!");
+    // Sıfıra bölme
+    Console.WriteLine("❌ Sıfıra bölme yapılamaz!");
 }
-catch (Exception ex)
+catch (Exception ex) // Tüm diğer hatalar
 {
     Console.WriteLine($"❌ Beklenmedik hata: {ex.Message}");
-    // Loglama sistemi burada devreye girer
+    // Gerçek projede: logger.Error(ex, "Bölme işlemi başarısız");
 }
 finally
 {
-    // Her zaman çalışır — kaynak temizliği için ideal
-    Console.WriteLine("İşlem sonlandı. (finally)");
+    // HER DURUMDA çalışır — kaynak temizliği için ideal
+    Console.WriteLine("İşlem tamamlandı. (finally bloğu)");
 }
 \`\`\`
 
 ### Özel Exception Sınıfı:
 \`\`\`csharp
+// Domain'e özgü exception tanımla
 public class YetersizBakiyeException : Exception
 {
     public decimal Bakiye { get; }
@@ -552,14 +684,35 @@ public void ParaCek(decimal tutar)
 
     _bakiye -= tutar;
 }
-\`\`\``
+
+// Çağıran tarafta yakalanır
+try { hesap.ParaCek(99999m); }
+catch (YetersizBakiyeException ex)
+{
+    Console.WriteLine(ex.Message);
+    Console.WriteLine($"Eksiği: {ex.IstenenTutar - ex.Bakiye:C}");
+}
+\`\`\``,
+        quiz: [
+          { q: "finally bloğu ne zaman çalışır?", options: ["Sadece hata olmadığında", "Sadece exception fırlatıldığında", "Her durumda — hata olsa da olmasa da", "Sadece return çağrıldığında"], answer: 2, exp: "finally bloğu, try başarılı da olsa, catch devreye girse de her zaman çalışır. Kaynak temizliği (connection close) için idealdir." },
+          { q: "Boş catch bloğu (catch {}) kullanmak neden kötü bir pratiktir?", options: ["Derleme hatası verir", "Hatayı yutarak debug'ı imkansız kılar", "Performansı düşürür", "Sadece FormatException'ı yakalar"], answer: 1, exp: "Boş catch bloğu hatayı sessizce yutarak sistemde neyin yanlış gittiğini anlamayı engeller." },
+          { q: "throw new ArgumentException('...') ifadesi ne yapar?", options: ["Programı sonlandırır", "Bir hata mesajı yazdırır", "ArgumentException türünde bir exception fırlatır", "catch bloğuna atlar"], answer: 2, exp: "throw, exception nesnesini oluşturup fırlatır. En yakın uygun catch bloğu tarafından yakalanır." }
+        ]
       },
       {
         id: "cs-10",
         title: "Ders 10: LINQ ile Veri Sorgulama",
-        content: `LINQ (Language Integrated Query), C# koleksiyonlarını SQL benzeri sözdizimi ile sorgulamanızı sağlar.
+        intro: `### LINQ Nedir?
+LINQ (Language Integrated Query), C# içinde koleksiyonları SQL benzeri sözdizimi ile sorgulamayı sağlar. Veri filtreleme, sıralama, gruplama ve dönüşüm işlemleri tek satıra sığar.
 
-### Temel LINQ Metodları:
+### Gerçek Dünya Kullanımı:
+* "Fiyatı 1000 TL'den yüksek aktif ürünleri getir" → \`.Where().OrderBy()\`
+* "Her kategorideki ürün sayısı" → \`.GroupBy().Count()\`
+* "En pahalı 10 ürün" → \`.OrderByDescending().Take(10)\`
+* Entity Framework Core, LINQ'yu SQL'e çevirir — veritabanı sorgularını C# ile yazarsın
+
+> **LINQ, EF Core'un dilidir.** Bunu öğrenmek, veritabanı sorgularını C# ile yazmayı öğrenmek demektir.`,
+        content: `### Temel LINQ Metodları:
 \`\`\`csharp
 using System.Linq;
 
@@ -569,17 +722,17 @@ var urunler = new List<Urun>
     new() { Ad = "Mouse",    Fiyat = 350,   Kategori = "Elektronik", Stok = 50 },
     new() { Ad = "Masa",     Fiyat = 3500,  Kategori = "Mobilya",    Stok = 8  },
     new() { Ad = "Sandalye", Fiyat = 2000,  Kategori = "Mobilya",    Stok = 12 },
-    new() { Ad = "Kalem",    Fiyat = 15,    Kategori = "Kirtasiye",  Stok = 200}
+    new() { Ad = "Kalem",    Fiyat = 15,    Kategori = "Kırtasiye",  Stok = 200}
 };
 
-// Filtreleme
+// Where — Filtreleme
 var pahalılar = urunler.Where(u => u.Fiyat > 1000).ToList();
 
-// Sıralama
+// OrderBy / OrderByDescending — Sıralama
 var ucuzdan = urunler.OrderBy(u => u.Fiyat).ToList();
-var pahalidan = urunler.OrderByDescending(u => u.Fiyat).ToList();
+var pahalidan = urunler.OrderByDescending(u => u.Fiyat).Take(3).ToList();
 
-// Dönüşüm
+// Select — Projeksiyon (tip dönüşümü)
 var adlar = urunler.Select(u => u.Ad).ToList();
 var ozet = urunler.Select(u => new { u.Ad, u.Fiyat }).ToList();
 
@@ -588,97 +741,130 @@ var enPahalı = urunler.MaxBy(u => u.Fiyat);
 var laptop = urunler.FirstOrDefault(u => u.Ad == "Laptop");
 \`\`\`
 
-### Gruplama ve İstatistik:
+### Aggregate Fonksiyonlar:
 \`\`\`csharp
-// Kategoriye göre grupla
-var gruplama = urunler
+decimal toplamDeger = urunler.Sum(u => u.Fiyat * u.Stok);
+double ortFiyat = urunler.Average(u => (double)u.Fiyat);
+int toplam = urunler.Count(u => u.Stok > 0);
+bool hepsiFiyatlı = urunler.All(u => u.Fiyat > 0);
+bool biriPahalı = urunler.Any(u => u.Fiyat > 40000);
+\`\`\`
+
+### GroupBy — Gruplama:
+\`\`\`csharp
+var gruplar = urunler
     .GroupBy(u => u.Kategori)
     .Select(g => new
     {
         Kategori = g.Key,
-        UrunSayisi = g.Count(),
+        Adet = g.Count(),
         ToplamDeger = g.Sum(u => u.Fiyat * u.Stok),
-        OrtalamaFiyat = g.Average(u => u.Fiyat)
+        OrtFiyat = g.Average(u => (double)u.Fiyat)
     })
     .OrderByDescending(g => g.ToplamDeger);
 
-foreach (var g in gruplama)
-    Console.WriteLine($"{g.Kategori}: {g.UrunSayisi} ürün, {g.ToplamDeger:C}");
-\`\`\``
+foreach (var g in gruplar)
+    Console.WriteLine($"{g.Kategori}: {g.Adet} ürün, {g.ToplamDeger:C}");
+\`\`\``,
+        quiz: [
+          { q: "LINQ'da Where() metodu ne yapar?", options: ["Sıralama yapar", "Belirtilen koşula göre filtreler", "Yeni bir nesne listesi oluşturur", "Gruplayarak saydırır"], answer: 1, exp: "Where(), koleksiyonu filtreler; koşulu true olanları yeni bir IEnumerable olarak döndürür." },
+          { q: ".FirstOrDefault() metodu ne zaman null döndürür?", options: ["Liste boş olduğunda", "Koşula uyan eleman bulunamadığında", "Her zaman null döndürür", "A ve B şıkları"], answer: 3, exp: "FirstOrDefault, koşula uyan eleman bulunamazsa veya liste boşsa default değeri (referans tiplerde null) döndürür." },
+          { q: "urunler.Count(u => u.Stok > 0) ne döndürür?", options: ["Ürün listesi", "En yüksek stok değeri", "Stoğu 0'dan büyük olan ürün sayısı", "Toplam stok adedi"], answer: 2, exp: "Count(predicate), verilen koşulu sağlayan eleman sayısını int olarak döndürür." }
+        ]
       },
       {
         id: "cs-11",
         title: "Ders 11: Asenkron Programlama (async/await)",
-        content: `Asenkron programlama, I/O işlemleri sırasında uygulamanın bloke olmasını önler. Web API, veritabanı ve dosya işlemleri için kritiktir.
+        intro: `### Asenkron Programlama Neden Gerekli?
+Bir restoran hayal et: Garson müşteriden siparişi alıp mutfaktan yemek çıkana kadar orada beklese diğer masalara gidemez. Asenkron programlama tam da budur — bir işlem beklerken diğer işler yapılabilir.
 
-### async/await Temelleri:
+### Gerçek Dünya:
+* **API çağrısı:** 200ms süren HTTP isteği sırasında thread bloke olmamalı
+* **Veritabanı sorgusu:** EF Core'un tüm metodları async'tir (\`.ToListAsync()\`)
+* **Dosya okuma:** Büyük dosyalar async okunur
+* **Web sunucusu:** ASP.NET Core, async ile aynı anda binlerce isteği işler
+
+> **Kural:** I/O işlemi yapıyorsan (ağ, disk, DB), async kullan. CPU işlemi yapıyorsan (hesaplama), async gerekmez.`,
+        content: `### async/await Temelleri:
 \`\`\`csharp
 using System.Net.Http;
 using System.Text.Json;
 
-// Task: Sonucu beklenebilir asenkron işlem
+// Task<T>: Değer döndüren asenkron metot
 public async Task<string> VeriGetirAsync(string url)
 {
     using var client = new HttpClient();
-    // await: Bekle ama thread'i bloke etme
+    
+    // await: İşlemi bekle ama thread'i BLOKE ETME
     string json = await client.GetStringAsync(url);
     return json;
 }
 
-// Task<T>: Değer döndüren asenkron metot
-public async Task<List<Urun>> UrunleriGetirAsync()
+// void yerine Task döndür (hata yakalanabilir olsun)
+public async Task KaydetAsync(string veri)
 {
-    using var client = new HttpClient();
-    var response = await client.GetAsync("https://api.ytkacademy.com.tr/urunler");
-    response.EnsureSuccessStatusCode();
-
-    string json = await response.Content.ReadAsStringAsync();
-    return JsonSerializer.Deserialize<List<Urun>>(json)!;
+    await File.WriteAllTextAsync("veri.txt", veri);
+    Console.WriteLine("✓ Kaydedildi");
 }
 \`\`\`
 
 ### Paralel Asenkron İşlemler:
 \`\`\`csharp
-public async Task<(List<Urun> urunler, List<Kullanici> kullanicilar)> VeriYukleAsync()
+public async Task<(string urunler, string kullanicilar)> VeriYukleAsync()
 {
-    // İkisini aynı anda başlat
-    var urunTask = UrunleriGetirAsync();
-    var kullaniciTask = KullanicilariGetirAsync();
+    // İkisini AYNI ANDA başlat (sırayla değil!)
+    Task<string> urunTask = VeriGetirAsync("/api/urunler");
+    Task<string> kullaniciTask = VeriGetirAsync("/api/kullanicilar");
 
-    // İkisinin de tamamlanmasını bekle
+    // Her ikisi bitene kadar bekle
     await Task.WhenAll(urunTask, kullaniciTask);
 
     return (await urunTask, await kullaniciTask);
 }
+
+// Sadece birini bekle (en hızlısı yeterli)
+Task<string> sonuc = await Task.WhenAny(urunTask, kullaniciTask);
 \`\`\`
 
 ### CancellationToken — İptal Desteği:
 \`\`\`csharp
-public async Task UzunIslemAsync(CancellationToken ct)
+public async Task RaporUretAsync(CancellationToken ct)
 {
     for (int i = 0; i < 100; i++)
     {
         ct.ThrowIfCancellationRequested(); // İptal istendi mi?
-        await Task.Delay(100, ct);
-        Console.WriteLine($"Adım {i + 1}/100");
+        await Task.Delay(100, ct);         // Bekleme (iptal edilebilir)
+        Console.WriteLine($"Adım {i + 1}/100 tamamlandı");
     }
 }
 
-// Kullanım
-using var cts = new CancellationTokenSource(timeout: TimeSpan.FromSeconds(5));
-await UzunIslemAsync(cts.Token);
-\`\`\``
+// 5 saniye sonra otomatik iptal
+using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+await RaporUretAsync(cts.Token);
+\`\`\``,
+        quiz: [
+          { q: "async metot hangi dönüş tiplerini kullanabilir?", options: ["Sadece void", "void, Task veya Task<T>", "Sadece Task", "Herhangi bir tip"], answer: 1, exp: "async metodlar void, Task veya Task<T> döndürebilir. void sadece event handler'lar için önerilir." },
+          { q: "await keyword'ü bir async işlem beklerken ne yapar?", options: ["Thread'i bloke eder ve bekler", "Thread'i serbest bırakır, işlem tamamlanınca devam eder", "Yeni bir Thread başlatır", "İşlemi iptal eder"], answer: 1, exp: "await, mevcut thread'i bloke etmeden işlemin tamamlanmasını bekler. Thread başka işlere atanabilir." },
+          { q: "Task.WhenAll() ne zaman kullanılır?", options: ["Sadece en hızlı tamamlanan Task'ı beklemek için", "Birden fazla async işlemi paralel başlatıp hepsinin tamamlanmasını beklemek için", "Task'ı iptal etmek için", "Senkron metodu async'e çevirmek için"], answer: 1, exp: "Task.WhenAll(), tüm Task'lar tamamlandığında devam eder. Paralel API çağrıları için idealdir." }
+        ]
       },
       {
         id: "cs-12",
         title: "Ders 12: Entity Framework Core",
-        content: `Entity Framework Core (EF Core), C# sınıfları ile veritabanı tabloları arasında köprü kuran ORM aracıdır.
+        intro: `### ORM Nedir ve Neden Kullanılır?
+SQL yazmak yerine C# nesneleri üzerinden veritabanı işlemi yapmak istiyorsan ORM (Object-Relational Mapping) kullanırsın. EF Core, .NET'in resmi ORM aracıdır.
 
-### DbContext ve Entity Tanımlama:
+### Gerçek Dünya:
+* Türkiye'deki kurumsal .NET projelerinin büyük çoğunluğu EF Core kullanıyor
+* \`db.Urunler.Where(u => u.Fiyat > 100).ToListAsync()\` → EF Core bunu SQL'e çevirir
+* Code-First yaklaşımı: C# sınıfı yaz → migration → veritabanı otomatik oluşur
+
+> **Bu ders sonunda:** Basit bir CRUD API'nin veritabanı katmanını yazabileceksin. Bu, gerçek projelerde kullanılan yapının ta kendisidir.`,
+        content: `### Entity ve DbContext Tanımlama:
 \`\`\`csharp
 using Microsoft.EntityFrameworkCore;
 
-// Entity sınıfı → Veritabanı tablosu
+// Entity → Veritabanı tablosu
 public class Urun
 {
     public int Id { get; set; }
@@ -704,14 +890,10 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
+        // Precision: decimal için zorunlu
         mb.Entity<Urun>()
           .Property(u => u.Fiyat)
           .HasPrecision(18, 2);
-
-        mb.Entity<Urun>()
-          .HasOne(u => u.Kategori)
-          .WithMany(k => k.Urunler)
-          .HasForeignKey(u => u.KategoriId);
     }
 }
 \`\`\`
@@ -720,44 +902,49 @@ public class AppDbContext : DbContext
 \`\`\`csharp
 await using var db = new AppDbContext(options);
 
-// CREATE
+// CREATE — Yeni kayıt ekle
 var yeniUrun = new Urun { Ad = "MacBook Pro", Fiyat = 85000m, KategoriId = 1 };
 db.Urunler.Add(yeniUrun);
-await db.SaveChangesAsync();
+await db.SaveChangesAsync(); // SQL: INSERT INTO...
 
-// READ — LINQ ile
-var elektronikler = await db.Urunler
-    .Include(u => u.Kategori)         // JOIN (eager loading)
+// READ — LINQ ile sorgula
+var aktifler = await db.Urunler
+    .Include(u => u.Kategori)          // SQL JOIN
     .Where(u => u.AktifMi && u.Stok > 0)
     .OrderByDescending(u => u.Fiyat)
     .Take(10)
     .ToListAsync();
 
-// UPDATE
+// UPDATE — Güncelle
 var urun = await db.Urunler.FindAsync(1);
 if (urun is not null)
 {
     urun.Fiyat = 79000m;
     urun.Stok -= 1;
-    await db.SaveChangesAsync();
+    await db.SaveChangesAsync(); // SQL: UPDATE...
 }
 
-// DELETE
+// DELETE — Sil
 var silinecek = await db.Urunler.FindAsync(5);
 if (silinecek is not null)
 {
     db.Urunler.Remove(silinecek);
-    await db.SaveChangesAsync();
+    await db.SaveChangesAsync(); // SQL: DELETE...
 }
 \`\`\`
 
-### Migration Komutları:
+### Migration Komutları (Terminalde çalıştırılır):
 \`\`\`csharp
-// Terminal (Package Manager Console veya CLI)
 // dotnet ef migrations add InitialCreate
 // dotnet ef database update
 // dotnet ef migrations list
-\`\`\``
+// dotnet ef database drop (dikkatli!)
+\`\`\``,
+        quiz: [
+          { q: "EF Core'da ORM açılımı nedir?", options: ["Object Resource Manager", "Object-Relational Mapping", "Ordered Record Model", "Optional Request Module"], answer: 1, exp: "ORM: Object-Relational Mapping. C# nesnelerini ilişkisel veritabanı tablolarına eşler." },
+          { q: "db.SaveChangesAsync() ne zaman çağrılmalıdır?", options: ["Her LINQ sorgusundan sonra", "Sadece DELETE işlemlerinde", "Add, Update veya Remove sonrasında değişiklikleri veritabanına yazmak için", "DbContext oluşturulduğunda"], answer: 2, exp: "SaveChangesAsync, bellekteki değişiklikleri (INSERT/UPDATE/DELETE) bir transaction içinde veritabanına gönderir." },
+          { q: ".Include(u => u.Kategori) EF Core'da ne işe yarar?", options: ["Kategori tablosunu oluşturur", "Kategorileri filtreler", "SQL JOIN yaparak ilişkili tabloyu yükler (eager loading)", "Kategori alanını şifreler"], answer: 2, exp: "Include, EF Core'a SQL JOIN ekletir. Aksi hâlde navigation property null gelir (lazy loading kapalıysa)." }
+        ]
       }
     ]
   },
@@ -768,622 +955,16 @@ if (silinecek is not null)
     icon: "🗄️",
     color: "#ffd166",
     lessons: [
-      {
-        id: "sql-1",
-        title: "Ders 1: SQL Nedir? Temel Kavramlar",
-        content: `SQL (Structured Query Language), ilişkisel veritabanlarında verileri sorgulamak, eklemek, güncellemek ve yönetmek için kullanılan standart dildir.
-
-### Temel Kavramlar:
-* **Veritabanı (Database):** Birbiriyle ilişkili verilerin düzenli saklandığı yapı.
-* **Tablo (Table):** Satır ve sütun yapısında veri depolayan nesne.
-* **Primary Key (PK):** Her satırı benzersiz tanımlayan sütun.
-* **Foreign Key (FK):** Başka tablonun PK'sına referans veren sütun.
-* **Index:** Sorgulama hızını artıran yapı.
-* **Schema:** Tablolar ve nesnelerin gruplanma mantığı.
-
-### SQL Komut Kategorileri:
-* **DDL:** CREATE, ALTER, DROP — Yapı yönetimi
-* **DML:** INSERT, UPDATE, DELETE — Veri yönetimi
-* **DQL:** SELECT — Veri sorgulama
-* **DCL:** GRANT, REVOKE — Yetki yönetimi
-* **TCL:** COMMIT, ROLLBACK — Transaction yönetimi
-
-### İlk SQL Komutları:
-\`\`\`sql
--- Veritabanı oluştur
-CREATE DATABASE YtkAcademy;
-GO
-
--- Veritabanını seç
-USE YtkAcademy;
-GO
-
--- Mevcut tabloları listele
-SELECT TABLE_NAME
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_TYPE = 'BASE TABLE';
-\`\`\`
-
-### Neden SQL Öğrenmeliyim?
-Her yazılım geliştirici veri tabanıyla çalışır. SQL bilmeden backend geliştirici olunamaz. Türkiye'deki iş ilanlarının %90'ında SQL zorunlu veya tercih edilen beceri olarak yer alır.`
-      },
-      {
-        id: "sql-2",
-        title: "Ders 2: Tablo Oluşturma (CREATE TABLE)",
-        content: `Veritabanında veri saklamak için tablo oluşturulur. Her sütunun veri tipi ve kısıtlamaları belirlenir.
-
-### Yaygın Veri Tipleri:
-* **INT / BIGINT:** Tam sayılar
-* **NVARCHAR(n):** Unicode metin (Türkçe için tercih edilir)
-* **DECIMAL(p,s):** Ondalıklı sayı — ör. DECIMAL(10,2) = 12345678.90
-* **BIT:** 0/1 (boolean)
-* **DATETIME / DATE:** Tarih ve saat
-* **UNIQUEIDENTIFIER:** GUID
-
-### Gerçek Bir E-Ticaret Şeması:
-\`\`\`sql
-CREATE TABLE Kategoriler (
-    Id    INT IDENTITY(1,1) PRIMARY KEY,
-    Ad    NVARCHAR(100) NOT NULL,
-    Slug  NVARCHAR(100) NOT NULL UNIQUE
-);
-
-CREATE TABLE Kullanicilar (
-    Id               INT IDENTITY(1,1) PRIMARY KEY,
-    Ad               NVARCHAR(50)  NOT NULL,
-    Soyad            NVARCHAR(50)  NOT NULL,
-    Email            NVARCHAR(100) NOT NULL UNIQUE,
-    SifreHash        NVARCHAR(255) NOT NULL,
-    Telefon          NVARCHAR(20)  NULL,
-    AktifMi          BIT           NOT NULL DEFAULT 1,
-    OlusturmaTarihi  DATETIME      NOT NULL DEFAULT GETDATE(),
-    SonGirisTarihi   DATETIME      NULL
-);
-
-CREATE TABLE Urunler (
-    Id               INT IDENTITY(1,1) PRIMARY KEY,
-    KategoriId       INT            NOT NULL,
-    Ad               NVARCHAR(200)  NOT NULL,
-    Aciklama         NVARCHAR(MAX)  NULL,
-    Fiyat            DECIMAL(10,2)  NOT NULL,
-    StokAdedi        INT            NOT NULL DEFAULT 0,
-    AktifMi          BIT            NOT NULL DEFAULT 1,
-    OlusturmaTarihi  DATETIME       NOT NULL DEFAULT GETDATE(),
-
-    CONSTRAINT FK_Urunler_Kategoriler
-        FOREIGN KEY (KategoriId) REFERENCES Kategoriler(Id),
-    CONSTRAINT CK_Urunler_Fiyat
-        CHECK (Fiyat >= 0),
-    CONSTRAINT CK_Urunler_Stok
-        CHECK (StokAdedi >= 0)
-);
-\`\`\`
-
-### Tablo Güncelleme ve Silme:
-\`\`\`sql
--- Sütun ekle
-ALTER TABLE Urunler ADD ResimUrl NVARCHAR(500) NULL;
-
--- Sütun tipi değiştir
-ALTER TABLE Urunler ALTER COLUMN Aciklama NVARCHAR(2000);
-
--- Tablo sil (dikkatli!)
-DROP TABLE IF EXISTS GeciciTablo;
-\`\`\``
-      },
-      {
-        id: "sql-3",
-        title: "Ders 3: SELECT ve Filtreleme",
-        content: `SELECT, veritabanından veri okumak için kullanılan en temel SQL komutudur.
-
-### Temel SELECT:
-\`\`\`sql
--- Tüm sütunlar (production'da kaçının, yavaş!)
-SELECT * FROM Urunler;
-
--- Belirli sütunlar
-SELECT Id, Ad, Fiyat, StokAdedi FROM Urunler;
-
--- Hesaplamalı sütun ve alias
-SELECT
-    Ad,
-    Fiyat,
-    Fiyat * 1.20 AS KDVliFiyat,
-    StokAdedi * Fiyat AS ToplamDeger,
-    GETDATE() AS SorguTarihi
-FROM Urunler;
-\`\`\`
-
-### WHERE ile Filtreleme:
-\`\`\`sql
--- Temel koşul
-SELECT * FROM Urunler WHERE Fiyat > 1000;
-
--- BETWEEN
-SELECT * FROM Urunler WHERE Fiyat BETWEEN 500 AND 5000;
-
--- IN listesi
-SELECT * FROM Urunler WHERE KategoriId IN (1, 3, 5);
-
--- LIKE — metin arama
-SELECT * FROM Urunler WHERE Ad LIKE '%laptop%';   -- içerir
-SELECT * FROM Kullanicilar WHERE Email LIKE '%@gmail.com'; -- biter
-
--- NULL kontrolü
-SELECT * FROM Kullanicilar WHERE Telefon IS NULL;
-
--- Birleşik koşullar
-SELECT * FROM Urunler
-WHERE AktifMi = 1
-  AND StokAdedi > 0
-  AND (Fiyat < 1000 OR KategoriId = 5);
-\`\`\`
-
-### Sıralama ve Sayfalama:
-\`\`\`sql
--- Sıralama
-SELECT Ad, Fiyat FROM Urunler
-ORDER BY Fiyat DESC, Ad ASC;
-
--- TOP ile limit (SQL Server)
-SELECT TOP 5 * FROM Urunler ORDER BY Fiyat DESC;
-
--- Sayfalama (OFFSET-FETCH)
--- 2. sayfa, sayfa başına 10 ürün
-SELECT Id, Ad, Fiyat FROM Urunler
-ORDER BY Id
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
-\`\`\``
-      },
-      {
-        id: "sql-4",
-        title: "Ders 4: INSERT, UPDATE ve DELETE",
-        content: `Veritabanındaki verileri eklemek, güncellemek ve silmek için DML komutları kullanılır.
-
-### INSERT — Veri Ekleme:
-\`\`\`sql
--- Tek kayıt
-INSERT INTO Kategoriler (Ad, Slug)
-VALUES ('Elektronik', 'elektronik');
-
--- Birden fazla kayıt
-INSERT INTO Kategoriler (Ad, Slug) VALUES
-    ('Giyim',     'giyim'),
-    ('Kitap',     'kitap'),
-    ('Spor',      'spor'),
-    ('Mobilya',   'mobilya');
-
--- Son eklenen ID'yi al
-INSERT INTO Urunler (KategoriId, Ad, Fiyat)
-VALUES (1, 'MacBook Pro M3', 85000);
-SELECT SCOPE_IDENTITY() AS YeniId; -- Sadece o işlem
-
--- SELECT'ten INSERT
-INSERT INTO ArsivUrunler (Ad, Fiyat, SilinmeTarihi)
-SELECT Ad, Fiyat, GETDATE()
-FROM Urunler
-WHERE AktifMi = 0;
-\`\`\`
-
-### UPDATE — Güncelleme:
-\`\`\`sql
--- ⚠️ WHERE olmadan TÜM satırlar değişir!
-
--- Tek kayıt
-UPDATE Kullanicilar
-SET SonGirisTarihi = GETDATE()
-WHERE Id = 42;
-
--- Toplu güncelleme
-UPDATE Urunler
-SET
-    Fiyat = Fiyat * 1.10,          -- %10 zam
-    GuncellemeTarihi = GETDATE()
-WHERE KategoriId = 1 AND AktifMi = 1;
-\`\`\`
-
-### DELETE — Silme:
-\`\`\`sql
--- ⚠️ WHERE olmadan TÜM kayıtlar silinir!
-
-DELETE FROM Urunler WHERE Id = 99;
-
--- Koşullu silme
-DELETE FROM Urunler
-WHERE StokAdedi = 0 AND AktifMi = 0;
-
--- Hızlı tablo temizleme (geri alınamaz!)
-TRUNCATE TABLE GeciciLog;
-\`\`\`
-
-### OUTPUT Clause — Ne Değişti?
-\`\`\`sql
--- Silinen kayıtları göster
-DELETE FROM Urunler
-OUTPUT DELETED.Id, DELETED.Ad, DELETED.Fiyat
-WHERE AktifMi = 0;
-\`\`\``
-      },
-      {
-        id: "sql-5",
-        title: "Ders 5: JOIN İşlemleri",
-        content: `İlişkisel veritabanlarında veriler farklı tablolarda saklanır. JOIN ile tablolar birleştirilir.
-
-### INNER JOIN — Sadece Eşleşenler:
-\`\`\`sql
-SELECT
-    u.Id,
-    u.Ad AS UrunAdi,
-    k.Ad AS Kategori,
-    u.Fiyat,
-    u.StokAdedi
-FROM Urunler u
-INNER JOIN Kategoriler k ON u.KategoriId = k.Id
-WHERE u.AktifMi = 1
-ORDER BY k.Ad, u.Fiyat;
-\`\`\`
-
-### LEFT JOIN — Sol Tablonun Tamamı:
-\`\`\`sql
--- Siparişi olmayan müşterileri de listele
-SELECT
-    k.Ad + ' ' + k.Soyad AS Musteri,
-    k.Email,
-    COUNT(s.Id)    AS SiparisSayisi,
-    SUM(s.Tutar)   AS ToplamHarcama
-FROM Kullanicilar k
-LEFT JOIN Siparisler s ON k.Id = s.KullaniciId
-GROUP BY k.Id, k.Ad, k.Soyad, k.Email
-ORDER BY ToplamHarcama DESC;
-\`\`\`
-
-### Çoklu JOIN — Sipariş Detay Raporu:
-\`\`\`sql
-SELECT
-    s.Id AS SiparisNo,
-    k.Ad + ' ' + k.Soyad AS MusteriAdi,
-    u.Ad AS UrunAdi,
-    kat.Ad AS Kategori,
-    sd.Adet,
-    sd.BirimFiyat,
-    sd.Adet * sd.BirimFiyat AS SatirToplam
-FROM Siparisler s
-INNER JOIN Kullanicilar k  ON s.KullaniciId = k.Id
-INNER JOIN SiparisDetay sd ON s.Id = sd.SiparisId
-INNER JOIN Urunler u       ON sd.UrunId = u.Id
-INNER JOIN Kategoriler kat ON u.KategoriId = kat.Id
-WHERE s.Durum = 'Tamamlandi'
-ORDER BY s.OlusturmaTarihi DESC;
-\`\`\``
-      },
-      {
-        id: "sql-6",
-        title: "Ders 6: GROUP BY ve Aggregate Fonksiyonlar",
-        content: `Verileri gruplamak ve istatistiksel hesaplamalar yapmak için kullanılır.
-
-### Aggregate Fonksiyonlar:
-\`\`\`sql
-SELECT
-    COUNT(*)          AS ToplamUrun,
-    COUNT(DISTINCT KategoriId) AS FarkliKategori,
-    SUM(StokAdedi)    AS ToplamStok,
-    AVG(Fiyat)        AS OrtFiyat,
-    MIN(Fiyat)        AS EnDusuk,
-    MAX(Fiyat)        AS EnYuksek,
-    SUM(Fiyat * StokAdedi) AS ToplamDeger
-FROM Urunler
-WHERE AktifMi = 1;
-\`\`\`
-
-### GROUP BY ile Gruplama:
-\`\`\`sql
-SELECT
-    k.Ad AS Kategori,
-    COUNT(u.Id)            AS UrunSayisi,
-    AVG(u.Fiyat)           AS OrtFiyat,
-    SUM(u.StokAdedi * u.Fiyat) AS ToplamDeger
-FROM Kategoriler k
-LEFT JOIN Urunler u ON k.Id = u.KategoriId AND u.AktifMi = 1
-GROUP BY k.Id, k.Ad
-ORDER BY ToplamDeger DESC;
-\`\`\`
-
-### HAVING — Grup Filtresi:
-\`\`\`sql
--- 5'ten fazla sipariş veren ve 10.000 TL+ harcayan müşteriler
-SELECT
-    k.Ad + ' ' + k.Soyad AS Musteri,
-    COUNT(s.Id)   AS SiparisSayisi,
-    SUM(s.Tutar)  AS ToplamHarcama
-FROM Kullanicilar k
-INNER JOIN Siparisler s ON k.Id = s.KullaniciId
-WHERE s.Durum = 'Tamamlandi'     -- Satır filtresi
-GROUP BY k.Id, k.Ad, k.Soyad
-HAVING COUNT(s.Id) > 5           -- Grup filtresi
-   AND SUM(s.Tutar) > 10000
-ORDER BY ToplamHarcama DESC;
-\`\`\`
-
-### Aylık Satış Raporu:
-\`\`\`sql
-SELECT
-    YEAR(OlusturmaTarihi) AS Yil,
-    MONTH(OlusturmaTarihi) AS Ay,
-    FORMAT(OlusturmaTarihi, 'MMMM', 'tr-TR') AS AyAdi,
-    COUNT(*) AS SiparisSayisi,
-    SUM(Tutar) AS AylikCiro
-FROM Siparisler
-WHERE Durum = 'Tamamlandi'
-GROUP BY YEAR(OlusturmaTarihi), MONTH(OlusturmaTarihi),
-         FORMAT(OlusturmaTarihi, 'MMMM', 'tr-TR')
-ORDER BY Yil DESC, Ay DESC;
-\`\`\``
-      },
-      {
-        id: "sql-7",
-        title: "Ders 7: Alt Sorgular ve CTE",
-        content: `Alt sorgular ve CTE'ler, karmaşık sorguları okunabilir yapılara dönüştürür.
-
-### Subquery (Alt Sorgu):
-\`\`\`sql
--- Ortalama fiyatın üzerindeki ürünler
-SELECT Ad, Fiyat,
-       (SELECT AVG(Fiyat) FROM Urunler WHERE AktifMi = 1) AS OrtFiyat
-FROM Urunler
-WHERE Fiyat > (SELECT AVG(Fiyat) FROM Urunler WHERE AktifMi = 1)
-ORDER BY Fiyat DESC;
-
--- Hiç sipariş vermemiş müşteriler (NOT EXISTS — daha verimli)
-SELECT Ad, Email
-FROM Kullanicilar k
-WHERE NOT EXISTS (
-    SELECT 1 FROM Siparisler s
-    WHERE s.KullaniciId = k.Id
-);
-
--- En çok satan ürünün kategorisi
-SELECT * FROM Kategoriler
-WHERE Id = (
-    SELECT TOP 1 u.KategoriId
-    FROM SiparisDetay sd
-    INNER JOIN Urunler u ON sd.UrunId = u.Id
-    GROUP BY u.KategoriId
-    ORDER BY SUM(sd.Adet) DESC
-);
-\`\`\`
-
-### CTE (Common Table Expression):
-\`\`\`sql
--- WITH ile okunabilir ara sorgu tanımla
-WITH AylıkSatislar AS (
-    SELECT
-        KullaniciId,
-        YEAR(OlusturmaTarihi)  AS Yil,
-        MONTH(OlusturmaTarihi) AS Ay,
-        COUNT(*) AS SiparisSayisi,
-        SUM(Tutar) AS ToplamTutar
-    FROM Siparisler
-    WHERE Durum = 'Tamamlandi'
-    GROUP BY KullaniciId, YEAR(OlusturmaTarihi), MONTH(OlusturmaTarihi)
-),
-VipMusteriler AS (
-    SELECT KullaniciId
-    FROM AylıkSatislar
-    WHERE ToplamTutar > 50000
-    GROUP BY KullaniciId
-)
-SELECT k.Ad, k.Email, 'VIP' AS Segment
-FROM Kullanicilar k
-INNER JOIN VipMusteriler v ON k.Id = v.KullaniciId;
-\`\`\``
-      },
-      {
-        id: "sql-8",
-        title: "Ders 8: Index ve Performans",
-        content: `Index'ler, büyük tablolarda sorgu hızını dramatik biçimde artırır.
-
-### Index Nedir?
-Kitabın arka sayfasındaki dizin gibi: tüm sayfaları taramak yerine doğrudan konuya atlar.
-
-### Index Türleri ve Oluşturma:
-\`\`\`sql
--- Clustered Index (tablo sıralaması — PRIMARY KEY varsayılan)
--- Her tabloda sadece 1 tane olabilir
-
--- Non-Clustered Index (en yaygın)
-CREATE INDEX IX_Urunler_Fiyat
-ON Urunler (Fiyat);
-
--- Composite Index (birden fazla sütun)
-CREATE INDEX IX_Siparisler_Musteri_Tarih
-ON Siparisler (KullaniciId, OlusturmaTarihi DESC);
-
--- Unique Index
-CREATE UNIQUE INDEX UIX_Kullanicilar_Email
-ON Kullanicilar (Email);
-
--- Covering Index (sık sorgulanan sütunları dahil et)
-CREATE INDEX IX_Urunler_Kategori_Covering
-ON Urunler (KategoriId)
-INCLUDE (Ad, Fiyat, StokAdedi);
-\`\`\`
-
-### Performans Analizi:
-\`\`\`sql
--- Sorgu çalışma planını gör (SSMS'de)
-SET STATISTICS IO ON;
-SET STATISTICS TIME ON;
-
-SELECT * FROM Urunler WHERE Fiyat BETWEEN 1000 AND 5000;
-
--- "Table Scan" kötü → Index ekle
--- "Index Seek" iyi → Hızlı çalışıyor
-
--- Mevcut index'leri listele
-SELECT
-    i.name AS IndexAdi,
-    i.type_desc AS Tur,
-    c.name AS Sutun
-FROM sys.indexes i
-JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id
-JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
-WHERE i.object_id = OBJECT_ID('Urunler');
-\`\`\`
-
-### Index Ne Zaman Eklemeliyim?
-\`\`\`sql
--- ✅ Ekle: WHERE, JOIN, ORDER BY'da sık kullanılan sütunlar
--- ✅ Ekle: Yüz binlerce kayıt içeren tablolar
--- ❌ Ekleme: Çok sık INSERT/UPDATE olan sütunlar (index güncelleme maliyeti)
--- ❌ Ekleme: Küçük tablolar (zaten hızlı)
-\`\`\``
-      },
-      {
-        id: "sql-9",
-        title: "Ders 9: View ve Stored Procedure",
-        content: `View ve Stored Procedure, SQL sorgularını yeniden kullanılabilir yapılara dönüştürür.
-
-### VIEW — Sanal Tablo:
-\`\`\`sql
--- View oluştur: Karmaşık JOIN'i basitleştir
-CREATE VIEW vw_UrunDetay AS
-SELECT
-    u.Id,
-    u.Ad AS UrunAdi,
-    k.Ad AS Kategori,
-    u.Fiyat,
-    u.Fiyat * 1.20 AS KDVliFiyat,
-    u.StokAdedi,
-    CASE
-        WHEN u.StokAdedi = 0    THEN 'Tükendi'
-        WHEN u.StokAdedi < 5    THEN 'Kritik'
-        WHEN u.StokAdedi < 20   THEN 'Düşük'
-        ELSE 'Yeterli'
-    END AS StokDurumu,
-    u.OlusturmaTarihi
-FROM Urunler u
-INNER JOIN Kategoriler k ON u.KategoriId = k.Id
-WHERE u.AktifMi = 1;
-GO
-
--- Normal tablo gibi kullan
-SELECT * FROM vw_UrunDetay WHERE Kategori = 'Elektronik';
-SELECT * FROM vw_UrunDetay WHERE StokDurumu IN ('Tükendi', 'Kritik');
-SELECT TOP 10 * FROM vw_UrunDetay ORDER BY Fiyat DESC;
-\`\`\`
-
-### STORED PROCEDURE — Saklı Yordam:
-\`\`\`sql
--- Sayfalama destekli ürün arama
-CREATE PROCEDURE sp_UrunAra
-    @Kelime     NVARCHAR(200) = NULL,
-    @MinFiyat   DECIMAL(10,2) = NULL,
-    @MaxFiyat   DECIMAL(10,2) = NULL,
-    @KategoriId INT = NULL,
-    @SayfaNo    INT = 1,
-    @SayfaBoyut INT = 20
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    -- Toplam kayıt sayısı
-    SELECT COUNT(*) AS ToplamKayit
-    FROM Urunler u
-    WHERE u.AktifMi = 1
-      AND (@Kelime IS NULL OR u.Ad LIKE '%' + @Kelime + '%')
-      AND (@MinFiyat IS NULL OR u.Fiyat >= @MinFiyat)
-      AND (@MaxFiyat IS NULL OR u.Fiyat <= @MaxFiyat)
-      AND (@KategoriId IS NULL OR u.KategoriId = @KategoriId);
-
-    -- Sayfalı sonuçlar
-    SELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat, u.StokAdedi
-    FROM Urunler u
-    INNER JOIN Kategoriler k ON u.KategoriId = k.Id
-    WHERE u.AktifMi = 1
-      AND (@Kelime IS NULL OR u.Ad LIKE '%' + @Kelime + '%')
-      AND (@MinFiyat IS NULL OR u.Fiyat >= @MinFiyat)
-      AND (@MaxFiyat IS NULL OR u.Fiyat <= @MaxFiyat)
-      AND (@KategoriId IS NULL OR u.KategoriId = @KategoriId)
-    ORDER BY u.Id
-    OFFSET (@SayfaNo - 1) * @SayfaBoyut ROWS
-    FETCH NEXT @SayfaBoyut ROWS ONLY;
-END;
-GO
-
--- Kullanım örnekleri
-EXEC sp_UrunAra @Kelime = 'laptop';
-EXEC sp_UrunAra @MinFiyat = 100, @MaxFiyat = 500, @SayfaNo = 2;
-\`\`\``
-      },
-      {
-        id: "sql-10",
-        title: "Ders 10: Transaction ve ACID Prensipleri",
-        content: `Transaction, birden fazla SQL işleminin tek bir atomik birim olarak çalışmasını sağlar.
-
-### ACID Prensipleri:
-* **Atomicity (Bütünlük):** Ya hepsi gerçekleşir ya da hiçbiri.
-* **Consistency (Tutarlılık):** İşlem öncesi ve sonrası veri geçerlilik kuralları bozulmaz.
-* **Isolation (Yalıtım):** Eş zamanlı işlemler birbirini olumsuz etkilemez.
-* **Durability (Kalıcılık):** COMMIT edilen işlem sistem çökmesine rağmen kalıcıdır.
-
-### Banka Transferi Örneği:
-\`\`\`sql
-BEGIN TRANSACTION;
-
-BEGIN TRY
-    DECLARE @GondericiId INT = 101;
-    DECLARE @AliciId     INT = 202;
-    DECLARE @Tutar       DECIMAL(10,2) = 5000.00;
-
-    -- 1. Gönderici bakiyesini düş
-    UPDATE Hesaplar
-    SET Bakiye = Bakiye - @Tutar,
-        GuncellemeTarihi = GETDATE()
-    WHERE Id = @GondericiId;
-
-    -- 2. Yetersiz bakiye kontrolü
-    IF (SELECT Bakiye FROM Hesaplar WHERE Id = @GondericiId) < 0
-    BEGIN
-        ;THROW 50001, 'Yetersiz bakiye! Transfer iptal edildi.', 1;
-    END
-
-    -- 3. Alıcı bakiyesine ekle
-    UPDATE Hesaplar
-    SET Bakiye = Bakiye + @Tutar,
-        GuncellemeTarihi = GETDATE()
-    WHERE Id = @AliciId;
-
-    -- 4. Transfer kaydını oluştur
-    INSERT INTO TransferGecmisi
-        (GondericiId, AliciId, Tutar, OlusturmaTarihi, Durum)
-    VALUES
-        (@GondericiId, @AliciId, @Tutar, GETDATE(), 'Tamamlandi');
-
-    COMMIT TRANSACTION;
-    PRINT '✓ Transfer başarıyla tamamlandı.';
-
-END TRY
-BEGIN CATCH
-    ROLLBACK TRANSACTION;
-    PRINT '✗ Hata oluştu, işlem geri alındı: ' + ERROR_MESSAGE();
-END CATCH;
-\`\`\`
-
-### Savepoint — Kısmi Geri Alma:
-\`\`\`sql
-BEGIN TRANSACTION;
-
-INSERT INTO Log (Mesaj) VALUES ('Adım 1 tamamlandı');
-SAVE TRANSACTION Adim1; -- Ara kayıt noktası
-
-INSERT INTO Log (Mesaj) VALUES ('Adım 2 başladı');
--- Bir hata oluştu, sadece Adım 2'ye geri al
-ROLLBACK TRANSACTION Adim1;
-
--- Adım 1 kalır, Adım 2 geri alındı
-COMMIT TRANSACTION;
-\`\`\``
-      }
+      { id: "sql-1", title: "Ders 1: SQL Nedir? Temel Kavramlar", content: `SQL (Structured Query Language), ilişkisel veritabanlarında veri yönetmek için kullanılan standart dildir.\n\n### Temel Kavramlar:\n* **Veritabanı:** Birbiriyle ilişkili verilerin düzenli saklandığı yapı.\n* **Tablo:** Satır ve sütun yapısında veri depolayan nesne.\n* **Primary Key (PK):** Her satırı benzersiz tanımlayan sütun.\n* **Foreign Key (FK):** Başka tablonun PK'sına referans veren sütun.\n\n### SQL Komut Kategorileri:\n* **DDL:** CREATE, ALTER, DROP — Yapı yönetimi\n* **DML:** INSERT, UPDATE, DELETE — Veri yönetimi\n* **DQL:** SELECT — Veri sorgulama\n* **TCL:** COMMIT, ROLLBACK — Transaction yönetimi\n\n### İlk SQL Komutları:\n\`\`\`sql\nCREATE DATABASE YtkAcademy;\nUSE YtkAcademy;\n\nSELECT TABLE_NAME\nFROM INFORMATION_SCHEMA.TABLES\nWHERE TABLE_TYPE = 'BASE TABLE';\n\`\`\`` },
+      { id: "sql-2", title: "Ders 2: Tablo Oluşturma (CREATE TABLE)", content: `### Gerçek Bir E-Ticaret Şeması:\n\`\`\`sql\nCREATE TABLE Kullanicilar (\n    Id               INT IDENTITY(1,1) PRIMARY KEY,\n    Ad               NVARCHAR(50)  NOT NULL,\n    Soyad            NVARCHAR(50)  NOT NULL,\n    Email            NVARCHAR(100) NOT NULL UNIQUE,\n    SifreHash        NVARCHAR(255) NOT NULL,\n    AktifMi          BIT           NOT NULL DEFAULT 1,\n    OlusturmaTarihi  DATETIME      NOT NULL DEFAULT GETDATE()\n);\n\nCREATE TABLE Urunler (\n    Id         INT IDENTITY(1,1) PRIMARY KEY,\n    KategoriId INT           NOT NULL,\n    Ad         NVARCHAR(200) NOT NULL,\n    Fiyat      DECIMAL(10,2) NOT NULL,\n    StokAdedi  INT           NOT NULL DEFAULT 0,\n    AktifMi    BIT           NOT NULL DEFAULT 1,\n\n    CONSTRAINT FK_Urunler_Kategoriler\n        FOREIGN KEY (KategoriId) REFERENCES Kategoriler(Id),\n    CONSTRAINT CK_Urunler_Fiyat CHECK (Fiyat >= 0)\n);\n\`\`\`` },
+      { id: "sql-3", title: "Ders 3: SELECT ve Filtreleme", content: `### Temel SELECT:\n\`\`\`sql\nSELECT Id, Ad, Fiyat FROM Urunler;\n\nSELECT Ad, Fiyat * 1.20 AS KDVliFiyat FROM Urunler;\n\`\`\`\n\n### WHERE ile Filtreleme:\n\`\`\`sql\nSELECT * FROM Urunler WHERE Fiyat > 1000;\n\nSELECT * FROM Urunler\nWHERE Fiyat BETWEEN 500 AND 5000\n  AND AktifMi = 1 AND StokAdedi > 0;\n\nSELECT * FROM Urunler WHERE Ad LIKE '%laptop%';\n\nSELECT * FROM Kullanicilar WHERE Telefon IS NULL;\n\`\`\`\n\n### Sıralama ve Sayfalama:\n\`\`\`sql\nSELECT Ad, Fiyat FROM Urunler\nORDER BY Fiyat DESC;\n\nSELECT TOP 5 * FROM Urunler ORDER BY Fiyat DESC;\n\n-- Sayfalama: 2. sayfa, 10'ar kayıt\nSELECT * FROM Urunler\nORDER BY Id\nOFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;\n\`\`\`` },
+      { id: "sql-4", title: "Ders 4: INSERT, UPDATE ve DELETE", content: `### INSERT:\n\`\`\`sql\nINSERT INTO Kategoriler (Ad, Slug) VALUES\n    ('Elektronik', 'elektronik'),\n    ('Mobilya', 'mobilya');\n\`\`\`\n\n### UPDATE:\n\`\`\`sql\n-- ⚠️ WHERE olmadan TÜM satırlar değişir!\nUPDATE Urunler\nSET Fiyat = Fiyat * 1.10, GuncellemeTarihi = GETDATE()\nWHERE KategoriId = 1 AND AktifMi = 1;\n\`\`\`\n\n### DELETE:\n\`\`\`sql\n-- ⚠️ WHERE olmadan TÜM kayıtlar silinir!\nDELETE FROM Urunler WHERE StokAdedi = 0 AND AktifMi = 0;\n\nTRUNCATE TABLE GeciciLog; -- Hızlı tablo temizleme\n\`\`\`` },
+      { id: "sql-5", title: "Ders 5: JOIN İşlemleri", content: `### INNER JOIN — Sadece Eşleşenler:\n\`\`\`sql\nSELECT u.Ad, k.Ad AS Kategori, u.Fiyat\nFROM Urunler u\nINNER JOIN Kategoriler k ON u.KategoriId = k.Id\nWHERE u.AktifMi = 1;\n\`\`\`\n\n### LEFT JOIN — Sol Tablonun Tamamı:\n\`\`\`sql\nSELECT k.Ad, COUNT(s.Id) AS SiparisSayisi\nFROM Kullanicilar k\nLEFT JOIN Siparisler s ON k.Id = s.KullaniciId\nGROUP BY k.Id, k.Ad;\n\`\`\`\n\n### Çoklu JOIN:\n\`\`\`sql\nSELECT s.Id, k.Ad AS Musteri, u.Ad AS Urun, sd.Adet\nFROM Siparisler s\nINNER JOIN Kullanicilar k ON s.KullaniciId = k.Id\nINNER JOIN SiparisDetay sd ON s.Id = sd.SiparisId\nINNER JOIN Urunler u ON sd.UrunId = u.Id\nWHERE s.Durum = 'Tamamlandi';\n\`\`\`` },
+      { id: "sql-6", title: "Ders 6: GROUP BY ve Aggregate Fonksiyonlar", content: `### Aggregate Fonksiyonlar:\n\`\`\`sql\nSELECT\n    COUNT(*) AS ToplamUrun,\n    SUM(StokAdedi) AS ToplamStok,\n    AVG(Fiyat) AS OrtFiyat,\n    MIN(Fiyat) AS EnDusuk,\n    MAX(Fiyat) AS EnYuksek\nFROM Urunler WHERE AktifMi = 1;\n\`\`\`\n\n### GROUP BY:\n\`\`\`sql\nSELECT k.Ad AS Kategori, COUNT(u.Id) AS UrunSayisi,\n       AVG(u.Fiyat) AS OrtFiyat\nFROM Kategoriler k\nLEFT JOIN Urunler u ON k.Id = u.KategoriId\nGROUP BY k.Id, k.Ad\nORDER BY OrtFiyat DESC;\n\`\`\`\n\n### HAVING — Grup Filtresi:\n\`\`\`sql\nSELECT KullaniciId, COUNT(*) AS Adet, SUM(Tutar) AS Toplam\nFROM Siparisler\nWHERE Durum = 'Tamamlandi'\nGROUP BY KullaniciId\nHAVING SUM(Tutar) > 10000;\n\`\`\`` },
+      { id: "sql-7", title: "Ders 7: Alt Sorgular ve CTE", content: `### Subquery:\n\`\`\`sql\n-- Ortalama üzerindeki ürünler\nSELECT Ad, Fiyat FROM Urunler\nWHERE Fiyat > (SELECT AVG(Fiyat) FROM Urunler WHERE AktifMi = 1);\n\n-- Sipariş vermemiş müşteriler\nSELECT Ad, Email FROM Kullanicilar k\nWHERE NOT EXISTS (\n    SELECT 1 FROM Siparisler s WHERE s.KullaniciId = k.Id\n);\n\`\`\`\n\n### CTE:\n\`\`\`sql\nWITH AylıkSatislar AS (\n    SELECT KullaniciId, YEAR(OlusturmaTarihi) AS Yil,\n           MONTH(OlusturmaTarihi) AS Ay, SUM(Tutar) AS Toplam\n    FROM Siparisler WHERE Durum = 'Tamamlandi'\n    GROUP BY KullaniciId, YEAR(OlusturmaTarihi), MONTH(OlusturmaTarihi)\n)\nSELECT * FROM AylıkSatislar WHERE Toplam > 50000;\n\`\`\`` },
+      { id: "sql-8", title: "Ders 8: Index ve Performans", content: `### Index Türleri:\n\`\`\`sql\nCREATE INDEX IX_Urunler_Fiyat ON Urunler (Fiyat);\n\nCREATE INDEX IX_Siparisler_Musteri_Tarih\nON Siparisler (KullaniciId, OlusturmaTarihi DESC);\n\nCREATE UNIQUE INDEX UIX_Email ON Kullanicilar (Email);\n\nCREATE INDEX IX_Covering\nON Urunler (KategoriId) INCLUDE (Ad, Fiyat, StokAdedi);\n\`\`\`\n\n### Performans Analizi:\n\`\`\`sql\nSET STATISTICS IO ON;\nSET STATISTICS TIME ON;\n\nSELECT * FROM Urunler WHERE Fiyat BETWEEN 1000 AND 5000;\n-- 'Index Seek' = iyi. 'Table Scan' = yavaş, index gerekiyor.\n\`\`\`` },
+      { id: "sql-9", title: "Ders 9: View ve Stored Procedure", content: `### VIEW:\n\`\`\`sql\nCREATE VIEW vw_UrunDetay AS\nSELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat,\n       CASE WHEN u.StokAdedi = 0 THEN 'Tükendi'\n            WHEN u.StokAdedi < 5 THEN 'Kritik'\n            ELSE 'Yeterli' END AS StokDurumu\nFROM Urunler u\nINNER JOIN Kategoriler k ON u.KategoriId = k.Id\nWHERE u.AktifMi = 1;\n\nSELECT * FROM vw_UrunDetay WHERE Kategori = 'Elektronik';\n\`\`\`\n\n### STORED PROCEDURE:\n\`\`\`sql\nCREATE PROCEDURE sp_UrunAra\n    @Kelime     NVARCHAR(200) = NULL,\n    @MaxFiyat   DECIMAL(10,2) = NULL,\n    @SayfaNo    INT = 1,\n    @SayfaBoyut INT = 20\nAS\nBEGIN\n    SET NOCOUNT ON;\n    SELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat\n    FROM Urunler u\n    INNER JOIN Kategoriler k ON u.KategoriId = k.Id\n    WHERE u.AktifMi = 1\n      AND (@Kelime IS NULL OR u.Ad LIKE '%' + @Kelime + '%')\n      AND (@MaxFiyat IS NULL OR u.Fiyat <= @MaxFiyat)\n    ORDER BY u.Id\n    OFFSET (@SayfaNo - 1) * @SayfaBoyut ROWS\n    FETCH NEXT @SayfaBoyut ROWS ONLY;\nEND;\n\nEXEC sp_UrunAra @Kelime = 'laptop', @MaxFiyat = 50000;\n\`\`\`` },
+      { id: "sql-10", title: "Ders 10: Transaction ve ACID", content: `### ACID Prensipleri:\n* **Atomicity:** Ya hepsi gerçekleşir ya da hiçbiri.\n* **Consistency:** Veri tutarlılığı korunur.\n* **Isolation:** Eş zamanlı işlemler birbirini bozmaz.\n* **Durability:** COMMIT edilen veri kalıcıdır.\n\n### Banka Transferi Örneği:\n\`\`\`sql\nBEGIN TRANSACTION;\n\nBEGIN TRY\n    UPDATE Hesaplar SET Bakiye = Bakiye - 5000\n    WHERE Id = 101;\n\n    IF (SELECT Bakiye FROM Hesaplar WHERE Id = 101) < 0\n        THROW 50001, 'Yetersiz bakiye!', 1;\n\n    UPDATE Hesaplar SET Bakiye = Bakiye + 5000\n    WHERE Id = 202;\n\n    INSERT INTO Transferler (GondericiId, AliciId, Tutar)\n    VALUES (101, 202, 5000);\n\n    COMMIT TRANSACTION;\nEND TRY\nBEGIN CATCH\n    ROLLBACK TRANSACTION;\n    PRINT 'Hata: ' + ERROR_MESSAGE();\nEND CATCH;\n\`\`\`` }
     ]
   }
 };

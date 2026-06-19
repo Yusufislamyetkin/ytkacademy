@@ -460,6 +460,8 @@ const DashboardPage = ({ navigate, data }) => {
       return [];
     }
   });
+  const [quizAnswers, setQuizAnswers] = useState({});
+  useEffect(() => { setQuizAnswers({}); }, [selectedSubject, activeLessonIndex]);
 
   const COURSES = (typeof window !== 'undefined' && window.YTK_COURSES) ? window.YTK_COURSES : {
     csharp: {
@@ -705,39 +707,70 @@ GROUP BY Sehir;
     }
   };
 
+  /* ── Syntax highlighter: C# (Visual Studio Dark teması) ── */
+  const highlightCSharp = (src) => {
+    const KW = new Set(['abstract','as','async','await','base','break','by','case','catch','checked','class','const','continue','default','delegate','do','else','enum','event','explicit','extern','false','finally','fixed','for','foreach','from','get','goto','group','if','implicit','in','interface','internal','into','is','join','let','lock','namespace','new','null','object','on','operator','orderby','out','override','params','partial','private','protected','public','readonly','ref','return','sealed','select','set','sizeof','stackalloc','static','struct','switch','this','throw','true','try','typeof','unchecked','unsafe','using','value','var','virtual','volatile','where','while','yield','dynamic']);
+    const VT = new Set(['bool','byte','char','decimal','double','float','int','long','sbyte','short','string','uint','ulong','ushort','void']);
+    const CL = new Set(['Action','ArgumentException','Array','Boolean','Console','Convert','DateTime','DbContext','DbSet','Decimal','Dictionary','Double','EventArgs','Exception','Func','Guid','HashSet','ICollection','IDictionary','IDisposable','IEnumerable','IList','IQueryable','Int32','JsonSerializer','List','Math','NullReferenceException','Queue','Regex','Stack','String','StringBuilder','Task','TimeSpan']);
+    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    let r='', i=0;
+    while(i<src.length){
+      if(src[i]==='/'&&src[i+1]==='/'){let e=src.indexOf('\n',i);if(e<0)e=src.length;r+=`<span style="color:#6a9955">${esc(src.slice(i,e))}</span>`;i=e;continue;}
+      if(src[i]==='/'&&src[i+1]==='*'){let e=src.indexOf('*/',i+2);e=e<0?src.length:e+2;r+=`<span style="color:#6a9955">${esc(src.slice(i,e))}</span>`;i=e;continue;}
+      if(src[i]==='$'&&src[i+1]==='"'){let j=i+2,d=0;while(j<src.length){if(src[j]==='\\'){j+=2;continue;}if(src[j]==='{')d++;if(src[j]==='}')d--;if(src[j]==='"'&&d<=0){j++;break;}j++;}r+=`<span style="color:#ce9178">${esc(src.slice(i,j))}</span>`;i=j;continue;}
+      if(src[i]==='@'&&src[i+1]==='"'){let j=i+2;while(j<src.length){if(src[j]==='"'&&src[j+1]==='"'){j+=2;continue;}if(src[j]==='"'){j++;break;}j++;}r+=`<span style="color:#ce9178">${esc(src.slice(i,j))}</span>`;i=j;continue;}
+      if(src[i]==='"'){let j=i+1;while(j<src.length&&src[j]!=='"'){if(src[j]==='\\')j++;j++;}j++;r+=`<span style="color:#ce9178">${esc(src.slice(i,j))}</span>`;i=j;continue;}
+      if(src.charCodeAt(i)===39&&src.charCodeAt(i+2)===39){r+=`<span style="color:#ce9178">${esc(src.slice(i,i+3))}</span>`;i+=3;continue;}
+      if(src.charCodeAt(i)===39&&src.charCodeAt(i+1)===92&&src.charCodeAt(i+3)===39){r+=`<span style="color:#ce9178">${esc(src.slice(i,i+4))}</span>`;i+=4;continue;}
+      if(/[0-9]/.test(src[i])&&(i===0||!/[a-zA-Z_]/.test(src[i-1]))){let j=i;while(j<src.length&&/[0-9._xXbBfFdDlLmMuUeE]/.test(src[j]))j++;r+=`<span style="color:#b5cea8">${esc(src.slice(i,j))}</span>`;i=j;continue;}
+      if(/[a-zA-Z_]/.test(src[i])){let j=i;while(j<src.length&&/[a-zA-Z0-9_]/.test(src[j]))j++;const w=src.slice(i,j);if(KW.has(w))r+=`<span style="color:#569cd6">${esc(w)}</span>`;else if(VT.has(w))r+=`<span style="color:#4ec9b0">${esc(w)}</span>`;else if(CL.has(w))r+=`<span style="color:#4ec9b0">${esc(w)}</span>`;else if(/^[A-Z]/.test(w))r+=`<span style="color:#4ec9b0">${esc(w)}</span>`;else if(j<src.length&&src[j]==='(')r+=`<span style="color:#dcdcaa">${esc(w)}</span>`;else r+=esc(w);i=j;continue;}
+      r+=esc(src[i]);i++;
+    }
+    return r;
+  };
+
+  /* ── Syntax highlighter: SQL ── */
+  const highlightSQL = (src) => {
+    const KW = new Set(['SELECT','FROM','WHERE','JOIN','INNER','LEFT','RIGHT','OUTER','FULL','ON','AS','AND','OR','NOT','IN','EXISTS','BETWEEN','LIKE','IS','NULL','INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','ALTER','DROP','INDEX','VIEW','PRIMARY','FOREIGN','KEY','REFERENCES','UNIQUE','CHECK','DEFAULT','CONSTRAINT','BEGIN','COMMIT','ROLLBACK','TRANSACTION','SAVEPOINT','GROUP','ORDER','BY','HAVING','DISTINCT','ALL','TOP','OFFSET','FETCH','NEXT','ROWS','ONLY','CASE','WHEN','THEN','ELSE','END','WITH','UNION','DECLARE','EXEC','EXECUTE','PRINT','IF','WHILE','RETURN','THROW','TRY','CATCH','GO','USE','CROSS','PROCEDURE','FUNCTION','TRIGGER','IDENTITY','NOCOUNT','OUTPUT','DELETED','INSERTED','INCLUDE','PARTITION','OVER']);
+    const FN = new Set(['COUNT','SUM','AVG','MIN','MAX','GETDATE','GETUTCDATE','NEWID','ISNULL','COALESCE','NULLIF','CAST','CONVERT','LEN','UPPER','LOWER','SUBSTRING','TRIM','LTRIM','RTRIM','REPLACE','CHARINDEX','FORMAT','YEAR','MONTH','DAY','DATEADD','DATEDIFF','DATEPART','ROW_NUMBER','RANK','DENSE_RANK','OVER','SCOPE_IDENTITY','OBJECT_ID','STRING_AGG','CONCAT','STUFF']);
+    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    let r='',i=0;
+    while(i<src.length){
+      if(src[i]==='-'&&src[i+1]==='-'){let e=src.indexOf('\n',i);if(e<0)e=src.length;r+=`<span style="color:#6a9955">${esc(src.slice(i,e))}</span>`;i=e;continue;}
+      if(src[i]==='/'&&src[i+1]==='*'){let e=src.indexOf('*/',i+2);e=e<0?src.length:e+2;r+=`<span style="color:#6a9955">${esc(src.slice(i,e))}</span>`;i=e;continue;}
+      if(src.charCodeAt(i)===39){let j=i+1;while(j<src.length){if(src.charCodeAt(j)===39&&src.charCodeAt(j+1)===39){j+=2;continue;}if(src.charCodeAt(j)===39){j++;break;}j++;}r+=`<span style="color:#ce9178">${esc(src.slice(i,j))}</span>`;i=j;continue;}
+      if(/[0-9]/.test(src[i])&&(i===0||!/[a-zA-Z_]/.test(src[i-1]))){let j=i;while(j<src.length&&/[0-9._]/.test(src[j]))j++;r+=`<span style="color:#b5cea8">${esc(src.slice(i,j))}</span>`;i=j;continue;}
+      if(/[a-zA-Z_@#\[]/.test(src[i])){let j=i;while(j<src.length&&/[a-zA-Z0-9_@#\[\]]/.test(src[j]))j++;const w=src.slice(i,j),u=w.toUpperCase();if(KW.has(u))r+=`<span style="color:#569cd6;font-weight:600">${esc(w)}</span>`;else if(FN.has(u))r+=`<span style="color:#dcdcaa">${esc(w)}</span>`;else if(w.startsWith('@')||w.startsWith('#'))r+=`<span style="color:#9cdcfe">${esc(w)}</span>`;else r+=esc(w);i=j;continue;}
+      r+=esc(src[i]);i++;
+    }
+    return r;
+  };
+
   const formatMarkdown = (text) => {
-    if (!text) return "";
-    
-    // Code block parser
-    const parts = text.split(/(```csharp[\s\S]*?```|```sql[\s\S]*?```)/g);
-    
+    if (!text) return '';
+    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const inl = t => t
+      .replace(/\*\*([^*]+)\*\*/g,'<strong style="color:#eafff5">$1</strong>')
+      .replace(/`([^`]+)`/g,'<code style="background:#252526;color:#9cdcfe;padding:1px 5px;border-radius:4px;font-size:11px;border:1px solid #3d3d3d;font-family:monospace">$1</code>');
+    const parts = text.split(/(```(?:csharp|sql|bash|json|xml|\w*)?(?:\n[\s\S]*?)?```)/g);
     return parts.map(part => {
-      if (part.startsWith('```csharp')) {
-        const code = part.replace('```csharp', '').replace('```', '').trim();
-        return `<pre class="bg-black/60 border border-[#103a26] rounded-xl p-4 my-4 font-mono text-xs text-[#5cffba] overflow-x-auto">${code}</pre>`;
-      } else if (part.startsWith('```sql')) {
-        const code = part.replace('```sql', '').replace('```', '').trim();
-        return `<pre class="bg-black/60 border border-[#103a26] rounded-xl p-4 my-4 font-mono text-xs text-[#ffd166] overflow-x-auto">${code}</pre>`;
-      } else {
-        return part.split('\n').map(line => {
-          let trimmed = line.trim();
-          if (!trimmed) return "";
-          if (trimmed.startsWith('###')) {
-            return `<h3 class="text-base font-bold text-[#eafff5] mt-5 mb-2.5 font-disp">${trimmed.substring(3).trim()}</h3>`;
-          }
-          if (trimmed.startsWith('*')) {
-            return `<li class="ml-5 list-disc text-[#9fc4b5] text-sm mb-1.5 font-mono">${trimmed.substring(1).trim()}</li>`;
-          }
-          if (/^\d+\./.test(trimmed)) {
-            const match = trimmed.match(/^(\d+)\.(.*)/);
-            return `<li class="ml-5 list-decimal text-[#9fc4b5] text-sm mb-1.5 font-mono">${match[2].trim()}</li>`;
-          }
-          return `<p class="text-sm text-[#74998a] leading-relaxed mb-3 font-mono">${line}</p>`;
-        }).join('');
-      }
-    }).join('')
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/`([^`]+)`/g, '<code class="bg-black/40 border border-[#103a26] text-[#00ff88] px-1.5 py-0.5 rounded font-mono text-xs">$1</code>');
+      const csm = part.match(/^```csharp\n([\s\S]*?)```$/);
+      if(csm){const code=csm[1].replace(/\n$/,'');return `<div style="margin:18px 0;border-radius:12px;overflow:hidden;border:1px solid #2d3d2d"><div style="background:#252526;padding:7px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #2d3d2d"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span><span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;display:inline-block"></span><span style="width:10px;height:10px;border-radius:50%;background:#28ca41;display:inline-block"></span><span style="color:#858585;font-size:11px;font-family:monospace;margin-left:6px">C# .cs</span></div><pre style="margin:0;padding:16px 20px;background:#1e1e1e;overflow-x:auto;line-height:1.75;font-size:12.5px;font-family:'Cascadia Code','Fira Code','Consolas',monospace;color:#d4d4d4">${highlightCSharp(code)}</pre></div>`;}
+      const sqlm = part.match(/^```sql\n([\s\S]*?)```$/);
+      if(sqlm){const code=sqlm[1].replace(/\n$/,'');return `<div style="margin:18px 0;border-radius:12px;overflow:hidden;border:1px solid #2d3d2d"><div style="background:#252526;padding:7px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #2d3d2d"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span><span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;display:inline-block"></span><span style="width:10px;height:10px;border-radius:50%;background:#28ca41;display:inline-block"></span><span style="color:#858585;font-size:11px;font-family:monospace;margin-left:6px">SQL .sql</span></div><pre style="margin:0;padding:16px 20px;background:#1e1e1e;overflow-x:auto;line-height:1.75;font-size:12.5px;font-family:'Cascadia Code','Fira Code','Consolas',monospace;color:#d4d4d4">${highlightSQL(code)}</pre></div>`;}
+      const genm = part.match(/^```\w*\n?([\s\S]*?)```$/);
+      if(genm){return `<pre style="margin:18px 0;padding:16px 20px;background:#1e1e1e;border:1px solid #2d3d2d;border-radius:12px;overflow-x:auto;line-height:1.75;font-size:12.5px;font-family:monospace;color:#d4d4d4">${esc(genm[1])}</pre>`;}
+      return part.split('\n').map(line=>{
+        const t=line.trim();
+        if(!t)return '<div style="height:6px"></div>';
+        if(t.startsWith('## '))return `<h2 style="font-size:16px;font-weight:700;color:#eafff5;margin:22px 0 10px;font-family:var(--font-disp,sans-serif);border-bottom:1px solid #103a26;padding-bottom:8px">${inl(t.slice(3))}</h2>`;
+        if(t.startsWith('### '))return `<h3 style="font-size:12px;font-weight:700;color:#00ff88;margin:18px 0 8px;font-family:monospace;text-transform:uppercase;letter-spacing:.1em">${inl(t.slice(4))}</h3>`;
+        if(t.startsWith('* '))return `<div style="display:flex;gap:10px;color:#9fc4b5;font-size:13px;margin:5px 0;font-family:monospace"><span style="color:#00ff88;font-size:9px;margin-top:5px;flex-shrink:0">▸</span><span>${inl(t.slice(2))}</span></div>`;
+        if(/^\d+\./.test(t)){const m=t.match(/^(\d+)\.(.*)/);return `<div style="display:flex;gap:10px;color:#9fc4b5;font-size:13px;margin:5px 0;font-family:monospace"><span style="color:#ffd166;min-width:18px;flex-shrink:0">${m[1]}.</span><span>${inl(m[2].trim())}</span></div>`;}
+        if(t.startsWith('> '))return `<div style="border-left:3px solid #ffd166;background:rgba(255,209,102,.06);padding:9px 14px;border-radius:0 8px 8px 0;color:#d4a800;font-size:12px;font-family:monospace;margin:10px 0">${inl(t.slice(2))}</div>`;
+        return `<p style="color:#9fc4b5;font-size:13px;line-height:1.9;margin:4px 0;font-family:monospace">${inl(t)}</p>`;
+      }).join('');
+    }).join('');
   };
 
   const handleMarkCompleted = (lessonId) => {
@@ -891,11 +924,77 @@ GROUP BY Sehir;
                 <h1 className="text-xl md:text-2xl font-disp font-bold text-[#eafff5] mb-6 border-b border-[#0c2719] pb-4">
                   {activeLesson.title}
                 </h1>
-                
+
+                {/* Intro / Motivasyon Kartı */}
+                {activeLesson.intro && (
+                  <div style={{background:'rgba(86,156,214,0.05)',border:'1px solid rgba(86,156,214,0.2)',borderRadius:'12px',padding:'16px 20px',marginBottom:'24px'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px'}}>
+                      <span style={{fontSize:'15px'}}>💡</span>
+                      <span style={{color:'#9cdcfe',fontSize:'10px',fontFamily:'monospace',textTransform:'uppercase',letterSpacing:'.12em',fontWeight:'700'}}>Bu Derste Ne Öğreneceğiz?</span>
+                    </div>
+                    <div dangerouslySetInnerHTML={{__html:formatMarkdown(activeLesson.intro)}} />
+                  </div>
+                )}
+
                 <div 
                   className="prose-custom mb-8"
                   dangerouslySetInnerHTML={{ __html: formatMarkdown(activeLesson.content) }}
                 />
+
+                {/* Quiz Bölümü */}
+                {activeLesson.quiz && activeLesson.quiz.length > 0 && (
+                  <div style={{marginTop:'28px',borderTop:'1px solid #103a26',paddingTop:'22px'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'18px'}}>
+                      <span style={{fontSize:'17px'}}>🧪</span>
+                      <h3 style={{color:'#eafff5',fontSize:'14px',fontWeight:'700',fontFamily:'var(--font-disp,sans-serif)',margin:0}}>Anlama Testi</h3>
+                      <span style={{fontSize:'11px',color:'#5c8a74',fontFamily:'monospace'}}>— {activeLesson.quiz.length} soru</span>
+                    </div>
+                    {activeLesson.quiz.map((q,qi)=>{
+                      const ans=quizAnswers[qi];
+                      const answered=ans!==undefined;
+                      const correct=answered&&ans===q.answer;
+                      return(
+                        <div key={qi} style={{marginBottom:'14px',padding:'14px 16px',borderRadius:'12px',border:'1px solid #103a26',background:'#04100a'}}>
+                          <p style={{color:'#eafff5',fontSize:'13px',fontWeight:'600',marginBottom:'10px',fontFamily:'monospace',lineHeight:'1.6',margin:'0 0 10px'}}>
+                            <span style={{color:'#ffd166',marginRight:'8px'}}>{qi+1}.</span>{q.q}
+                          </p>
+                          <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                            {q.options.map((opt,oi)=>{
+                              const sel=ans===oi;
+                              const showRight=answered&&oi===q.answer;
+                              const bc=sel?(correct?'#00ff88':'#ff5f57'):showRight?'#00ff88':'#1a3a26';
+                              const bg=sel?(correct?'rgba(0,255,136,.08)':'rgba(255,95,87,.08)'):showRight?'rgba(0,255,136,.05)':'transparent';
+                              const tc=sel?(correct?'#00ff88':'#ff9f9a'):showRight?'#00ff88':'#74998a';
+                              return(
+                                <button key={oi} onClick={()=>!answered&&setQuizAnswers(p=>({...p,[qi]:oi}))}
+                                  style={{textAlign:'left',padding:'9px 13px',borderRadius:'8px',border:`1px solid ${bc}`,background:bg,color:tc,fontSize:'12px',fontFamily:'monospace',cursor:answered?'default':'pointer',transition:'all .15s',display:'flex',alignItems:'center',gap:'10px',width:'100%'}}>
+                                  <span style={{width:'19px',height:'19px',borderRadius:'50%',border:`1px solid ${bc}`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'10px',flexShrink:0,fontWeight:'700'}}>
+                                    {sel?(correct?'✓':'✗'):String.fromCharCode(65+oi)}
+                                  </span>
+                                  {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          {answered&&(
+                            <div style={{marginTop:'9px',padding:'8px 12px',borderRadius:'8px',background:correct?'rgba(0,255,136,.06)':'rgba(255,95,87,.06)',color:correct?'#6dffb5':'#ff9f9a',fontSize:'12px',fontFamily:'monospace',lineHeight:'1.6'}}>
+                              {correct?'✓ Doğru cevap!':`✗ Yanlış. Doğru: "${q.options[q.answer]}"`}
+                              {q.exp&&<span style={{color:'#74998a',marginLeft:'6px'}}>— {q.exp}</span>}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                    {Object.keys(quizAnswers).length===activeLesson.quiz.length&&(
+                      <div style={{padding:'14px',borderRadius:'12px',textAlign:'center',background:'rgba(0,255,136,.05)',border:'1px solid #00ff88',marginTop:'6px'}}>
+                        <div style={{color:'#00ff88',fontSize:'20px',fontWeight:'700',fontFamily:'monospace'}}>
+                          {Object.entries(quizAnswers).filter(([k,v])=>Number(v)===activeLesson.quiz[Number(k)].answer).length}/{activeLesson.quiz.length}
+                        </div>
+                        <div style={{color:'#74998a',fontSize:'12px',marginTop:'3px',fontFamily:'monospace'}}>doğru cevap</div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#0c2719]">
                   <div className="text-xs text-[#74998a] font-mono">

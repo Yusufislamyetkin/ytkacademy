@@ -1,23 +1,24 @@
-(()=>{window.YTK_COURSES={csharp:{title:"C# Programlama Temelleri",desc:".NET ekosisteminde C# temelleri: veri tipleri, OOP, LINQ, async/await ve Entity Framework Core.",icon:"\u{1F4BB}",color:"#569cd6",lessons:[{id:"cs-1",title:"Ders 1: C# Nedir ve Nas\u0131l \xC7al\u0131\u015F\u0131r?",content:`C# (C-Sharp), Microsoft taraf\u0131ndan geli\u015Ftirilen modern, nesne y\xF6nelimli ve g\xFCvenli bir programlama dilidir.
+(()=>{window.YTK_COURSES={csharp:{title:"C# Programlama Temelleri",desc:".NET ekosisteminde C# temelleri: s\xF6zdizimi, OOP, LINQ, async/await ve Entity Framework Core.",icon:"\u{1F4BB}",color:"#569cd6",lessons:[{id:"cs-1",title:"Ders 1: C# Nedir ve Nas\u0131l \xC7al\u0131\u015F\u0131r?",intro:`### Neden C#?
+C# (C-Sharp), Microsoft taraf\u0131ndan 2000 y\u0131l\u0131nda .NET platformu ile birlikte tan\u0131t\u0131lan modern, nesne y\xF6nelimli bir programlama dilidir.
 
-### Temel \xD6zellikleri:
-* **Nesne Y\xF6nelimli (OOP):** S\u0131n\u0131flar, nesneler, kal\u0131t\u0131m ve \xE7ok bi\xE7imlilik gibi prensipleri temel al\u0131r.
-* **Tip G\xFCvenli (Type-Safe):** De\u011Fi\u015Fken t\xFCrleri s\u0131k\u0131 bir \u015Fekilde denetlenir ve bellek hatalar\u0131 \xF6nlenir.
-* **Cross-Platform:** .NET 8 ile birlikte C# kodlar\u0131 Windows, macOS ve Linux'ta \xE7al\u0131\u015F\u0131r.
-* **Y\xFCksek Performans:** Modern .NET, Node.js ve Python'\u0131 ge\xE7en benchmark sonu\xE7lar\u0131 \xFCretiyor.
+### T\xFCrkiye'de Nerede Kullan\u0131l\u0131r?
+T\xFCrkiye'deki b\xFCy\xFCk bankalar\u0131n (Garanti, \u0130\u015F Bankas\u0131, Akbank), e-ticaret devlerinin (Trendyol, Hepsiburada) ve devlet kurumlar\u0131n\u0131n backend sistemlerinin b\xFCy\xFCk \xE7o\u011Funlu\u011Fu C# ve .NET \xFCzerine kuruludur. \u0130\u015F ilanlar\u0131ndaki "Senior Backend Developer" pozisyonlar\u0131n\u0131n **%60-70'i** C# bilgisi aramaktad\u0131r.
 
-### \xC7al\u0131\u015Fma Mant\u0131\u011F\u0131:
-C# kodu \u2192 **MSIL** (Ara Dil) \u2192 **CLR/JIT** \u2192 Makine Kodu
+### Bu Derste Ne \xD6\u011Frenece\u011Fiz?
+* C# nas\u0131l derlenir ve \xE7al\u0131\u015F\u0131r (MSIL \u2192 JIT \u2192 Makine Kodu)
+* \u0130lk C# program\u0131n\u0131 yazaca\u011F\u0131z
+* .NET ekosistemini tan\u0131yaca\u011F\u0131z`,content:`### C# \xC7al\u0131\u015Fma Prensibi:
+Yazd\u0131\u011F\u0131n C# kodu \u2192 **MSIL** (Ara Dil) \u2192 **CLR/JIT Compiler** \u2192 \u0130\u015Flemci Kodu
+
+Bu sayede ayn\u0131 kod Windows, Linux ve macOS'ta \xE7al\u0131\u015F\u0131r.
 
 ### \u0130lk C# Program\u0131:
 \`\`\`csharp
-using System;
-
-// .NET 6+ ile top-level statements
+// .NET 6+ Modern S\xF6zdizimi (top-level statements)
 Console.WriteLine("Merhaba, YTK Academy!");
 Console.WriteLine($"Bug\xFCn\xFCn tarihi: {DateTime.Now:dd.MM.yyyy}");
 
-// Klasik yap\u0131
+// Klasik yap\u0131 (eski .NET Framework)
 namespace YtkAcademy
 {
     class Program
@@ -25,37 +26,31 @@ namespace YtkAcademy
         static void Main(string[] args)
         {
             Console.WriteLine("Merhaba, D\xFCnya!");
-            Console.ReadLine();
+            Console.ReadLine(); // Konsolu a\xE7\u0131k tutar
         }
     }
 }
 \`\`\`
 
-### Neden C# \xD6\u011Frenmeliyim?
-* T\xFCrkiye kurumsal yaz\u0131l\u0131m pazar\u0131n\u0131n b\xFCy\xFCk \xE7o\u011Funlu\u011Fu .NET/C# kullan\u0131yor.
-* Banka, fintech, e-ticaret ve kamu yaz\u0131l\u0131mlar\u0131 b\xFCy\xFCk \xF6l\xE7\xFCde C# tabanl\u0131.
-* Y\xFCksek maa\u015Fl\u0131 pozisyonlarda aranan ilk dillerden biri.
-* Microsoft, Azure ve modern bulut mimarileriyle tam entegrasyon.`},{id:"cs-2",title:"Ders 2: De\u011Fi\u015Fkenler ve Veri Tipleri",content:`De\u011Fi\u015Fkenler, program i\xE7erisinde i\u015Flenecek verilerin ge\xE7ici olarak bellekte (RAM) sakland\u0131\u011F\u0131 isimlendirilmi\u015F alanlard\u0131r.
+### Temel \xD6zellikler:
+* **Nesne Y\xF6nelimli (OOP):** S\u0131n\u0131f, nesne, kal\u0131t\u0131m, \xE7ok bi\xE7imlilik
+* **Tip G\xFCvenli:** Derleme zaman\u0131nda tip hatalar\u0131 yakalan\u0131r
+* **Cross-Platform:** Windows, Linux, macOS deste\u011Fi
+* **Y\xFCksek Performans:** Modern .NET 8, Node.js ve Python'\u0131 benchmark'larda ge\xE7iyor`,quiz:[{q:"C# hangi \u015Firket taraf\u0131ndan geli\u015Ftirilmi\u015Ftir?",options:["Apple","Microsoft","Google","Oracle"],answer:1,exp:"Microsoft, C# ve .NET platformunu 2000 y\u0131l\u0131nda tan\u0131tt\u0131."},{q:"C# kodu derlendikten sonra hangi ara dile \xE7evrilir?",options:["Bytecode","MSIL","Assembly","WebAssembly"],answer:1,exp:"MSIL (Microsoft Intermediate Language), CLR taraf\u0131ndan \xE7al\u0131\u015Fma zaman\u0131nda makine koduna d\xF6n\xFC\u015Ft\xFCr\xFCl\xFCr."},{q:"CLR i\xE7indeki bile\u015Fen hangisi MSIL'i makine koduna \xE7evirir?",options:["Compiler","Linker","JIT (Just-In-Time) Compiler","Interpreter"],answer:2,exp:"JIT Compiler, \xE7al\u0131\u015Fma zaman\u0131nda MSIL kodunu hedef i\u015Flemcinin makine koduna \xE7evirir."}]},{id:"cs-2",title:"Ders 2: De\u011Fi\u015Fkenler ve Veri Tipleri",intro:"### De\u011Fi\u015Fkenler Nedir?\nBir program \xE7al\u0131\u015F\u0131rken bellekte (RAM) ge\xE7ici veriler saklar. De\u011Fi\u015Fkenler bu verilere isimle eri\u015Fmemizi sa\u011Flar. Kullan\u0131c\u0131n\u0131n ad\u0131ndan bir \xFCr\xFCn\xFCn fiyat\u0131na, stok adedinden sipari\u015F tutar\u0131na kadar her \u015Fey de\u011Fi\u015Fkenlerde tutulur.\n\n### Ger\xE7ek D\xFCnya \xD6rne\u011Fi:\nBir e-ticaret uygulamas\u0131 d\xFC\u015F\xFCn: `kullaniciAdi`, `sepetToplami`, `urunFiyati`, `stokMevcut` \u2014 bunlar\u0131n hepsi de\u011Fi\u015Fkenlerdir. Do\u011Fru veri tipini se\xE7mek hem bellek kullan\u0131m\u0131n\u0131 hem de hesaplama hassasiyetini do\u011Frudan etkiler.\n\n> **\xD6nemli:** Finansal hesaplamalarda `double` yerine `decimal` kullan\u0131n! double'\u0131n kayan nokta hatas\u0131, bankac\u0131l\u0131k sistemlerinde ciddi sorunlara yol a\xE7abilir.",content:`### C# Temel Veri Tipleri:
+* **\`int\`** \u2192 32-bit tam say\u0131: \`int yas = 25;\`
+* **\`long\`** \u2192 64-bit b\xFCy\xFCk tam say\u0131: \`long nufus = 85_000_000;\`
+* **\`double\`** \u2192 Ondal\u0131kl\u0131: \`double pi = 3.14159;\`
+* **\`decimal\`** \u2192 Finansal hesaplama: \`decimal fiyat = 999.99m;\`
+* **\`string\`** \u2192 Metin: \`string isim = "Yusuf";\`
+* **\`bool\`** \u2192 true/false: \`bool aktifMi = true;\`
+* **\`char\`** \u2192 Tek karakter: \`char cinsiyet = 'E';\`
 
-### C# Temel Veri Tipleri:
-* **int:** 32-bit tam say\u0131 \u2014 \`int yas = 25;\`
-* **long:** 64-bit b\xFCy\xFCk tam say\u0131 \u2014 \`long nufus = 85_000_000;\`
-* **double:** Ondal\u0131kl\u0131 say\u0131 \u2014 \`double pi = 3.14159;\`
-* **decimal:** Finansal hesaplama \u2014 \`decimal fiyat = 999.99m;\`
-* **string:** Metin \u2014 \`string isim = "Yusuf";\`
-* **bool:** true/false \u2014 \`bool aktifMi = true;\`
-* **char:** Tek karakter \u2014 \`char cinsiyet = 'E';\`
-
-### var ve Type Inference:
+### var ve const:
 \`\`\`csharp
-// Explicit tip belirtimi
-int sayi = 42;
-string ad = "Yusuf";
-
-// var ile otomatik tip \xE7\u0131kar\u0131m\u0131
-var yas = 28;         // int olarak derlenir
-var isim = "Ahmet";   // string olarak derlenir
-var fiyat = 99.99;    // double olarak derlenir
+// var: Tip derleme zaman\u0131nda otomatik belirlenir
+var yas = 28;           // int olarak derlenir
+var isim = "Ahmet";     // string olarak derlenir
+var fiyat = 99.99m;     // decimal olarak derlenir
 
 // const: De\u011Fi\u015Ftirilemez sabit
 const double PI = 3.14159265358979;
@@ -67,45 +62,51 @@ const string SITE_URL = "https://ytkacademy.com.tr";
 string ad = "Yusuf";
 string soyad = "Yetkin";
 
-// String interpolation (\xF6nerilen)
-string mesaj = $"Merhaba, {ad} {soyad}! Ya\u015F\u0131n: {28}";
+// String interpolation \u2014 \xF6nerilen y\xF6ntem
+string mesaj = $"Merhaba, {ad} {soyad}! Bug\xFCn: {DateTime.Now:dd/MM/yyyy}";
 
-// Verbatim string (@ ile ters b\xF6l\xFC sorun olmaz)
-string dosyaYolu = @"C:UsersYusufDesktopproje";
+// Verbatim string ( karakteri sorun yaratmaz)
+string yol = @"C:UsersYusufDesktopproje";
 
-// String metodlar\u0131
-Console.WriteLine(ad.ToUpper());         // YUSUF
-Console.WriteLine(ad.Length);            // 5
-Console.WriteLine(ad.Contains("usu"));  // True
-Console.WriteLine("  YTK  ".Trim());    // YTK
-Console.WriteLine(ad.Replace("Y","J")); // Jusuf
+// S\u0131k kullan\u0131lan metodlar
+Console.WriteLine(ad.ToUpper());          // YUSUF
+Console.WriteLine(ad.Length);             // 5
+Console.WriteLine("  YTK  ".Trim());     // YTK
+Console.WriteLine(ad.Contains("usu"));   // True
+Console.WriteLine(ad.Replace("Y","J"));  // Jusuf
 \`\`\`
 
-### Tip D\xF6n\xFC\u015F\xFCmleri:
+### G\xFCvenli Tip D\xF6n\xFC\u015F\xFCm\xFC:
 \`\`\`csharp
-// G\xFCvenli d\xF6n\xFC\u015F\xFCm (TryParse - hata f\u0131rlatmaz)
+// TryParse: Hata f\u0131rlatmaz, bool d\xF6nd\xFCr\xFCr
 if (int.TryParse("123", out int sayi))
     Console.WriteLine($"D\xF6n\xFC\u015Ft\xFCr\xFCld\xFC: {sayi}");
 else
-    Console.WriteLine("Ge\xE7ersiz say\u0131!");
+    Console.WriteLine("Ge\xE7ersiz say\u0131 format\u0131!");
 
 // Convert s\u0131n\u0131f\u0131
-string txt = "42";
-int deger = Convert.ToInt32(txt);
+int deger = Convert.ToInt32("42");
 bool aktif = Convert.ToBoolean("true");
-\`\`\``},{id:"cs-3",title:"Ders 3: Karar Yap\u0131lar\u0131 (if-else & switch)",content:`Karar yap\u0131lar\u0131, program\u0131n belirli ko\u015Fullara g\xF6re farkl\u0131 ak\u0131\u015Flarda ilerlemesini sa\u011Flar.
+\`\`\``,quiz:[{q:"Finansal hesaplamalarda (banka, e-ticaret) hangi veri tipi kullan\u0131lmal\u0131d\u0131r?",options:["double","float","decimal","int"],answer:2,exp:"decimal, kayan nokta hatas\u0131 olmayan y\xFCksek hassasiyetli ondal\u0131kl\u0131 tiptir. Finansal i\u015Flemler i\xE7in zorunludur."},{q:"int.TryParse('abc', out int x) ifadesi ne d\xF6nd\xFCr\xFCr?",options:["exception f\u0131rlat\u0131r","0 d\xF6nd\xFCr\xFCr","false d\xF6nd\xFCr\xFCr","null d\xF6nd\xFCr\xFCr"],answer:2,exp:"TryParse, d\xF6n\xFC\u015F\xFCm ba\u015Far\u0131s\u0131z oldu\u011Funda false d\xF6nd\xFCr\xFCr ve out parametresine 0 yazar. Hata f\u0131rlatmaz."},{q:"var anahtar kelimesiyle tan\u0131mlanan de\u011Fi\u015Fkenin tipi ne zaman belirlenir?",options:["\xC7al\u0131\u015Fma zaman\u0131nda","Derleme zaman\u0131nda","\u0130lk de\u011Fer atamas\u0131nda","Kullan\u0131ld\u0131\u011F\u0131 anda"],answer:1,exp:"var ile tan\u0131mlanan de\u011Fi\u015Fkenin tipi derleme zaman\u0131nda sabitlenir. Runtime'da dinamik de\u011Fildir."}]},{id:"cs-3",title:"Ders 3: Karar Yap\u0131lar\u0131 (if-else & switch)",intro:`### Karar Yap\u0131lar\u0131 Neden Gerekli?
+Bir yaz\u0131l\u0131m, her zaman ayn\u0131 \u015Feyi yapmaz. "Kullan\u0131c\u0131 giri\u015F yapt\u0131 m\u0131?", "Bakiye yeterli mi?", "Stok var m\u0131?" gibi sorular kod i\xE7inde karar yap\u0131lar\u0131yla yan\u0131tlan\u0131r. Modern bir backend API'de y\xFCzlerce karar noktas\u0131 bulunur.
 
-### if-else if-else:
+### Ger\xE7ek D\xFCnya \xD6rne\u011Fi:
+Bir \xF6deme sisteminde:
+* Bakiye >= tutar \u2192 \xD6demeyi onayla
+* Kart limiti a\u015F\u0131ld\u0131 \u2192 Reddet ve log yaz
+* \u015E\xFCpheli i\u015Flem \u2192 3D Secure'a y\xF6nlendir
+
+Her bu senaryonun kodu if-else veya switch yap\u0131lar\u0131yla yaz\u0131l\u0131r.`,content:`### if-else if-else:
 \`\`\`csharp
 int not = 78;
 string harf;
 
-if (not >= 90) harf = "AA";
+if (not >= 90)      harf = "AA";
 else if (not >= 80) harf = "BA";
 else if (not >= 70) harf = "BB";
 else if (not >= 60) harf = "CB";
 else if (not >= 50) harf = "CC";
-else harf = "FF";
+else                harf = "FF";
 
 Console.WriteLine($"Harf notu: {harf}"); // BB
 \`\`\`
@@ -133,31 +134,40 @@ switch (gun)
 }
 \`\`\`
 
-### switch Expression (C# 8+ - Modern):
+### switch Expression \u2014 C# 8+ Modern S\xF6zdizimi:
 \`\`\`csharp
+// \xC7ok daha k\u0131sa ve okunabilir
 string durum = gun switch
 {
     "Pazartesi" or "Sal\u0131" or "\xC7ar\u015Famba"
     or "Per\u015Fembe" or "Cuma" => "\u0130\u015F g\xFCn\xFC",
     "Cumartesi" or "Pazar" => "Hafta sonu",
-    _ => "Bilinmiyor"
+    _ => "Bilinmiyor" // default
 };
 \`\`\`
 
 ### Ternary ve Null Operat\xF6rler:
 \`\`\`csharp
+// Ternary: ko\u015Ful ? do\u011Fruysa : yanl\u0131\u015Fsa
 int yas = 20;
 string etiket = (yas >= 18) ? "Yeti\u015Fkin" : "\xC7ocuk";
 
-// Null coalescing ??
+// Null coalescing: ?? \u2014 null ise alternatifi kullan
 string? isim = null;
-string gosterilecek = isim ?? "Anonim";
+string gosterilecek = isim ?? "Anonim Kullan\u0131c\u0131";
 
-// Null conditional ?.
-string? uzunluk = isim?.ToUpper(); // null, hata f\u0131rlatmaz
-\`\`\``},{id:"cs-4",title:"Ders 4: D\xF6ng\xFCler (for, while, foreach)",content:`D\xF6ng\xFCler, bir kod blo\u011Funun belirli bir ko\u015Ful sa\u011Fland\u0131\u011F\u0131 s\xFCrece tekrarlanmas\u0131n\u0131 sa\u011Flar.
+// Null conditional: ?. \u2014 null ise i\u015Flemi atla
+string? uzunluk = isim?.ToUpper(); // hata f\u0131rlatmaz, null d\xF6ner
+\`\`\``,quiz:[{q:"switch-case'de bir case blo\u011Fundan \xE7\u0131kmak i\xE7in hangi keyword kullan\u0131l\u0131r?",options:["exit","stop","break","return"],answer:2,exp:"break, switch-case blo\u011Fundan \xE7\u0131karak bir sonraki case'in \xE7al\u0131\u015Fmas\u0131n\u0131 engeller."},{q:"string? isim = null; \u2192 isim ?? 'Anonim' ifadesinin sonucu nedir?",options:["null","isim","'Anonim'","Hata f\u0131rlat\u0131r"],answer:2,exp:"?? operat\xF6r\xFC sol taraf null ise sa\u011F taraftaki de\u011Feri d\xF6nd\xFCr\xFCr."},{q:"C# 8+ switch expression'da default durumu hangi sembolle ifade edilir?",options:["default:","else","_ =>","*"],answer:2,exp:"_ (discard pattern), switch expression'da t\xFCm e\u015Fle\u015Fmeyen durumlar\u0131 yakalamak i\xE7in kullan\u0131l\u0131r."}]},{id:"cs-4",title:"Ders 4: D\xF6ng\xFCler (for, while, foreach)",intro:`### D\xF6ng\xFCler Neden Gerekli?
+100 \xFCr\xFCn\xFC ekrana yazd\u0131rmak i\xE7in 100 sat\u0131r kod yazmak yerine d\xF6ng\xFCyle 3 sat\u0131r yeterli. D\xF6ng\xFCler tekrarl\u0131 i\u015Flemleri otomatize eder.
 
-### for D\xF6ng\xFCs\xFC:
+### Ger\xE7ek D\xFCnya Kullan\u0131m\u0131:
+* **E-ticaret:** Sepetteki t\xFCm \xFCr\xFCnlerin toplam\u0131n\u0131 hesapla
+* **Banka:** T\xFCm i\u015Flem kay\u0131tlar\u0131n\u0131 tara, \u015F\xFCphelileri i\u015Faretle
+* **API:** Gelen veri listesini i\u015Fle, veritaban\u0131na kaydet
+* **Rapor:** 1000 m\xFC\u015Fteriye e-posta g\xF6nder
+
+> **Hangisini se\xE7eyim?** Ka\xE7 kez d\xF6nece\u011Fi belli \u2192 \`for\`. Koleksiyon \xFCzerinde gez \u2192 \`foreach\`. Ko\u015Ful ger\xE7ekle\u015Fene dek \u2192 \`while\`.`,content:`### for D\xF6ng\xFCs\xFC \u2014 Saya\xE7 tabanl\u0131:
 \`\`\`csharp
 // 1'den 10'a \xE7arp\u0131m tablosu
 for (int i = 1; i <= 10; i++)
@@ -165,36 +175,36 @@ for (int i = 1; i <= 10; i++)
     Console.WriteLine($"7 x {i} = {7 * i}");
 }
 
-// Geriye sayma
+// Geriye do\u011Fru sayma
 for (int i = 10; i >= 1; i--)
     Console.Write(i + " ");
 // \xC7\u0131kt\u0131: 10 9 8 7 6 5 4 3 2 1
 \`\`\`
 
-### while D\xF6ng\xFCs\xFC:
+### while D\xF6ng\xFCs\xFC \u2014 Ko\u015Ful tabanl\u0131:
 \`\`\`csharp
-// Kullan\u0131c\u0131 do\u011Fru \u015Fifreyi girene kadar sor
 int deneme = 0;
-const string dogru = "ytk2024";
+const string dogruSifre = "ytk2024";
 
 while (deneme < 3)
 {
     Console.Write("\u015Eifreyi girin: ");
     string girilen = Console.ReadLine() ?? "";
 
-    if (girilen == dogru)
+    if (girilen == dogruSifre)
     {
-        Console.WriteLine("Giri\u015F ba\u015Far\u0131l\u0131! \u2713");
-        break;
+        Console.WriteLine("\u2713 Giri\u015F ba\u015Far\u0131l\u0131!");
+        break; // D\xF6ng\xFCden \xE7\u0131k
     }
     deneme++;
-    Console.WriteLine($"Hatal\u0131! Kalan hak: {3 - deneme}");
+    Console.WriteLine($"\u2717 Hatal\u0131! Kalan hak: {3 - deneme}");
 }
-if (deneme == 3)
+
+if (deneme >= 3)
     Console.WriteLine("Hesap kilitlendi!");
 \`\`\`
 
-### foreach D\xF6ng\xFCs\xFC:
+### foreach D\xF6ng\xFCs\xFC \u2014 Koleksiyonlar i\xE7in:
 \`\`\`csharp
 string[] ogrenciler = { "Ahmet", "Mehmet", "Ay\u015Fe", "Fatma" };
 
@@ -202,10 +212,20 @@ foreach (string ogrenci in ogrenciler)
 {
     Console.WriteLine($"  \u2022 {ogrenci}");
 }
+
+// Sepet toplam\u0131 \xF6rne\u011Fi
+decimal[] fiyatlar = { 299.99m, 149.50m, 79.90m, 459.00m };
+decimal toplam = 0;
+foreach (decimal fiyat in fiyatlar)
+    toplam += fiyat;
+
+Console.WriteLine($"Sepet Toplam\u0131: {toplam:C}");
 \`\`\`
 
 ### break ve continue:
 \`\`\`csharp
+// continue: Bu ad\u0131m\u0131 atla, devam et
+// break: D\xF6ng\xFCden tamamen \xE7\u0131k
 for (int i = 1; i <= 10; i++)
 {
     if (i % 2 == 0) continue; // \xC7iftleri atla
@@ -213,37 +233,41 @@ for (int i = 1; i <= 10; i++)
     Console.Write(i + " ");
 }
 // \xC7\u0131kt\u0131: 1 3 5 7
-\`\`\``},{id:"cs-5",title:"Ders 5: Metotlar (Methods)",content:`Metotlar, belirli bir i\u015Fi yapan ve gerekti\u011Finde \xE7a\u011Fr\u0131lan yeniden kullan\u0131labilir kod bloklar\u0131d\u0131r.
-
-### Temel Metot Yap\u0131s\u0131:
+\`\`\``,quiz:[{q:"Bir koleksiyon \xFCzerindeki t\xFCm elemanlar\u0131 gezmek i\xE7in en uygun d\xF6ng\xFC hangisidir?",options:["for","while","do-while","foreach"],answer:3,exp:"foreach, IEnumerable aray\xFCz\xFCn\xFC uygulayan herhangi bir koleksiyonu (List, Array, Dictionary) gezmek i\xE7in tasarlanm\u0131\u015Ft\u0131r."},{q:"continue keyword'\xFC d\xF6ng\xFCde ne yapar?",options:["D\xF6ng\xFCy\xFC sonland\u0131r\u0131r","Mevcut ad\u0131m\u0131 atlay\u0131p bir sonrakine ge\xE7er","D\xF6ng\xFCy\xFC ba\u015Fa sarar","Program\u0131 sonland\u0131r\u0131r"],answer:1,exp:"continue, gerideki kodu atlayarak d\xF6ng\xFCn\xFCn bir sonraki iterasyonuna ge\xE7er."},{q:"for (int i=0; i<5; i++) d\xF6ng\xFCs\xFC ka\xE7 kez \xE7al\u0131\u015F\u0131r?",options:["4","5","6","0"],answer:1,exp:"i=0,1,2,3,4 \u2192 5 iterasyon. i=5 oldu\u011Funda i<5 ko\u015Fulu false olur."}]},{id:"cs-5",title:"Ders 5: Metotlar (Methods)",intro:'### Metotlar Neden Gerekli?\n"Ayn\u0131 kodu defalarca yazmak" \u2014 yaz\u0131l\u0131m d\xFCnyas\u0131n\u0131n en b\xFCy\xFCk g\xFCnahlar\u0131ndan biridir (DRY: Don\'t Repeat Yourself). Metotlar kodu tekrar kullan\u0131labilir par\xE7alara b\xF6ler.\n\n### Ger\xE7ek D\xFCnya Kullan\u0131m\u0131:\n`KDVHesapla()`, `SifreDogrula()`, `EmailGonder()`, `RaporOlustur()` \u2014 bunlar birer metot. B\xFCy\xFCk bir projedeki binlerce metot; her biri tek bir sorumlulu\u011Fu yerine getirir (Single Responsibility Principle).\n\n> \u0130yi yaz\u0131lm\u0131\u015F bir metot, ad\u0131n\u0131 okuyunca ne yapt\u0131\u011F\u0131n\u0131 anlat\u0131r. `x()` de\u011Fil, `SepetToplamin\u0131Hesapla()` yaz\u0131n.',content:`### Temel Metot S\xF6zdizimi:
 \`\`\`csharp
-// [eri\u015Fim belirteci] [d\xF6n\xFC\u015F tipi] MetotAd\u0131([parametreler])
+// [eri\u015Fim] [d\xF6n\xFC\u015F tipi] MetotAd\u0131([parametreler])
 public static int Topla(int a, int b)
 {
     return a + b;
 }
 
-// Expression body (tek sat\u0131r) \u2014 C# 6+
+// Expression body \u2014 tek sat\u0131r (C# 6+)
 public static int Carp(int a, int b) => a * b;
 \`\`\`
 
 ### Parametre \xC7e\u015Fitleri:
 \`\`\`csharp
-// Varsay\u0131lan parametre de\u011Feri
-static double KDVHesapla(double fiyat, double kdvOrani = 0.20)
-    => fiyat * (1 + kdvOrani);
+// Varsay\u0131lan (default) parametre
+static double KDVHesapla(double fiyat, double oran = 0.20)
+    => fiyat * (1 + oran);
 
-// \u0130simli parametre
-KDVHesapla(fiyat: 100, kdvOrani: 0.08); // 108
+KDVHesapla(100);          // 120 (varsay\u0131lan %20)
+KDVHesapla(100, 0.08);    // 108 (%8 KDV)
+KDVHesapla(fiyat: 100, oran: 0.10); // \u0130simli parametre
 
 // params \u2014 De\u011Fi\u015Fken say\u0131da parametre
 static int Topla(params int[] sayilar)
-    => sayilar.Sum();
+{
+    int toplam = 0;
+    foreach (int s in sayilar) toplam += s;
+    return toplam;
+}
 
-Topla(1, 2, 3, 4, 5); // 15
+Topla(1, 2, 3);       // 6
+Topla(10, 20, 30, 40); // 100
 \`\`\`
 
-### out ve ref Parametreler:
+### out Parametresi \u2014 Birden Fazla De\u011Fer D\xF6nd\xFCr:
 \`\`\`csharp
 static void MinMax(int[] dizi, out int min, out int max)
 {
@@ -256,131 +280,149 @@ MinMax(arr, out int enKucuk, out int enBuyuk);
 Console.WriteLine($"Min: {enKucuk}, Max: {enBuyuk}"); // Min: 1, Max: 9
 \`\`\`
 
-### Metot A\u015F\u0131r\u0131 Y\xFCklemesi (Overloading):
+### Method Overloading (A\u015F\u0131r\u0131 Y\xFCkleme):
 \`\`\`csharp
-static string Formatla(int sayi) => sayi.ToString("N0");
+// Ayn\u0131 isim, farkl\u0131 parametre imzas\u0131
+static string Formatla(int sayi)    => sayi.ToString("N0");
 static string Formatla(double sayi) => sayi.ToString("F2");
 static string Formatla(decimal para) => para.ToString("C");
 
 Console.WriteLine(Formatla(1000000));  // 1.000.000
-Console.WriteLine(Formatla(3.14159)); // 3,14
+Console.WriteLine(Formatla(3.14159));  // 3,14
 Console.WriteLine(Formatla(999.99m)); // \u20BA999,99
-\`\`\``},{id:"cs-6",title:"Ders 6: S\u0131n\u0131flar ve OOP",content:`Nesne Y\xF6nelimli Programlama (OOP), ger\xE7ek d\xFCnyadaki varl\u0131klar\u0131 kod olarak modelleme yakla\u015F\u0131m\u0131d\u0131r.
+\`\`\``,quiz:[{q:"void d\xF6n\xFC\u015F tipi ne anlama gelir?",options:["Metot hata f\u0131rlatabilir","Metot geriye bir de\u011Fer d\xF6nd\xFCrmez","Metot asenkrondur","Metot sadece static olabilir"],answer:1,exp:"void, metodun geriye herhangi bir de\u011Fer d\xF6nd\xFCrmedi\u011Fini belirtir. Yan etkiler i\xE7in kullan\u0131l\u0131r (log, ekrana yaz, kaydet)."},{q:"Ayn\u0131 isimde, farkl\u0131 parametreli birden fazla metot tan\u0131mlamak ne olarak adland\u0131r\u0131l\u0131r?",options:["Method Overriding","Method Hiding","Method Overloading","Method Chaining"],answer:2,exp:"Method Overloading (A\u015F\u0131r\u0131 Y\xFCkleme), derleyici parametre tipine g\xF6re do\u011Fru metodu se\xE7er."},{q:"static void Yaz(params string[] kelimeler) metoduna ka\xE7 arg\xFCman g\xF6nderilebilir?",options:["Sadece 1","Sadece 3","0 veya daha fazla","Maksimum 5"],answer:2,exp:"params ile tan\u0131mlanan parametre s\u0131f\u0131r veya daha fazla arg\xFCman alabilir."}]},{id:"cs-6",title:"Ders 6: S\u0131n\u0131flar ve OOP",intro:`### OOP Neden Gerekli?
+Ger\xE7ek d\xFCnyadaki "M\xFC\u015Fteri", "Sipari\u015F", "\xDCr\xFCn", "Banka Hesab\u0131" gibi kavramlar\u0131 koda yans\u0131tmak i\xE7in nesne y\xF6nelimli programlama kullan\u0131l\u0131r. S\u0131n\u0131flar bu kavramlar\u0131n \u015Fablonudur.
 
-### S\u0131n\u0131f Tasar\u0131m\u0131 (Ger\xE7ek Senaryo):
+### Ger\xE7ek D\xFCnya \xD6rne\u011Fi:
+Bir e-ticaret sisteminde \`Urun\` s\u0131n\u0131f\u0131; \xFCr\xFCn\xFCn ad\u0131n\u0131, fiyat\u0131n\u0131, sto\u011Funu tutar ve sat\u0131\u015F yapma, stok g\xFCncelleme gibi i\u015Flemleri y\xF6netir. Bu s\u0131n\u0131ftan binlerce "Urun nesnesi" olu\u015Fturulabilir.
+
+### 4 Temel OOP Prensibi:
+* **Encapsulation:** Veriyi d\u0131\u015Far\u0131dan koruma (private field + public property)
+* **Inheritance:** Miras alma (BankaHesabi \u2192 VadeliHesap)
+* **Polymorphism:** Ayn\u0131 metot, farkl\u0131 davran\u0131\u015F (override)
+* **Abstraction:** Karma\u015F\u0131kl\u0131\u011F\u0131 gizle, sade aray\xFCz sun`,content:`### S\u0131n\u0131f Tasar\u0131m\u0131 \u2014 Banka Hesab\u0131 \xD6rne\u011Fi:
 \`\`\`csharp
 public class BankaHesabi
 {
     // Private field \u2014 d\u0131\u015Far\u0131dan do\u011Frudan eri\u015Filemez
     private decimal _bakiye;
-    private readonly List<string> _islemGecmisi;
+    private readonly List<string> _islemGecmisi = new();
 
-    // Properties
+    // Properties \u2014 kontroll\xFC eri\u015Fim
     public string HesapNo { get; private set; }
     public string SahibiAdi { get; set; }
-    public decimal Bakiye => _bakiye; // Salt okunur
+    public decimal Bakiye => _bakiye; // Sadece okunabilir
 
-    // Constructor
-    public BankaHesabi(string hesapNo, string sahibiAdi, decimal baslangicBakiyesi = 0)
+    // Constructor \u2014 nesne olu\u015Fturuldu\u011Funda \xE7al\u0131\u015F\u0131r
+    public BankaHesabi(string hesapNo, string sahibi, decimal baslangic = 0)
     {
         HesapNo = hesapNo;
-        SahibiAdi = sahibiAdi;
-        _bakiye = baslangicBakiyesi;
-        _islemGecmisi = new List<string>();
+        SahibiAdi = sahibi;
+        _bakiye = baslangic;
     }
 
-    // Para yat\u0131rma
+    // Para yat\u0131rma metodu
     public void ParaYatir(decimal tutar)
     {
         if (tutar <= 0) throw new ArgumentException("Tutar pozitif olmal\u0131!");
         _bakiye += tutar;
-        _islemGecmisi.Add($"+{tutar:C} yat\u0131r\u0131ld\u0131. Bakiye: {_bakiye:C}");
+        _islemGecmisi.Add($"+{tutar:C} yat\u0131r\u0131ld\u0131 \u2192 Bakiye: {_bakiye:C}");
     }
 
-    // Para \xE7ekme
+    // Para \xE7ekme \u2014 ba\u015Far\u0131 durumunu bool olarak d\xF6nd\xFCr\xFCr
     public bool ParaCek(decimal tutar)
     {
         if (tutar <= 0 || tutar > _bakiye) return false;
         _bakiye -= tutar;
-        _islemGecmisi.Add($"-{tutar:C} \xE7ekildi. Bakiye: {_bakiye:C}");
+        _islemGecmisi.Add($"-{tutar:C} \xE7ekildi \u2192 Bakiye: {_bakiye:C}");
         return true;
     }
 
-    public void IslemGecmisiniGoster()
+    public void IslemleriGoster()
     {
+        Console.WriteLine($"=== {HesapNo} \u0130\u015Flem Ge\xE7mi\u015Fi ===");
         foreach (var islem in _islemGecmisi)
-            Console.WriteLine($"  \u2022 {islem}");
+            Console.WriteLine("  " + islem);
     }
 }
-
-// Kullan\u0131m
-var hesap = new BankaHesabi("TR33-0001", "Yusuf Yetkin", 5000m);
-hesap.ParaYatir(2500m);
-hesap.ParaCek(1000m);
-hesap.IslemGecmisiniGoster();
 \`\`\`
 
-### 4 Temel OOP Prensibi:
-* **Encapsulation:** Veriler private, eri\u015Fim property/metot \xFCzerinden.
-* **Inheritance:** Alt s\u0131n\u0131f \xFCst s\u0131n\u0131f\u0131n \xF6zelliklerini miras al\u0131r.
-* **Polymorphism:** Ayn\u0131 metot farkl\u0131 davran\u0131\u015Flar sergileyebilir (override).
-* **Abstraction:** Karma\u015F\u0131k detaylar\u0131 gizleyip sade aray\xFCz sunmak.`},{id:"cs-7",title:"Ders 7: Koleksiyonlar (List, Dictionary, Array)",content:`C#'ta birden fazla veriyi bir arada tutmak i\xE7in koleksiyonlar kullan\u0131l\u0131r.
-
-### Array (Dizi) \u2014 Sabit boyutlu:
+### Nesne Olu\u015Fturma ve Kullan\u0131m:
 \`\`\`csharp
-int[] notlar = { 85, 92, 78, 95, 88 };
-double ort = notlar.Average();
-int max = notlar.Max();
+// new ile nesne olu\u015Ftur
+var hesap = new BankaHesabi("TR33-0001", "Yusuf Yetkin", 5000m);
 
-// 2D dizi
+hesap.ParaYatir(2500m);
+hesap.ParaCek(1000m);
+bool sonuc = hesap.ParaCek(99999m); // false d\xF6ner (yetersiz bakiye)
+
+Console.WriteLine($"Bakiye: {hesap.Bakiye:C}");
+hesap.IslemleriGoster();
+\`\`\``,quiz:[{q:"OOP'de Encapsulation (Kaps\xFClleme) ne anlama gelir?",options:["S\u0131n\u0131f\u0131 ba\u015Fka bir s\u0131n\u0131ftan t\xFCretmek","Veriyi d\u0131\u015F eri\u015Fimden koruyup kontroll\xFC eri\u015Fim sa\u011Flamak","Ayn\u0131 metodun farkl\u0131 davran\u0131\u015F sergilemesi","Soyut s\u0131n\u0131f tan\u0131mlamak"],answer:1,exp:"Encapsulation: private field + public property/metot ile veriyi d\u0131\u015Far\u0131dan koruma prensibidir."},{q:"Constructor (yap\u0131c\u0131 metot) ne zaman \xE7a\u011Fr\u0131l\u0131r?",options:["Nesne silindi\u011Finde","Metot her \xE7a\u011Fr\u0131ld\u0131\u011F\u0131nda","Nesne olu\u015Fturuldu\u011Funda (new)","Program ba\u015Flad\u0131\u011F\u0131nda"],answer:2,exp:"Constructor, 'new' keyword'\xFC ile nesne olu\u015Fturuldu\u011Fu anda otomatik \xE7a\u011Fr\u0131l\u0131r."},{q:"public decimal Bakiye => _bakiye; ifadesi ne anlama gelir?",options:["_bakiye de\u011Fi\u015Fkenine public eri\u015Fim","Bakiye'ye hem okuma hem yazma izni var","Bakiye sadece okunabilir (getter-only property)","Bakiye statik bir de\u011Fi\u015Fkendir"],answer:2,exp:"=> ile tan\u0131mlanan expression-body property sadece get i\xE7erir, set yoktur. D\u0131\u015Far\u0131dan de\u011Fi\u015Ftirilemez."}]},{id:"cs-7",title:"Ders 7: Koleksiyonlar (List, Dictionary, Array)",intro:'### Koleksiyonlar Neden Gerekli?\nTek bir veri i\xE7in de\u011Fi\u015Fken yeterlidir. Ama "t\xFCm sipari\u015Fler", "b\xFCt\xFCn kullan\u0131c\u0131lar", "aktif \xFCr\xFCnler" gibi veri setleri i\xE7in koleksiyon kullan\u0131l\u0131r.\n\n### Ger\xE7ek D\xFCnya Kullan\u0131m\u0131:\n* **API Response:** `List<Urun>` d\xF6nd\xFCr\n* **Cache:** `Dictionary<string, object>` ile anahtar-de\u011Fer \xF6nbellekleme\n* **Benzersiz veri:** `HashSet<int>` ile duplicate\'siz ID listesi\n* **S\u0131ral\u0131 veri:** `Queue<SiparisTalebi>` ile i\u015Flem kuyru\u011Fu\n\n> **Ne zaman hangisi?** S\u0131ral\u0131 liste \u2192 `List`. H\u0131zl\u0131 arama \u2192 `Dictionary`. Sabit boyut \u2192 `Array`. Benzersiz \u2192 `HashSet`.',content:`### Array \u2014 Sabit Boyutlu Dizi:
+\`\`\`csharp
+// Tan\u0131mlama
+int[] notlar = { 85, 92, 78, 95, 88 };
+
+// LINQ ile istatistik
+double ortalama = notlar.Average();  // 87.6
+int en_yuksek = notlar.Max();        // 95
+int en_dusuk = notlar.Min();         // 78
+
+// 2D dizi (matris)
 int[,] matris = { { 1, 2, 3 }, { 4, 5, 6 } };
 Console.WriteLine(matris[1, 2]); // 6
 \`\`\`
 
-### List<T> \u2014 Dinamik liste:
+### List<T> \u2014 Dinamik Liste:
 \`\`\`csharp
-var ogrenciler = new List<string> { "Ahmet", "Mehmet", "Ay\u015Fe" };
+var urunler = new List<string> { "Laptop", "Mouse", "Klavye" };
 
-ogrenciler.Add("Fatma");
-ogrenciler.Insert(0, "Zeynep"); // \u0130ndekse ekle
-ogrenciler.Remove("Mehmet");
-ogrenciler.Sort();
+// Ekleme
+urunler.Add("Monit\xF6r");
+urunler.Insert(0, "Kulakl\u0131k"); // \u0130ndekse ekle
 
-Console.WriteLine($"Say\u0131: {ogrenciler.Count}");
-Console.WriteLine(string.Join(", ", ogrenciler));
+// Silme
+urunler.Remove("Mouse");
+urunler.RemoveAt(0); // \u0130ndekse g\xF6re sil
 
 // Arama
-bool varMi = ogrenciler.Contains("Ahmet");
-int indeks = ogrenciler.IndexOf("Ahmet");
+bool varMi = urunler.Contains("Laptop");     // true
+int indeks = urunler.IndexOf("Klavye");      // 0 (\u015Fu an)
+
+// S\u0131ralama
+urunler.Sort();
+Console.WriteLine(string.Join(", ", urunler));
+Console.WriteLine($"Toplam: {urunler.Count} \xFCr\xFCn");
 \`\`\`
 
 ### Dictionary<TKey, TValue> \u2014 Anahtar-De\u011Fer:
 \`\`\`csharp
-var notSistemi = new Dictionary<string, int>
+// Kullan\u0131c\u0131 puanlar\u0131
+var puan = new Dictionary<string, int>
 {
-    ["Ahmet"] = 85,
-    ["Mehmet"] = 72,
-    ["Ay\u015Fe"] = 95
+    ["Ahmet"] = 850,
+    ["Mehmet"] = 720,
+    ["Ay\u015Fe"]  = 950
 };
 
-// De\u011Fer okuma
-int ahmetNot = notSistemi["Ahmet"];
+// Okuma
+int ahmetPuan = puan["Ahmet"]; // 850
 
-// G\xFCvenli okuma
-if (notSistemi.TryGetValue("Ali", out int aliNot))
-    Console.WriteLine($"Ali: {aliNot}");
+// G\xFCvenli okuma (KeyNotFoundException \xF6nle)
+if (puan.TryGetValue("Ali", out int aliPuan))
+    Console.WriteLine($"Ali: {aliPuan}");
+else
+    Console.WriteLine("Ali bulunamad\u0131.");
 
-// Yeni kay\u0131t ekleme/g\xFCncelleme
-notSistemi["Fatma"] = 91;
+// Ekleme / g\xFCncelleme
+puan["Fatma"] = 880;
 
 // D\xF6ng\xFC
-foreach (var (isim, not) in notSistemi)
-    Console.WriteLine($"{isim}: {not}");
-\`\`\``},{id:"cs-8",title:"Ders 8: Kal\u0131t\u0131m (Inheritance) ve Interface",content:`Kal\u0131t\u0131m, kod tekrar\u0131n\u0131 \xF6nleyerek s\u0131n\u0131flar aras\u0131nda \xF6zellik payla\u015F\u0131m\u0131 sa\u011Flar.
-
-### Kal\u0131t\u0131m \xD6rne\u011Fi:
+foreach (var (isim, p) in puan)
+    Console.WriteLine($"{isim}: {p} puan");
+\`\`\``,quiz:[{q:"List<T> ile Array aras\u0131ndaki temel fark nedir?",options:["List daha yava\u015Ft\u0131r","List dinamik boyutlu, Array sabit boyutludur","Array tip g\xFCvenlidir, List de\u011Fildir","List sadece string saklar"],answer:1,exp:"Array olu\u015Fturulurken boyutu sabittir. List dinamik olarak b\xFCy\xFCy\xFCp k\xFC\xE7\xFClebilir (Add/Remove)."},{q:"Dictionary'de mevcut olmayan bir Key'e [] ile eri\u015Fildi\u011Finde ne olur?",options:["null d\xF6ner","0 d\xF6ner","KeyNotFoundException f\u0131rlat\u0131r","false d\xF6ner"],answer:2,exp:"G\xFCvenli eri\u015Fim i\xE7in TryGetValue kullan\u0131lmal\u0131d\u0131r."},{q:"urunler.Contains('Laptop') ifadesi ne d\xF6nd\xFCr\xFCr?",options:["int (indeks)","string (de\u011Fer)","bool","List<string>"],answer:2,exp:"Contains, eleman\u0131n listede olup olmad\u0131\u011F\u0131n\u0131 bool (true/false) olarak d\xF6nd\xFCr\xFCr."}]},{id:"cs-8",title:"Ders 8: Kal\u0131t\u0131m (Inheritance) ve Interface",intro:'### Kal\u0131t\u0131m Neden Gerekli?\n"Yaz\u0131l\u0131mc\u0131 da bir \xC7al\u0131\u015Fand\u0131r" \u2014 bu c\xFCmle kal\u0131t\u0131m\u0131 \xF6zetler. Ortak \xF6zellikleri tekrar yazmak yerine \xFCst s\u0131n\u0131ftan miras al\u0131n\u0131r. Bu hem kod tekrar\u0131n\u0131 \xF6nler hem de sistemin geni\u015Flemesini kolayla\u015Ft\u0131r\u0131r.\n\n### Interface Neden Gerekli?\n"Kredi kart\u0131yla \xF6deme de, PayPal ile \xF6deme de birer \xF6demedir." Her \xF6deme y\xF6ntemi farkl\u0131 \xE7al\u0131\u015Fsa da ayn\u0131 `OdemeYap()` metoduna sahip olmal\u0131. Interface bu s\xF6zle\u015Fmeyi tan\u0131mlar.\n\n### Ger\xE7ek D\xFCnya:\n* **Repository Pattern:** `IUrunRepository` \u2192 `SqlUrunRepository`, `MongoUrunRepository`\n* **Strategy Pattern:** `IFiyatHesaplama` \u2192 `IndirimliHesap`, `NormalHesap`\n* **Dependency Injection:** ASP.NET Core\'un temeli interface\'lere dayan\u0131r',content:`### Kal\u0131t\u0131m \xD6rne\u011Fi:
 \`\`\`csharp
-// Temel s\u0131n\u0131f
+// Temel s\u0131n\u0131f (Base Class)
 public abstract class Calisan
 {
     public int Id { get; set; }
@@ -392,12 +434,11 @@ public abstract class Calisan
         Id = id; Ad = ad; MaasBase = maas;
     }
 
-    // abstract: Alt s\u0131n\u0131flar ZORUNDA override eder
-    public abstract decimal NetMaasHesapla();
+    // abstract: Alt s\u0131n\u0131flar MUTLAKA override eder
+    public abstract decimal NetMaas();
 
-    // virtual: Alt s\u0131n\u0131flar iste\u011Fe ba\u011Fl\u0131 override edebilir
-    public virtual string Tanitim()
-        => $"\xC7al\u0131\u015Fan #{Id}: {Ad}";
+    // virtual: Alt s\u0131n\u0131flar iste\u011Fe ba\u011Fl\u0131 override eder
+    public virtual string Ozet() => $"#{Id} {Ad}";
 }
 
 // T\xFCretilmi\u015F s\u0131n\u0131flar
@@ -406,76 +447,88 @@ public class Yazilimci : Calisan
     public string Dil { get; set; }
 
     public Yazilimci(int id, string ad, decimal maas, string dil)
-        : base(id, ad, maas)
+        : base(id, ad, maas) // \xDCst s\u0131n\u0131f constructor'\u0131 \xE7a\u011F\u0131r
     {
         Dil = dil;
     }
 
-    public override decimal NetMaasHesapla()
+    public override decimal NetMaas()
         => MaasBase * 0.85m + 2000m; // Vergi sonras\u0131 + teknoloji bonusu
 
-    public override string Tanitim()
-        => base.Tanitim() + $" | {Dil} Developer";
+    public override string Ozet()
+        => base.Ozet() + $" | {Dil} Developer";
 }
 \`\`\`
 
-### Interface (Aray\xFCz) \u2014 S\xF6zle\u015Fme:
+### Interface \u2014 S\xF6zle\u015Fme Tan\u0131mlama:
 \`\`\`csharp
+// Interface sadece kural koyar, kod yazmaz
 public interface IOdeme
 {
     string OdemeYontemi { get; }
     bool OdemeYap(decimal tutar, string aciklama);
 }
 
+// Her \xF6deme y\xF6ntemi ayn\u0131 s\xF6zle\u015Fmeyi uygular
 public class KrediKarti : IOdeme
 {
     public string OdemeYontemi => "Kredi Kart\u0131";
+
     public bool OdemeYap(decimal tutar, string aciklama)
     {
-        Console.WriteLine($"\u{1F4B3} {tutar:C} - {aciklama}");
-        return true;
+        Console.WriteLine($"\u{1F4B3} {tutar:C} \u2192 {aciklama}");
+        return true; // banka onay\u0131 sim\xFCle
     }
 }
 
 // Polymorphism: Hangi implementasyon oldu\u011Fu \xF6nemli de\u011Fil
 IOdeme odeme = new KrediKarti();
 odeme.OdemeYap(299.99m, "YTK Academy Ment\xF6rl\xFCk");
-\`\`\``},{id:"cs-9",title:"Ders 9: Hata Y\xF6netimi (try-catch-finally)",content:`Hata y\xF6netimi, programlar\u0131n beklenmedik durumlarla kar\u015F\u0131la\u015Ft\u0131\u011F\u0131nda \xE7\xF6kmesini \xF6nler.
+\`\`\``,quiz:[{q:"abstract keyword ile i\u015Faretlenen bir metot ne anlama gelir?",options:["Metot \xE7al\u0131\u015Fma zaman\u0131nda y\xFCklenir","Alt s\u0131n\u0131flar bu metodu MUTLAKA override etmek zorundad\u0131r","Metot sadece static olabilir","Metot private tan\u0131mlanm\u0131\u015Ft\u0131r"],answer:1,exp:"abstract metot, temel s\u0131n\u0131fta g\xF6vde (body) i\xE7ermez. T\xFCm t\xFCretilmi\u015F s\u0131n\u0131flar onu override etmek zorundad\u0131r."},{q:"Interface ile Abstract Class aras\u0131ndaki temel fark nedir?",options:["Interface metod g\xF6vdesi i\xE7erebilir, Abstract Class i\xE7eremez","Interface sadece s\xF6zle\u015Fme tan\u0131mlar (implementasyon yok), Abstract Class k\u0131smen implemente edebilir","Interface'den miras al\u0131namaz","Abstract Class'tan birden fazla miras al\u0131nabilir"],answer:1,exp:"C# 8+'dan \xF6nce interface'de sadece imza vard\u0131. Abstract class hem soyut hem de somut metotlar i\xE7erebilir. Bir s\u0131n\u0131f birden fazla interface'i uygulayabilir."},{q:"base() keyword'\xFC ne i\xE7in kullan\u0131l\u0131r?",options:["\xDCst s\u0131n\u0131f\u0131n static metodunu \xE7a\u011F\u0131rmak i\xE7in","T\xFCretilmi\u015F s\u0131n\u0131fta \xFCst s\u0131n\u0131f\u0131n constructor'\u0131n\u0131 veya \xFCyelerini \xE7a\u011F\u0131rmak i\xE7in","Interface metodunu \xE7a\u011F\u0131rmak i\xE7in","Mevcut s\u0131n\u0131f\u0131n ba\u015Fka constructor'\u0131n\u0131 \xE7a\u011F\u0131rmak i\xE7in"],answer:1,exp:"base(), t\xFCretilmi\u015F s\u0131n\u0131f\u0131n constructor'\u0131nda \xFCst s\u0131n\u0131f\u0131n constructor'\u0131n\u0131 \xE7a\u011F\u0131rmak i\xE7in kullan\u0131l\u0131r."}]},{id:"cs-9",title:"Ders 9: Hata Y\xF6netimi (try-catch-finally)",intro:`### Hata Y\xF6netimi Neden Kritik?
+Hi\xE7bir program hatas\u0131z \xE7al\u0131\u015Fmaz. Kullan\u0131c\u0131 yanl\u0131\u015F format girebilir, a\u011F ba\u011Flant\u0131s\u0131 kesilebilir, disk dolabilir, veritaban\u0131 cevap vermeyebilir. Bu durumlarda program\u0131n \xE7\xF6kmesi de\u011Fil, zarif bir hata y\xF6netimi yapmas\u0131 beklenir.
 
-### try-catch-finally:
+### Ger\xE7ek D\xFCnya:
+* \xDCretim ortam\u0131nda yakalanmayan exception \u2192 servis \xE7\xF6k\xFC\u015F\xFC \u2192 gelir kayb\u0131
+* \u0130yi hata y\xF6netimi: hatay\u0131 logla, kullan\u0131c\u0131ya uygun mesaj g\xF6ster, sistemi ayakta tut
+* .NET uygulamalar\u0131nda **Serilog** veya **NLog** ile merkezi loglama yap\u0131l\u0131r
+
+> **Alt\u0131n Kural:** Asla bo\u015F catch blo\u011Fu b\u0131rakma! Hatay\u0131 yutmak debugging'i imkans\u0131z k\u0131lar.`,content:`### try-catch-finally Yap\u0131s\u0131:
 \`\`\`csharp
 try
 {
-    Console.Write("B\xF6l\xFCnen say\u0131y\u0131 girin: ");
+    Console.Write("B\xF6l\xFCnen: ");
     int a = int.Parse(Console.ReadLine()!);
 
-    Console.Write("B\xF6len say\u0131y\u0131 girin: ");
+    Console.Write("B\xF6len: ");
     int b = int.Parse(Console.ReadLine()!);
 
     Console.WriteLine($"Sonu\xE7: {a / b}");
 }
-catch (FormatException)
+catch (FormatException ex)
 {
-    Console.WriteLine("\u274C Hata: Ge\xE7erli bir say\u0131 girilmedi!");
+    // Say\u0131 olmayan giri\u015F
+    Console.WriteLine($"\u274C Ge\xE7ersiz say\u0131: {ex.Message}");
 }
 catch (DivideByZeroException)
 {
-    Console.WriteLine("\u274C Hata: S\u0131f\u0131ra b\xF6lme yap\u0131lamaz!");
+    // S\u0131f\u0131ra b\xF6lme
+    Console.WriteLine("\u274C S\u0131f\u0131ra b\xF6lme yap\u0131lamaz!");
 }
-catch (Exception ex)
+catch (Exception ex) // T\xFCm di\u011Fer hatalar
 {
     Console.WriteLine($"\u274C Beklenmedik hata: {ex.Message}");
-    // Loglama sistemi burada devreye girer
+    // Ger\xE7ek projede: logger.Error(ex, "B\xF6lme i\u015Flemi ba\u015Far\u0131s\u0131z");
 }
 finally
 {
-    // Her zaman \xE7al\u0131\u015F\u0131r \u2014 kaynak temizli\u011Fi i\xE7in ideal
-    Console.WriteLine("\u0130\u015Flem sonland\u0131. (finally)");
+    // HER DURUMDA \xE7al\u0131\u015F\u0131r \u2014 kaynak temizli\u011Fi i\xE7in ideal
+    Console.WriteLine("\u0130\u015Flem tamamland\u0131. (finally blo\u011Fu)");
 }
 \`\`\`
 
 ### \xD6zel Exception S\u0131n\u0131f\u0131:
 \`\`\`csharp
+// Domain'e \xF6zg\xFC exception tan\u0131mla
 public class YetersizBakiyeException : Exception
 {
     public decimal Bakiye { get; }
@@ -497,9 +550,24 @@ public void ParaCek(decimal tutar)
 
     _bakiye -= tutar;
 }
-\`\`\``},{id:"cs-10",title:"Ders 10: LINQ ile Veri Sorgulama",content:`LINQ (Language Integrated Query), C# koleksiyonlar\u0131n\u0131 SQL benzeri s\xF6zdizimi ile sorgulaman\u0131z\u0131 sa\u011Flar.
 
-### Temel LINQ Metodlar\u0131:
+// \xC7a\u011F\u0131ran tarafta yakalan\u0131r
+try { hesap.ParaCek(99999m); }
+catch (YetersizBakiyeException ex)
+{
+    Console.WriteLine(ex.Message);
+    Console.WriteLine($"Eksi\u011Fi: {ex.IstenenTutar - ex.Bakiye:C}");
+}
+\`\`\``,quiz:[{q:"finally blo\u011Fu ne zaman \xE7al\u0131\u015F\u0131r?",options:["Sadece hata olmad\u0131\u011F\u0131nda","Sadece exception f\u0131rlat\u0131ld\u0131\u011F\u0131nda","Her durumda \u2014 hata olsa da olmasa da","Sadece return \xE7a\u011Fr\u0131ld\u0131\u011F\u0131nda"],answer:2,exp:"finally blo\u011Fu, try ba\u015Far\u0131l\u0131 da olsa, catch devreye girse de her zaman \xE7al\u0131\u015F\u0131r. Kaynak temizli\u011Fi (connection close) i\xE7in idealdir."},{q:"Bo\u015F catch blo\u011Fu (catch {}) kullanmak neden k\xF6t\xFC bir pratiktir?",options:["Derleme hatas\u0131 verir","Hatay\u0131 yutarak debug'\u0131 imkans\u0131z k\u0131lar","Performans\u0131 d\xFC\u015F\xFCr\xFCr","Sadece FormatException'\u0131 yakalar"],answer:1,exp:"Bo\u015F catch blo\u011Fu hatay\u0131 sessizce yutarak sistemde neyin yanl\u0131\u015F gitti\u011Fini anlamay\u0131 engeller."},{q:"throw new ArgumentException('...') ifadesi ne yapar?",options:["Program\u0131 sonland\u0131r\u0131r","Bir hata mesaj\u0131 yazd\u0131r\u0131r","ArgumentException t\xFCr\xFCnde bir exception f\u0131rlat\u0131r","catch blo\u011Funa atlar"],answer:2,exp:"throw, exception nesnesini olu\u015Fturup f\u0131rlat\u0131r. En yak\u0131n uygun catch blo\u011Fu taraf\u0131ndan yakalan\u0131r."}]},{id:"cs-10",title:"Ders 10: LINQ ile Veri Sorgulama",intro:`### LINQ Nedir?
+LINQ (Language Integrated Query), C# i\xE7inde koleksiyonlar\u0131 SQL benzeri s\xF6zdizimi ile sorgulamay\u0131 sa\u011Flar. Veri filtreleme, s\u0131ralama, gruplama ve d\xF6n\xFC\u015F\xFCm i\u015Flemleri tek sat\u0131ra s\u0131\u011Far.
+
+### Ger\xE7ek D\xFCnya Kullan\u0131m\u0131:
+* "Fiyat\u0131 1000 TL'den y\xFCksek aktif \xFCr\xFCnleri getir" \u2192 \`.Where().OrderBy()\`
+* "Her kategorideki \xFCr\xFCn say\u0131s\u0131" \u2192 \`.GroupBy().Count()\`
+* "En pahal\u0131 10 \xFCr\xFCn" \u2192 \`.OrderByDescending().Take(10)\`
+* Entity Framework Core, LINQ'yu SQL'e \xE7evirir \u2014 veritaban\u0131 sorgular\u0131n\u0131 C# ile yazars\u0131n
+
+> **LINQ, EF Core'un dilidir.** Bunu \xF6\u011Frenmek, veritaban\u0131 sorgular\u0131n\u0131 C# ile yazmay\u0131 \xF6\u011Frenmek demektir.`,content:`### Temel LINQ Metodlar\u0131:
 \`\`\`csharp
 using System.Linq;
 
@@ -509,17 +577,17 @@ var urunler = new List<Urun>
     new() { Ad = "Mouse",    Fiyat = 350,   Kategori = "Elektronik", Stok = 50 },
     new() { Ad = "Masa",     Fiyat = 3500,  Kategori = "Mobilya",    Stok = 8  },
     new() { Ad = "Sandalye", Fiyat = 2000,  Kategori = "Mobilya",    Stok = 12 },
-    new() { Ad = "Kalem",    Fiyat = 15,    Kategori = "Kirtasiye",  Stok = 200}
+    new() { Ad = "Kalem",    Fiyat = 15,    Kategori = "K\u0131rtasiye",  Stok = 200}
 };
 
-// Filtreleme
+// Where \u2014 Filtreleme
 var pahal\u0131lar = urunler.Where(u => u.Fiyat > 1000).ToList();
 
-// S\u0131ralama
+// OrderBy / OrderByDescending \u2014 S\u0131ralama
 var ucuzdan = urunler.OrderBy(u => u.Fiyat).ToList();
-var pahalidan = urunler.OrderByDescending(u => u.Fiyat).ToList();
+var pahalidan = urunler.OrderByDescending(u => u.Fiyat).Take(3).ToList();
 
-// D\xF6n\xFC\u015F\xFCm
+// Select \u2014 Projeksiyon (tip d\xF6n\xFC\u015F\xFCm\xFC)
 var adlar = urunler.Select(u => u.Ad).ToList();
 var ozet = urunler.Select(u => new { u.Ad, u.Fiyat }).ToList();
 
@@ -528,87 +596,108 @@ var enPahal\u0131 = urunler.MaxBy(u => u.Fiyat);
 var laptop = urunler.FirstOrDefault(u => u.Ad == "Laptop");
 \`\`\`
 
-### Gruplama ve \u0130statistik:
+### Aggregate Fonksiyonlar:
 \`\`\`csharp
-// Kategoriye g\xF6re grupla
-var gruplama = urunler
+decimal toplamDeger = urunler.Sum(u => u.Fiyat * u.Stok);
+double ortFiyat = urunler.Average(u => (double)u.Fiyat);
+int toplam = urunler.Count(u => u.Stok > 0);
+bool hepsiFiyatl\u0131 = urunler.All(u => u.Fiyat > 0);
+bool biriPahal\u0131 = urunler.Any(u => u.Fiyat > 40000);
+\`\`\`
+
+### GroupBy \u2014 Gruplama:
+\`\`\`csharp
+var gruplar = urunler
     .GroupBy(u => u.Kategori)
     .Select(g => new
     {
         Kategori = g.Key,
-        UrunSayisi = g.Count(),
+        Adet = g.Count(),
         ToplamDeger = g.Sum(u => u.Fiyat * u.Stok),
-        OrtalamaFiyat = g.Average(u => u.Fiyat)
+        OrtFiyat = g.Average(u => (double)u.Fiyat)
     })
     .OrderByDescending(g => g.ToplamDeger);
 
-foreach (var g in gruplama)
-    Console.WriteLine($"{g.Kategori}: {g.UrunSayisi} \xFCr\xFCn, {g.ToplamDeger:C}");
-\`\`\``},{id:"cs-11",title:"Ders 11: Asenkron Programlama (async/await)",content:`Asenkron programlama, I/O i\u015Flemleri s\u0131ras\u0131nda uygulaman\u0131n bloke olmas\u0131n\u0131 \xF6nler. Web API, veritaban\u0131 ve dosya i\u015Flemleri i\xE7in kritiktir.
+foreach (var g in gruplar)
+    Console.WriteLine($"{g.Kategori}: {g.Adet} \xFCr\xFCn, {g.ToplamDeger:C}");
+\`\`\``,quiz:[{q:"LINQ'da Where() metodu ne yapar?",options:["S\u0131ralama yapar","Belirtilen ko\u015Fula g\xF6re filtreler","Yeni bir nesne listesi olu\u015Fturur","Gruplayarak sayd\u0131r\u0131r"],answer:1,exp:"Where(), koleksiyonu filtreler; ko\u015Fulu true olanlar\u0131 yeni bir IEnumerable olarak d\xF6nd\xFCr\xFCr."},{q:".FirstOrDefault() metodu ne zaman null d\xF6nd\xFCr\xFCr?",options:["Liste bo\u015F oldu\u011Funda","Ko\u015Fula uyan eleman bulunamad\u0131\u011F\u0131nda","Her zaman null d\xF6nd\xFCr\xFCr","A ve B \u015F\u0131klar\u0131"],answer:3,exp:"FirstOrDefault, ko\u015Fula uyan eleman bulunamazsa veya liste bo\u015Fsa default de\u011Feri (referans tiplerde null) d\xF6nd\xFCr\xFCr."},{q:"urunler.Count(u => u.Stok > 0) ne d\xF6nd\xFCr\xFCr?",options:["\xDCr\xFCn listesi","En y\xFCksek stok de\u011Feri","Sto\u011Fu 0'dan b\xFCy\xFCk olan \xFCr\xFCn say\u0131s\u0131","Toplam stok adedi"],answer:2,exp:"Count(predicate), verilen ko\u015Fulu sa\u011Flayan eleman say\u0131s\u0131n\u0131 int olarak d\xF6nd\xFCr\xFCr."}]},{id:"cs-11",title:"Ders 11: Asenkron Programlama (async/await)",intro:`### Asenkron Programlama Neden Gerekli?
+Bir restoran hayal et: Garson m\xFC\u015Fteriden sipari\u015Fi al\u0131p mutfaktan yemek \xE7\u0131kana kadar orada beklese di\u011Fer masalara gidemez. Asenkron programlama tam da budur \u2014 bir i\u015Flem beklerken di\u011Fer i\u015Fler yap\u0131labilir.
 
-### async/await Temelleri:
+### Ger\xE7ek D\xFCnya:
+* **API \xE7a\u011Fr\u0131s\u0131:** 200ms s\xFCren HTTP iste\u011Fi s\u0131ras\u0131nda thread bloke olmamal\u0131
+* **Veritaban\u0131 sorgusu:** EF Core'un t\xFCm metodlar\u0131 async'tir (\`.ToListAsync()\`)
+* **Dosya okuma:** B\xFCy\xFCk dosyalar async okunur
+* **Web sunucusu:** ASP.NET Core, async ile ayn\u0131 anda binlerce iste\u011Fi i\u015Fler
+
+> **Kural:** I/O i\u015Flemi yap\u0131yorsan (a\u011F, disk, DB), async kullan. CPU i\u015Flemi yap\u0131yorsan (hesaplama), async gerekmez.`,content:`### async/await Temelleri:
 \`\`\`csharp
 using System.Net.Http;
 using System.Text.Json;
 
-// Task: Sonucu beklenebilir asenkron i\u015Flem
+// Task<T>: De\u011Fer d\xF6nd\xFCren asenkron metot
 public async Task<string> VeriGetirAsync(string url)
 {
     using var client = new HttpClient();
-    // await: Bekle ama thread'i bloke etme
+    
+    // await: \u0130\u015Flemi bekle ama thread'i BLOKE ETME
     string json = await client.GetStringAsync(url);
     return json;
 }
 
-// Task<T>: De\u011Fer d\xF6nd\xFCren asenkron metot
-public async Task<List<Urun>> UrunleriGetirAsync()
+// void yerine Task d\xF6nd\xFCr (hata yakalanabilir olsun)
+public async Task KaydetAsync(string veri)
 {
-    using var client = new HttpClient();
-    var response = await client.GetAsync("https://api.ytkacademy.com.tr/urunler");
-    response.EnsureSuccessStatusCode();
-
-    string json = await response.Content.ReadAsStringAsync();
-    return JsonSerializer.Deserialize<List<Urun>>(json)!;
+    await File.WriteAllTextAsync("veri.txt", veri);
+    Console.WriteLine("\u2713 Kaydedildi");
 }
 \`\`\`
 
 ### Paralel Asenkron \u0130\u015Flemler:
 \`\`\`csharp
-public async Task<(List<Urun> urunler, List<Kullanici> kullanicilar)> VeriYukleAsync()
+public async Task<(string urunler, string kullanicilar)> VeriYukleAsync()
 {
-    // \u0130kisini ayn\u0131 anda ba\u015Flat
-    var urunTask = UrunleriGetirAsync();
-    var kullaniciTask = KullanicilariGetirAsync();
+    // \u0130kisini AYNI ANDA ba\u015Flat (s\u0131rayla de\u011Fil!)
+    Task<string> urunTask = VeriGetirAsync("/api/urunler");
+    Task<string> kullaniciTask = VeriGetirAsync("/api/kullanicilar");
 
-    // \u0130kisinin de tamamlanmas\u0131n\u0131 bekle
+    // Her ikisi bitene kadar bekle
     await Task.WhenAll(urunTask, kullaniciTask);
 
     return (await urunTask, await kullaniciTask);
 }
+
+// Sadece birini bekle (en h\u0131zl\u0131s\u0131 yeterli)
+Task<string> sonuc = await Task.WhenAny(urunTask, kullaniciTask);
 \`\`\`
 
 ### CancellationToken \u2014 \u0130ptal Deste\u011Fi:
 \`\`\`csharp
-public async Task UzunIslemAsync(CancellationToken ct)
+public async Task RaporUretAsync(CancellationToken ct)
 {
     for (int i = 0; i < 100; i++)
     {
         ct.ThrowIfCancellationRequested(); // \u0130ptal istendi mi?
-        await Task.Delay(100, ct);
-        Console.WriteLine($"Ad\u0131m {i + 1}/100");
+        await Task.Delay(100, ct);         // Bekleme (iptal edilebilir)
+        Console.WriteLine($"Ad\u0131m {i + 1}/100 tamamland\u0131");
     }
 }
 
-// Kullan\u0131m
-using var cts = new CancellationTokenSource(timeout: TimeSpan.FromSeconds(5));
-await UzunIslemAsync(cts.Token);
-\`\`\``},{id:"cs-12",title:"Ders 12: Entity Framework Core",content:`Entity Framework Core (EF Core), C# s\u0131n\u0131flar\u0131 ile veritaban\u0131 tablolar\u0131 aras\u0131nda k\xF6pr\xFC kuran ORM arac\u0131d\u0131r.
+// 5 saniye sonra otomatik iptal
+using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+await RaporUretAsync(cts.Token);
+\`\`\``,quiz:[{q:"async metot hangi d\xF6n\xFC\u015F tiplerini kullanabilir?",options:["Sadece void","void, Task veya Task<T>","Sadece Task","Herhangi bir tip"],answer:1,exp:"async metodlar void, Task veya Task<T> d\xF6nd\xFCrebilir. void sadece event handler'lar i\xE7in \xF6nerilir."},{q:"await keyword'\xFC bir async i\u015Flem beklerken ne yapar?",options:["Thread'i bloke eder ve bekler","Thread'i serbest b\u0131rak\u0131r, i\u015Flem tamamlan\u0131nca devam eder","Yeni bir Thread ba\u015Flat\u0131r","\u0130\u015Flemi iptal eder"],answer:1,exp:"await, mevcut thread'i bloke etmeden i\u015Flemin tamamlanmas\u0131n\u0131 bekler. Thread ba\u015Fka i\u015Flere atanabilir."},{q:"Task.WhenAll() ne zaman kullan\u0131l\u0131r?",options:["Sadece en h\u0131zl\u0131 tamamlanan Task'\u0131 beklemek i\xE7in","Birden fazla async i\u015Flemi paralel ba\u015Flat\u0131p hepsinin tamamlanmas\u0131n\u0131 beklemek i\xE7in","Task'\u0131 iptal etmek i\xE7in","Senkron metodu async'e \xE7evirmek i\xE7in"],answer:1,exp:"Task.WhenAll(), t\xFCm Task'lar tamamland\u0131\u011F\u0131nda devam eder. Paralel API \xE7a\u011Fr\u0131lar\u0131 i\xE7in idealdir."}]},{id:"cs-12",title:"Ders 12: Entity Framework Core",intro:`### ORM Nedir ve Neden Kullan\u0131l\u0131r?
+SQL yazmak yerine C# nesneleri \xFCzerinden veritaban\u0131 i\u015Flemi yapmak istiyorsan ORM (Object-Relational Mapping) kullan\u0131rs\u0131n. EF Core, .NET'in resmi ORM arac\u0131d\u0131r.
 
-### DbContext ve Entity Tan\u0131mlama:
+### Ger\xE7ek D\xFCnya:
+* T\xFCrkiye'deki kurumsal .NET projelerinin b\xFCy\xFCk \xE7o\u011Funlu\u011Fu EF Core kullan\u0131yor
+* \`db.Urunler.Where(u => u.Fiyat > 100).ToListAsync()\` \u2192 EF Core bunu SQL'e \xE7evirir
+* Code-First yakla\u015F\u0131m\u0131: C# s\u0131n\u0131f\u0131 yaz \u2192 migration \u2192 veritaban\u0131 otomatik olu\u015Fur
+
+> **Bu ders sonunda:** Basit bir CRUD API'nin veritaban\u0131 katman\u0131n\u0131 yazabileceksin. Bu, ger\xE7ek projelerde kullan\u0131lan yap\u0131n\u0131n ta kendisidir.`,content:`### Entity ve DbContext Tan\u0131mlama:
 \`\`\`csharp
 using Microsoft.EntityFrameworkCore;
 
-// Entity s\u0131n\u0131f\u0131 \u2192 Veritaban\u0131 tablosu
+// Entity \u2192 Veritaban\u0131 tablosu
 public class Urun
 {
     public int Id { get; set; }
@@ -634,14 +723,10 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
+        // Precision: decimal i\xE7in zorunlu
         mb.Entity<Urun>()
           .Property(u => u.Fiyat)
           .HasPrecision(18, 2);
-
-        mb.Entity<Urun>()
-          .HasOne(u => u.Kategori)
-          .WithMany(k => k.Urunler)
-          .HasForeignKey(u => u.KategoriId);
     }
 }
 \`\`\`
@@ -650,607 +735,298 @@ public class AppDbContext : DbContext
 \`\`\`csharp
 await using var db = new AppDbContext(options);
 
-// CREATE
+// CREATE \u2014 Yeni kay\u0131t ekle
 var yeniUrun = new Urun { Ad = "MacBook Pro", Fiyat = 85000m, KategoriId = 1 };
 db.Urunler.Add(yeniUrun);
-await db.SaveChangesAsync();
+await db.SaveChangesAsync(); // SQL: INSERT INTO...
 
-// READ \u2014 LINQ ile
-var elektronikler = await db.Urunler
-    .Include(u => u.Kategori)         // JOIN (eager loading)
+// READ \u2014 LINQ ile sorgula
+var aktifler = await db.Urunler
+    .Include(u => u.Kategori)          // SQL JOIN
     .Where(u => u.AktifMi && u.Stok > 0)
     .OrderByDescending(u => u.Fiyat)
     .Take(10)
     .ToListAsync();
 
-// UPDATE
+// UPDATE \u2014 G\xFCncelle
 var urun = await db.Urunler.FindAsync(1);
 if (urun is not null)
 {
     urun.Fiyat = 79000m;
     urun.Stok -= 1;
-    await db.SaveChangesAsync();
+    await db.SaveChangesAsync(); // SQL: UPDATE...
 }
 
-// DELETE
+// DELETE \u2014 Sil
 var silinecek = await db.Urunler.FindAsync(5);
 if (silinecek is not null)
 {
     db.Urunler.Remove(silinecek);
-    await db.SaveChangesAsync();
+    await db.SaveChangesAsync(); // SQL: DELETE...
 }
 \`\`\`
 
-### Migration Komutlar\u0131:
+### Migration Komutlar\u0131 (Terminalde \xE7al\u0131\u015Ft\u0131r\u0131l\u0131r):
 \`\`\`csharp
-// Terminal (Package Manager Console veya CLI)
 // dotnet ef migrations add InitialCreate
 // dotnet ef database update
 // dotnet ef migrations list
-\`\`\``}]},sql:{title:"SQL Veritaban\u0131 Temelleri",desc:"\u0130li\u015Fkisel veritaban\u0131 tasar\u0131m\u0131, DDL/DML komutlar\u0131, JOIN, index, stored procedure ve transaction y\xF6netimi.",icon:"\u{1F5C4}\uFE0F",color:"#ffd166",lessons:[{id:"sql-1",title:"Ders 1: SQL Nedir? Temel Kavramlar",content:`SQL (Structured Query Language), ili\u015Fkisel veritabanlar\u0131nda verileri sorgulamak, eklemek, g\xFCncellemek ve y\xF6netmek i\xE7in kullan\u0131lan standart dildir.
+// dotnet ef database drop (dikkatli!)
+\`\`\``,quiz:[{q:"EF Core'da ORM a\xE7\u0131l\u0131m\u0131 nedir?",options:["Object Resource Manager","Object-Relational Mapping","Ordered Record Model","Optional Request Module"],answer:1,exp:"ORM: Object-Relational Mapping. C# nesnelerini ili\u015Fkisel veritaban\u0131 tablolar\u0131na e\u015Fler."},{q:"db.SaveChangesAsync() ne zaman \xE7a\u011Fr\u0131lmal\u0131d\u0131r?",options:["Her LINQ sorgusundan sonra","Sadece DELETE i\u015Flemlerinde","Add, Update veya Remove sonras\u0131nda de\u011Fi\u015Fiklikleri veritaban\u0131na yazmak i\xE7in","DbContext olu\u015Fturuldu\u011Funda"],answer:2,exp:"SaveChangesAsync, bellekteki de\u011Fi\u015Fiklikleri (INSERT/UPDATE/DELETE) bir transaction i\xE7inde veritaban\u0131na g\xF6nderir."},{q:".Include(u => u.Kategori) EF Core'da ne i\u015Fe yarar?",options:["Kategori tablosunu olu\u015Fturur","Kategorileri filtreler","SQL JOIN yaparak ili\u015Fkili tabloyu y\xFCkler (eager loading)","Kategori alan\u0131n\u0131 \u015Fifreler"],answer:2,exp:"Include, EF Core'a SQL JOIN ekletir. Aksi h\xE2lde navigation property null gelir (lazy loading kapal\u0131ysa)."}]}]},sql:{title:"SQL Veritaban\u0131 Temelleri",desc:"\u0130li\u015Fkisel veritaban\u0131 tasar\u0131m\u0131, DDL/DML komutlar\u0131, JOIN, index, stored procedure ve transaction y\xF6netimi.",icon:"\u{1F5C4}\uFE0F",color:"#ffd166",lessons:[{id:"sql-1",title:"Ders 1: SQL Nedir? Temel Kavramlar",content:`SQL (Structured Query Language), ili\u015Fkisel veritabanlar\u0131nda veri y\xF6netmek i\xE7in kullan\u0131lan standart dildir.
 
 ### Temel Kavramlar:
-* **Veritaban\u0131 (Database):** Birbiriyle ili\u015Fkili verilerin d\xFCzenli sakland\u0131\u011F\u0131 yap\u0131.
-* **Tablo (Table):** Sat\u0131r ve s\xFCtun yap\u0131s\u0131nda veri depolayan nesne.
+* **Veritaban\u0131:** Birbiriyle ili\u015Fkili verilerin d\xFCzenli sakland\u0131\u011F\u0131 yap\u0131.
+* **Tablo:** Sat\u0131r ve s\xFCtun yap\u0131s\u0131nda veri depolayan nesne.
 * **Primary Key (PK):** Her sat\u0131r\u0131 benzersiz tan\u0131mlayan s\xFCtun.
 * **Foreign Key (FK):** Ba\u015Fka tablonun PK's\u0131na referans veren s\xFCtun.
-* **Index:** Sorgulama h\u0131z\u0131n\u0131 art\u0131ran yap\u0131.
-* **Schema:** Tablolar ve nesnelerin gruplanma mant\u0131\u011F\u0131.
 
 ### SQL Komut Kategorileri:
 * **DDL:** CREATE, ALTER, DROP \u2014 Yap\u0131 y\xF6netimi
 * **DML:** INSERT, UPDATE, DELETE \u2014 Veri y\xF6netimi
 * **DQL:** SELECT \u2014 Veri sorgulama
-* **DCL:** GRANT, REVOKE \u2014 Yetki y\xF6netimi
 * **TCL:** COMMIT, ROLLBACK \u2014 Transaction y\xF6netimi
 
 ### \u0130lk SQL Komutlar\u0131:
 \`\`\`sql
--- Veritaban\u0131 olu\u015Ftur
 CREATE DATABASE YtkAcademy;
-GO
-
--- Veritaban\u0131n\u0131 se\xE7
 USE YtkAcademy;
-GO
 
--- Mevcut tablolar\u0131 listele
 SELECT TABLE_NAME
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_TYPE = 'BASE TABLE';
-\`\`\`
-
-### Neden SQL \xD6\u011Frenmeliyim?
-Her yaz\u0131l\u0131m geli\u015Ftirici veri taban\u0131yla \xE7al\u0131\u015F\u0131r. SQL bilmeden backend geli\u015Ftirici olunamaz. T\xFCrkiye'deki i\u015F ilanlar\u0131n\u0131n %90'\u0131nda SQL zorunlu veya tercih edilen beceri olarak yer al\u0131r.`},{id:"sql-2",title:"Ders 2: Tablo Olu\u015Fturma (CREATE TABLE)",content:`Veritaban\u0131nda veri saklamak i\xE7in tablo olu\u015Fturulur. Her s\xFCtunun veri tipi ve k\u0131s\u0131tlamalar\u0131 belirlenir.
-
-### Yayg\u0131n Veri Tipleri:
-* **INT / BIGINT:** Tam say\u0131lar
-* **NVARCHAR(n):** Unicode metin (T\xFCrk\xE7e i\xE7in tercih edilir)
-* **DECIMAL(p,s):** Ondal\u0131kl\u0131 say\u0131 \u2014 \xF6r. DECIMAL(10,2) = 12345678.90
-* **BIT:** 0/1 (boolean)
-* **DATETIME / DATE:** Tarih ve saat
-* **UNIQUEIDENTIFIER:** GUID
-
-### Ger\xE7ek Bir E-Ticaret \u015Eemas\u0131:
+\`\`\``},{id:"sql-2",title:"Ders 2: Tablo Olu\u015Fturma (CREATE TABLE)",content:`### Ger\xE7ek Bir E-Ticaret \u015Eemas\u0131:
 \`\`\`sql
-CREATE TABLE Kategoriler (
-    Id    INT IDENTITY(1,1) PRIMARY KEY,
-    Ad    NVARCHAR(100) NOT NULL,
-    Slug  NVARCHAR(100) NOT NULL UNIQUE
-);
-
 CREATE TABLE Kullanicilar (
     Id               INT IDENTITY(1,1) PRIMARY KEY,
     Ad               NVARCHAR(50)  NOT NULL,
     Soyad            NVARCHAR(50)  NOT NULL,
     Email            NVARCHAR(100) NOT NULL UNIQUE,
     SifreHash        NVARCHAR(255) NOT NULL,
-    Telefon          NVARCHAR(20)  NULL,
     AktifMi          BIT           NOT NULL DEFAULT 1,
-    OlusturmaTarihi  DATETIME      NOT NULL DEFAULT GETDATE(),
-    SonGirisTarihi   DATETIME      NULL
+    OlusturmaTarihi  DATETIME      NOT NULL DEFAULT GETDATE()
 );
 
 CREATE TABLE Urunler (
-    Id               INT IDENTITY(1,1) PRIMARY KEY,
-    KategoriId       INT            NOT NULL,
-    Ad               NVARCHAR(200)  NOT NULL,
-    Aciklama         NVARCHAR(MAX)  NULL,
-    Fiyat            DECIMAL(10,2)  NOT NULL,
-    StokAdedi        INT            NOT NULL DEFAULT 0,
-    AktifMi          BIT            NOT NULL DEFAULT 1,
-    OlusturmaTarihi  DATETIME       NOT NULL DEFAULT GETDATE(),
+    Id         INT IDENTITY(1,1) PRIMARY KEY,
+    KategoriId INT           NOT NULL,
+    Ad         NVARCHAR(200) NOT NULL,
+    Fiyat      DECIMAL(10,2) NOT NULL,
+    StokAdedi  INT           NOT NULL DEFAULT 0,
+    AktifMi    BIT           NOT NULL DEFAULT 1,
 
     CONSTRAINT FK_Urunler_Kategoriler
         FOREIGN KEY (KategoriId) REFERENCES Kategoriler(Id),
-    CONSTRAINT CK_Urunler_Fiyat
-        CHECK (Fiyat >= 0),
-    CONSTRAINT CK_Urunler_Stok
-        CHECK (StokAdedi >= 0)
+    CONSTRAINT CK_Urunler_Fiyat CHECK (Fiyat >= 0)
 );
-\`\`\`
-
-### Tablo G\xFCncelleme ve Silme:
+\`\`\``},{id:"sql-3",title:"Ders 3: SELECT ve Filtreleme",content:`### Temel SELECT:
 \`\`\`sql
--- S\xFCtun ekle
-ALTER TABLE Urunler ADD ResimUrl NVARCHAR(500) NULL;
+SELECT Id, Ad, Fiyat FROM Urunler;
 
--- S\xFCtun tipi de\u011Fi\u015Ftir
-ALTER TABLE Urunler ALTER COLUMN Aciklama NVARCHAR(2000);
-
--- Tablo sil (dikkatli!)
-DROP TABLE IF EXISTS GeciciTablo;
-\`\`\``},{id:"sql-3",title:"Ders 3: SELECT ve Filtreleme",content:`SELECT, veritaban\u0131ndan veri okumak i\xE7in kullan\u0131lan en temel SQL komutudur.
-
-### Temel SELECT:
-\`\`\`sql
--- T\xFCm s\xFCtunlar (production'da ka\xE7\u0131n\u0131n, yava\u015F!)
-SELECT * FROM Urunler;
-
--- Belirli s\xFCtunlar
-SELECT Id, Ad, Fiyat, StokAdedi FROM Urunler;
-
--- Hesaplamal\u0131 s\xFCtun ve alias
-SELECT
-    Ad,
-    Fiyat,
-    Fiyat * 1.20 AS KDVliFiyat,
-    StokAdedi * Fiyat AS ToplamDeger,
-    GETDATE() AS SorguTarihi
-FROM Urunler;
+SELECT Ad, Fiyat * 1.20 AS KDVliFiyat FROM Urunler;
 \`\`\`
 
 ### WHERE ile Filtreleme:
 \`\`\`sql
--- Temel ko\u015Ful
 SELECT * FROM Urunler WHERE Fiyat > 1000;
 
--- BETWEEN
-SELECT * FROM Urunler WHERE Fiyat BETWEEN 500 AND 5000;
-
--- IN listesi
-SELECT * FROM Urunler WHERE KategoriId IN (1, 3, 5);
-
--- LIKE \u2014 metin arama
-SELECT * FROM Urunler WHERE Ad LIKE '%laptop%';   -- i\xE7erir
-SELECT * FROM Kullanicilar WHERE Email LIKE '%@gmail.com'; -- biter
-
--- NULL kontrol\xFC
-SELECT * FROM Kullanicilar WHERE Telefon IS NULL;
-
--- Birle\u015Fik ko\u015Fullar
 SELECT * FROM Urunler
-WHERE AktifMi = 1
-  AND StokAdedi > 0
-  AND (Fiyat < 1000 OR KategoriId = 5);
+WHERE Fiyat BETWEEN 500 AND 5000
+  AND AktifMi = 1 AND StokAdedi > 0;
+
+SELECT * FROM Urunler WHERE Ad LIKE '%laptop%';
+
+SELECT * FROM Kullanicilar WHERE Telefon IS NULL;
 \`\`\`
 
 ### S\u0131ralama ve Sayfalama:
 \`\`\`sql
--- S\u0131ralama
 SELECT Ad, Fiyat FROM Urunler
-ORDER BY Fiyat DESC, Ad ASC;
+ORDER BY Fiyat DESC;
 
--- TOP ile limit (SQL Server)
 SELECT TOP 5 * FROM Urunler ORDER BY Fiyat DESC;
 
--- Sayfalama (OFFSET-FETCH)
--- 2. sayfa, sayfa ba\u015F\u0131na 10 \xFCr\xFCn
-SELECT Id, Ad, Fiyat FROM Urunler
+-- Sayfalama: 2. sayfa, 10'ar kay\u0131t
+SELECT * FROM Urunler
 ORDER BY Id
 OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
-\`\`\``},{id:"sql-4",title:"Ders 4: INSERT, UPDATE ve DELETE",content:`Veritaban\u0131ndaki verileri eklemek, g\xFCncellemek ve silmek i\xE7in DML komutlar\u0131 kullan\u0131l\u0131r.
-
-### INSERT \u2014 Veri Ekleme:
+\`\`\``},{id:"sql-4",title:"Ders 4: INSERT, UPDATE ve DELETE",content:`### INSERT:
 \`\`\`sql
--- Tek kay\u0131t
-INSERT INTO Kategoriler (Ad, Slug)
-VALUES ('Elektronik', 'elektronik');
-
--- Birden fazla kay\u0131t
 INSERT INTO Kategoriler (Ad, Slug) VALUES
-    ('Giyim',     'giyim'),
-    ('Kitap',     'kitap'),
-    ('Spor',      'spor'),
-    ('Mobilya',   'mobilya');
-
--- Son eklenen ID'yi al
-INSERT INTO Urunler (KategoriId, Ad, Fiyat)
-VALUES (1, 'MacBook Pro M3', 85000);
-SELECT SCOPE_IDENTITY() AS YeniId; -- Sadece o i\u015Flem
-
--- SELECT'ten INSERT
-INSERT INTO ArsivUrunler (Ad, Fiyat, SilinmeTarihi)
-SELECT Ad, Fiyat, GETDATE()
-FROM Urunler
-WHERE AktifMi = 0;
+    ('Elektronik', 'elektronik'),
+    ('Mobilya', 'mobilya');
 \`\`\`
 
-### UPDATE \u2014 G\xFCncelleme:
+### UPDATE:
 \`\`\`sql
 -- \u26A0\uFE0F WHERE olmadan T\xDCM sat\u0131rlar de\u011Fi\u015Fir!
-
--- Tek kay\u0131t
-UPDATE Kullanicilar
-SET SonGirisTarihi = GETDATE()
-WHERE Id = 42;
-
--- Toplu g\xFCncelleme
 UPDATE Urunler
-SET
-    Fiyat = Fiyat * 1.10,          -- %10 zam
-    GuncellemeTarihi = GETDATE()
+SET Fiyat = Fiyat * 1.10, GuncellemeTarihi = GETDATE()
 WHERE KategoriId = 1 AND AktifMi = 1;
 \`\`\`
 
-### DELETE \u2014 Silme:
+### DELETE:
 \`\`\`sql
 -- \u26A0\uFE0F WHERE olmadan T\xDCM kay\u0131tlar silinir!
+DELETE FROM Urunler WHERE StokAdedi = 0 AND AktifMi = 0;
 
-DELETE FROM Urunler WHERE Id = 99;
-
--- Ko\u015Fullu silme
-DELETE FROM Urunler
-WHERE StokAdedi = 0 AND AktifMi = 0;
-
--- H\u0131zl\u0131 tablo temizleme (geri al\u0131namaz!)
-TRUNCATE TABLE GeciciLog;
-\`\`\`
-
-### OUTPUT Clause \u2014 Ne De\u011Fi\u015Fti?
+TRUNCATE TABLE GeciciLog; -- H\u0131zl\u0131 tablo temizleme
+\`\`\``},{id:"sql-5",title:"Ders 5: JOIN \u0130\u015Flemleri",content:`### INNER JOIN \u2014 Sadece E\u015Fle\u015Fenler:
 \`\`\`sql
--- Silinen kay\u0131tlar\u0131 g\xF6ster
-DELETE FROM Urunler
-OUTPUT DELETED.Id, DELETED.Ad, DELETED.Fiyat
-WHERE AktifMi = 0;
-\`\`\``},{id:"sql-5",title:"Ders 5: JOIN \u0130\u015Flemleri",content:`\u0130li\u015Fkisel veritabanlar\u0131nda veriler farkl\u0131 tablolarda saklan\u0131r. JOIN ile tablolar birle\u015Ftirilir.
-
-### INNER JOIN \u2014 Sadece E\u015Fle\u015Fenler:
-\`\`\`sql
-SELECT
-    u.Id,
-    u.Ad AS UrunAdi,
-    k.Ad AS Kategori,
-    u.Fiyat,
-    u.StokAdedi
+SELECT u.Ad, k.Ad AS Kategori, u.Fiyat
 FROM Urunler u
 INNER JOIN Kategoriler k ON u.KategoriId = k.Id
-WHERE u.AktifMi = 1
-ORDER BY k.Ad, u.Fiyat;
+WHERE u.AktifMi = 1;
 \`\`\`
 
 ### LEFT JOIN \u2014 Sol Tablonun Tamam\u0131:
 \`\`\`sql
--- Sipari\u015Fi olmayan m\xFC\u015Fterileri de listele
-SELECT
-    k.Ad + ' ' + k.Soyad AS Musteri,
-    k.Email,
-    COUNT(s.Id)    AS SiparisSayisi,
-    SUM(s.Tutar)   AS ToplamHarcama
+SELECT k.Ad, COUNT(s.Id) AS SiparisSayisi
 FROM Kullanicilar k
 LEFT JOIN Siparisler s ON k.Id = s.KullaniciId
-GROUP BY k.Id, k.Ad, k.Soyad, k.Email
-ORDER BY ToplamHarcama DESC;
+GROUP BY k.Id, k.Ad;
 \`\`\`
 
-### \xC7oklu JOIN \u2014 Sipari\u015F Detay Raporu:
+### \xC7oklu JOIN:
 \`\`\`sql
-SELECT
-    s.Id AS SiparisNo,
-    k.Ad + ' ' + k.Soyad AS MusteriAdi,
-    u.Ad AS UrunAdi,
-    kat.Ad AS Kategori,
-    sd.Adet,
-    sd.BirimFiyat,
-    sd.Adet * sd.BirimFiyat AS SatirToplam
+SELECT s.Id, k.Ad AS Musteri, u.Ad AS Urun, sd.Adet
 FROM Siparisler s
-INNER JOIN Kullanicilar k  ON s.KullaniciId = k.Id
+INNER JOIN Kullanicilar k ON s.KullaniciId = k.Id
 INNER JOIN SiparisDetay sd ON s.Id = sd.SiparisId
-INNER JOIN Urunler u       ON sd.UrunId = u.Id
-INNER JOIN Kategoriler kat ON u.KategoriId = kat.Id
-WHERE s.Durum = 'Tamamlandi'
-ORDER BY s.OlusturmaTarihi DESC;
-\`\`\``},{id:"sql-6",title:"Ders 6: GROUP BY ve Aggregate Fonksiyonlar",content:`Verileri gruplamak ve istatistiksel hesaplamalar yapmak i\xE7in kullan\u0131l\u0131r.
-
-### Aggregate Fonksiyonlar:
+INNER JOIN Urunler u ON sd.UrunId = u.Id
+WHERE s.Durum = 'Tamamlandi';
+\`\`\``},{id:"sql-6",title:"Ders 6: GROUP BY ve Aggregate Fonksiyonlar",content:`### Aggregate Fonksiyonlar:
 \`\`\`sql
 SELECT
-    COUNT(*)          AS ToplamUrun,
-    COUNT(DISTINCT KategoriId) AS FarkliKategori,
-    SUM(StokAdedi)    AS ToplamStok,
-    AVG(Fiyat)        AS OrtFiyat,
-    MIN(Fiyat)        AS EnDusuk,
-    MAX(Fiyat)        AS EnYuksek,
-    SUM(Fiyat * StokAdedi) AS ToplamDeger
-FROM Urunler
-WHERE AktifMi = 1;
+    COUNT(*) AS ToplamUrun,
+    SUM(StokAdedi) AS ToplamStok,
+    AVG(Fiyat) AS OrtFiyat,
+    MIN(Fiyat) AS EnDusuk,
+    MAX(Fiyat) AS EnYuksek
+FROM Urunler WHERE AktifMi = 1;
 \`\`\`
 
-### GROUP BY ile Gruplama:
+### GROUP BY:
 \`\`\`sql
-SELECT
-    k.Ad AS Kategori,
-    COUNT(u.Id)            AS UrunSayisi,
-    AVG(u.Fiyat)           AS OrtFiyat,
-    SUM(u.StokAdedi * u.Fiyat) AS ToplamDeger
+SELECT k.Ad AS Kategori, COUNT(u.Id) AS UrunSayisi,
+       AVG(u.Fiyat) AS OrtFiyat
 FROM Kategoriler k
-LEFT JOIN Urunler u ON k.Id = u.KategoriId AND u.AktifMi = 1
+LEFT JOIN Urunler u ON k.Id = u.KategoriId
 GROUP BY k.Id, k.Ad
-ORDER BY ToplamDeger DESC;
+ORDER BY OrtFiyat DESC;
 \`\`\`
 
 ### HAVING \u2014 Grup Filtresi:
 \`\`\`sql
--- 5'ten fazla sipari\u015F veren ve 10.000 TL+ harcayan m\xFC\u015Fteriler
-SELECT
-    k.Ad + ' ' + k.Soyad AS Musteri,
-    COUNT(s.Id)   AS SiparisSayisi,
-    SUM(s.Tutar)  AS ToplamHarcama
-FROM Kullanicilar k
-INNER JOIN Siparisler s ON k.Id = s.KullaniciId
-WHERE s.Durum = 'Tamamlandi'     -- Sat\u0131r filtresi
-GROUP BY k.Id, k.Ad, k.Soyad
-HAVING COUNT(s.Id) > 5           -- Grup filtresi
-   AND SUM(s.Tutar) > 10000
-ORDER BY ToplamHarcama DESC;
-\`\`\`
-
-### Ayl\u0131k Sat\u0131\u015F Raporu:
-\`\`\`sql
-SELECT
-    YEAR(OlusturmaTarihi) AS Yil,
-    MONTH(OlusturmaTarihi) AS Ay,
-    FORMAT(OlusturmaTarihi, 'MMMM', 'tr-TR') AS AyAdi,
-    COUNT(*) AS SiparisSayisi,
-    SUM(Tutar) AS AylikCiro
+SELECT KullaniciId, COUNT(*) AS Adet, SUM(Tutar) AS Toplam
 FROM Siparisler
 WHERE Durum = 'Tamamlandi'
-GROUP BY YEAR(OlusturmaTarihi), MONTH(OlusturmaTarihi),
-         FORMAT(OlusturmaTarihi, 'MMMM', 'tr-TR')
-ORDER BY Yil DESC, Ay DESC;
-\`\`\``},{id:"sql-7",title:"Ders 7: Alt Sorgular ve CTE",content:`Alt sorgular ve CTE'ler, karma\u015F\u0131k sorgular\u0131 okunabilir yap\u0131lara d\xF6n\xFC\u015Ft\xFCr\xFCr.
-
-### Subquery (Alt Sorgu):
+GROUP BY KullaniciId
+HAVING SUM(Tutar) > 10000;
+\`\`\``},{id:"sql-7",title:"Ders 7: Alt Sorgular ve CTE",content:`### Subquery:
 \`\`\`sql
--- Ortalama fiyat\u0131n \xFCzerindeki \xFCr\xFCnler
-SELECT Ad, Fiyat,
-       (SELECT AVG(Fiyat) FROM Urunler WHERE AktifMi = 1) AS OrtFiyat
-FROM Urunler
-WHERE Fiyat > (SELECT AVG(Fiyat) FROM Urunler WHERE AktifMi = 1)
-ORDER BY Fiyat DESC;
+-- Ortalama \xFCzerindeki \xFCr\xFCnler
+SELECT Ad, Fiyat FROM Urunler
+WHERE Fiyat > (SELECT AVG(Fiyat) FROM Urunler WHERE AktifMi = 1);
 
--- Hi\xE7 sipari\u015F vermemi\u015F m\xFC\u015Fteriler (NOT EXISTS \u2014 daha verimli)
-SELECT Ad, Email
-FROM Kullanicilar k
+-- Sipari\u015F vermemi\u015F m\xFC\u015Fteriler
+SELECT Ad, Email FROM Kullanicilar k
 WHERE NOT EXISTS (
-    SELECT 1 FROM Siparisler s
-    WHERE s.KullaniciId = k.Id
-);
-
--- En \xE7ok satan \xFCr\xFCn\xFCn kategorisi
-SELECT * FROM Kategoriler
-WHERE Id = (
-    SELECT TOP 1 u.KategoriId
-    FROM SiparisDetay sd
-    INNER JOIN Urunler u ON sd.UrunId = u.Id
-    GROUP BY u.KategoriId
-    ORDER BY SUM(sd.Adet) DESC
+    SELECT 1 FROM Siparisler s WHERE s.KullaniciId = k.Id
 );
 \`\`\`
 
-### CTE (Common Table Expression):
+### CTE:
 \`\`\`sql
--- WITH ile okunabilir ara sorgu tan\u0131mla
 WITH Ayl\u0131kSatislar AS (
-    SELECT
-        KullaniciId,
-        YEAR(OlusturmaTarihi)  AS Yil,
-        MONTH(OlusturmaTarihi) AS Ay,
-        COUNT(*) AS SiparisSayisi,
-        SUM(Tutar) AS ToplamTutar
-    FROM Siparisler
-    WHERE Durum = 'Tamamlandi'
+    SELECT KullaniciId, YEAR(OlusturmaTarihi) AS Yil,
+           MONTH(OlusturmaTarihi) AS Ay, SUM(Tutar) AS Toplam
+    FROM Siparisler WHERE Durum = 'Tamamlandi'
     GROUP BY KullaniciId, YEAR(OlusturmaTarihi), MONTH(OlusturmaTarihi)
-),
-VipMusteriler AS (
-    SELECT KullaniciId
-    FROM Ayl\u0131kSatislar
-    WHERE ToplamTutar > 50000
-    GROUP BY KullaniciId
 )
-SELECT k.Ad, k.Email, 'VIP' AS Segment
-FROM Kullanicilar k
-INNER JOIN VipMusteriler v ON k.Id = v.KullaniciId;
-\`\`\``},{id:"sql-8",title:"Ders 8: Index ve Performans",content:`Index'ler, b\xFCy\xFCk tablolarda sorgu h\u0131z\u0131n\u0131 dramatik bi\xE7imde art\u0131r\u0131r.
-
-### Index Nedir?
-Kitab\u0131n arka sayfas\u0131ndaki dizin gibi: t\xFCm sayfalar\u0131 taramak yerine do\u011Frudan konuya atlar.
-
-### Index T\xFCrleri ve Olu\u015Fturma:
+SELECT * FROM Ayl\u0131kSatislar WHERE Toplam > 50000;
+\`\`\``},{id:"sql-8",title:"Ders 8: Index ve Performans",content:`### Index T\xFCrleri:
 \`\`\`sql
--- Clustered Index (tablo s\u0131ralamas\u0131 \u2014 PRIMARY KEY varsay\u0131lan)
--- Her tabloda sadece 1 tane olabilir
+CREATE INDEX IX_Urunler_Fiyat ON Urunler (Fiyat);
 
--- Non-Clustered Index (en yayg\u0131n)
-CREATE INDEX IX_Urunler_Fiyat
-ON Urunler (Fiyat);
-
--- Composite Index (birden fazla s\xFCtun)
 CREATE INDEX IX_Siparisler_Musteri_Tarih
 ON Siparisler (KullaniciId, OlusturmaTarihi DESC);
 
--- Unique Index
-CREATE UNIQUE INDEX UIX_Kullanicilar_Email
-ON Kullanicilar (Email);
+CREATE UNIQUE INDEX UIX_Email ON Kullanicilar (Email);
 
--- Covering Index (s\u0131k sorgulanan s\xFCtunlar\u0131 dahil et)
-CREATE INDEX IX_Urunler_Kategori_Covering
-ON Urunler (KategoriId)
-INCLUDE (Ad, Fiyat, StokAdedi);
+CREATE INDEX IX_Covering
+ON Urunler (KategoriId) INCLUDE (Ad, Fiyat, StokAdedi);
 \`\`\`
 
 ### Performans Analizi:
 \`\`\`sql
--- Sorgu \xE7al\u0131\u015Fma plan\u0131n\u0131 g\xF6r (SSMS'de)
 SET STATISTICS IO ON;
 SET STATISTICS TIME ON;
 
 SELECT * FROM Urunler WHERE Fiyat BETWEEN 1000 AND 5000;
-
--- "Table Scan" k\xF6t\xFC \u2192 Index ekle
--- "Index Seek" iyi \u2192 H\u0131zl\u0131 \xE7al\u0131\u015F\u0131yor
-
--- Mevcut index'leri listele
-SELECT
-    i.name AS IndexAdi,
-    i.type_desc AS Tur,
-    c.name AS Sutun
-FROM sys.indexes i
-JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id
-JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
-WHERE i.object_id = OBJECT_ID('Urunler');
-\`\`\`
-
-### Index Ne Zaman Eklemeliyim?
+-- 'Index Seek' = iyi. 'Table Scan' = yava\u015F, index gerekiyor.
+\`\`\``},{id:"sql-9",title:"Ders 9: View ve Stored Procedure",content:`### VIEW:
 \`\`\`sql
--- \u2705 Ekle: WHERE, JOIN, ORDER BY'da s\u0131k kullan\u0131lan s\xFCtunlar
--- \u2705 Ekle: Y\xFCz binlerce kay\u0131t i\xE7eren tablolar
--- \u274C Ekleme: \xC7ok s\u0131k INSERT/UPDATE olan s\xFCtunlar (index g\xFCncelleme maliyeti)
--- \u274C Ekleme: K\xFC\xE7\xFCk tablolar (zaten h\u0131zl\u0131)
-\`\`\``},{id:"sql-9",title:"Ders 9: View ve Stored Procedure",content:`View ve Stored Procedure, SQL sorgular\u0131n\u0131 yeniden kullan\u0131labilir yap\u0131lara d\xF6n\xFC\u015Ft\xFCr\xFCr.
-
-### VIEW \u2014 Sanal Tablo:
-\`\`\`sql
--- View olu\u015Ftur: Karma\u015F\u0131k JOIN'i basitle\u015Ftir
 CREATE VIEW vw_UrunDetay AS
-SELECT
-    u.Id,
-    u.Ad AS UrunAdi,
-    k.Ad AS Kategori,
-    u.Fiyat,
-    u.Fiyat * 1.20 AS KDVliFiyat,
-    u.StokAdedi,
-    CASE
-        WHEN u.StokAdedi = 0    THEN 'T\xFCkendi'
-        WHEN u.StokAdedi < 5    THEN 'Kritik'
-        WHEN u.StokAdedi < 20   THEN 'D\xFC\u015F\xFCk'
-        ELSE 'Yeterli'
-    END AS StokDurumu,
-    u.OlusturmaTarihi
+SELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat,
+       CASE WHEN u.StokAdedi = 0 THEN 'T\xFCkendi'
+            WHEN u.StokAdedi < 5 THEN 'Kritik'
+            ELSE 'Yeterli' END AS StokDurumu
 FROM Urunler u
 INNER JOIN Kategoriler k ON u.KategoriId = k.Id
 WHERE u.AktifMi = 1;
-GO
 
--- Normal tablo gibi kullan
 SELECT * FROM vw_UrunDetay WHERE Kategori = 'Elektronik';
-SELECT * FROM vw_UrunDetay WHERE StokDurumu IN ('T\xFCkendi', 'Kritik');
-SELECT TOP 10 * FROM vw_UrunDetay ORDER BY Fiyat DESC;
 \`\`\`
 
-### STORED PROCEDURE \u2014 Sakl\u0131 Yordam:
+### STORED PROCEDURE:
 \`\`\`sql
--- Sayfalama destekli \xFCr\xFCn arama
 CREATE PROCEDURE sp_UrunAra
     @Kelime     NVARCHAR(200) = NULL,
-    @MinFiyat   DECIMAL(10,2) = NULL,
     @MaxFiyat   DECIMAL(10,2) = NULL,
-    @KategoriId INT = NULL,
     @SayfaNo    INT = 1,
     @SayfaBoyut INT = 20
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    -- Toplam kay\u0131t say\u0131s\u0131
-    SELECT COUNT(*) AS ToplamKayit
-    FROM Urunler u
-    WHERE u.AktifMi = 1
-      AND (@Kelime IS NULL OR u.Ad LIKE '%' + @Kelime + '%')
-      AND (@MinFiyat IS NULL OR u.Fiyat >= @MinFiyat)
-      AND (@MaxFiyat IS NULL OR u.Fiyat <= @MaxFiyat)
-      AND (@KategoriId IS NULL OR u.KategoriId = @KategoriId);
-
-    -- Sayfal\u0131 sonu\xE7lar
-    SELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat, u.StokAdedi
+    SELECT u.Id, u.Ad, k.Ad AS Kategori, u.Fiyat
     FROM Urunler u
     INNER JOIN Kategoriler k ON u.KategoriId = k.Id
     WHERE u.AktifMi = 1
       AND (@Kelime IS NULL OR u.Ad LIKE '%' + @Kelime + '%')
-      AND (@MinFiyat IS NULL OR u.Fiyat >= @MinFiyat)
       AND (@MaxFiyat IS NULL OR u.Fiyat <= @MaxFiyat)
-      AND (@KategoriId IS NULL OR u.KategoriId = @KategoriId)
     ORDER BY u.Id
     OFFSET (@SayfaNo - 1) * @SayfaBoyut ROWS
     FETCH NEXT @SayfaBoyut ROWS ONLY;
 END;
-GO
 
--- Kullan\u0131m \xF6rnekleri
-EXEC sp_UrunAra @Kelime = 'laptop';
-EXEC sp_UrunAra @MinFiyat = 100, @MaxFiyat = 500, @SayfaNo = 2;
-\`\`\``},{id:"sql-10",title:"Ders 10: Transaction ve ACID Prensipleri",content:`Transaction, birden fazla SQL i\u015Fleminin tek bir atomik birim olarak \xE7al\u0131\u015Fmas\u0131n\u0131 sa\u011Flar.
-
-### ACID Prensipleri:
-* **Atomicity (B\xFCt\xFCnl\xFCk):** Ya hepsi ger\xE7ekle\u015Fir ya da hi\xE7biri.
-* **Consistency (Tutarl\u0131l\u0131k):** \u0130\u015Flem \xF6ncesi ve sonras\u0131 veri ge\xE7erlilik kurallar\u0131 bozulmaz.
-* **Isolation (Yal\u0131t\u0131m):** E\u015F zamanl\u0131 i\u015Flemler birbirini olumsuz etkilemez.
-* **Durability (Kal\u0131c\u0131l\u0131k):** COMMIT edilen i\u015Flem sistem \xE7\xF6kmesine ra\u011Fmen kal\u0131c\u0131d\u0131r.
+EXEC sp_UrunAra @Kelime = 'laptop', @MaxFiyat = 50000;
+\`\`\``},{id:"sql-10",title:"Ders 10: Transaction ve ACID",content:`### ACID Prensipleri:
+* **Atomicity:** Ya hepsi ger\xE7ekle\u015Fir ya da hi\xE7biri.
+* **Consistency:** Veri tutarl\u0131l\u0131\u011F\u0131 korunur.
+* **Isolation:** E\u015F zamanl\u0131 i\u015Flemler birbirini bozmaz.
+* **Durability:** COMMIT edilen veri kal\u0131c\u0131d\u0131r.
 
 ### Banka Transferi \xD6rne\u011Fi:
 \`\`\`sql
 BEGIN TRANSACTION;
 
 BEGIN TRY
-    DECLARE @GondericiId INT = 101;
-    DECLARE @AliciId     INT = 202;
-    DECLARE @Tutar       DECIMAL(10,2) = 5000.00;
+    UPDATE Hesaplar SET Bakiye = Bakiye - 5000
+    WHERE Id = 101;
 
-    -- 1. G\xF6nderici bakiyesini d\xFC\u015F
-    UPDATE Hesaplar
-    SET Bakiye = Bakiye - @Tutar,
-        GuncellemeTarihi = GETDATE()
-    WHERE Id = @GondericiId;
+    IF (SELECT Bakiye FROM Hesaplar WHERE Id = 101) < 0
+        THROW 50001, 'Yetersiz bakiye!', 1;
 
-    -- 2. Yetersiz bakiye kontrol\xFC
-    IF (SELECT Bakiye FROM Hesaplar WHERE Id = @GondericiId) < 0
-    BEGIN
-        ;THROW 50001, 'Yetersiz bakiye! Transfer iptal edildi.', 1;
-    END
+    UPDATE Hesaplar SET Bakiye = Bakiye + 5000
+    WHERE Id = 202;
 
-    -- 3. Al\u0131c\u0131 bakiyesine ekle
-    UPDATE Hesaplar
-    SET Bakiye = Bakiye + @Tutar,
-        GuncellemeTarihi = GETDATE()
-    WHERE Id = @AliciId;
-
-    -- 4. Transfer kayd\u0131n\u0131 olu\u015Ftur
-    INSERT INTO TransferGecmisi
-        (GondericiId, AliciId, Tutar, OlusturmaTarihi, Durum)
-    VALUES
-        (@GondericiId, @AliciId, @Tutar, GETDATE(), 'Tamamlandi');
+    INSERT INTO Transferler (GondericiId, AliciId, Tutar)
+    VALUES (101, 202, 5000);
 
     COMMIT TRANSACTION;
-    PRINT '\u2713 Transfer ba\u015Far\u0131yla tamamland\u0131.';
-
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION;
-    PRINT '\u2717 Hata olu\u015Ftu, i\u015Flem geri al\u0131nd\u0131: ' + ERROR_MESSAGE();
+    PRINT 'Hata: ' + ERROR_MESSAGE();
 END CATCH;
-\`\`\`
-
-### Savepoint \u2014 K\u0131smi Geri Alma:
-\`\`\`sql
-BEGIN TRANSACTION;
-
-INSERT INTO Log (Mesaj) VALUES ('Ad\u0131m 1 tamamland\u0131');
-SAVE TRANSACTION Adim1; -- Ara kay\u0131t noktas\u0131
-
-INSERT INTO Log (Mesaj) VALUES ('Ad\u0131m 2 ba\u015Flad\u0131');
--- Bir hata olu\u015Ftu, sadece Ad\u0131m 2'ye geri al
-ROLLBACK TRANSACTION Adim1;
-
--- Ad\u0131m 1 kal\u0131r, Ad\u0131m 2 geri al\u0131nd\u0131
-COMMIT TRANSACTION;
 \`\`\``}]}};})();
